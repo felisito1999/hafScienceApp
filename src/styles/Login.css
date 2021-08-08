@@ -1,0 +1,180 @@
+body{
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #97cf8a, #4bb325, #319c0b);
+    background-size: 400%, 400%;
+    animation: change 10s ease-in-out infinite;
+}
+
+@keyframes change {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+.container {
+    height: 100vh;
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-container {
+    background-color: #fff;
+    width: 95%;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+}
+
+.form-container h1 {
+    margin-top: 20px;
+    font-weight: 700;
+    color: #05668d;
+    text-align: center;
+}
+
+.form .form-group {
+    height: 40px;
+    width: 100%;
+    position: relative;
+    margin-top: 40px;
+}
+
+
+.form .form-group button {
+    height: 100%;
+    width: 100%;
+    background-color: #319c0b;
+    font-size: 16px;
+    border: none;
+    border: 2px solid #05668d;
+}
+
+.form .form-group button:hover {
+    height: 100%;
+    width: 100%;
+    background-color: #4bb325;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    border: 2px solid #0b9ad3;
+}
+
+.form .form-group input {
+    height: 100%;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid silver;
+    outline: none;
+}
+
+.form-group input:focus ~ label,
+.form-group input:valid ~ label {
+    transform: translateY(-20px);
+    font-size: 14px;
+    outline: none;
+}
+
+.form .form-group label {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    color: #05668d;
+    pointer-events: none;
+    transition: all 0.6s ease;
+}
+
+.form .form-group .underline {
+    position: absolute;
+    bottom: 0px;
+    height: 2px;
+    width: 100%;
+} 
+
+.form .form-group .underline:before {
+    position: absolute;
+    content: "";
+    bottom: 0px;
+    height: 100%;
+    width: 100%;
+    background: #319c0b;
+    transform: scaleX(0);
+    transition: transform 0.6s ease;
+} 
+
+.form-group input:focus ~ .underline:before,
+.form-group input:valid ~ .underline:before {
+    transform: scaleX(1);
+}
+
+.login-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-icon > * {
+    height: 100px;
+}
+/* .sign-in-button{
+    z-index: 1;
+    transition: all;
+    position: relative;
+} */
+@media only screen and (max-width: 600px){
+    .form-container {
+        width: 90%;
+    }
+
+    .login-icon > * {
+        height: 125px;
+    }
+}
+
+@media only screen and (min-width: 600px){
+    .form-container {
+        width: 85%;
+    }
+
+    .login-icon > * {
+        height: 150px;
+    }
+}
+
+@media only screen and (min-width: 768px){
+    .form-container {
+        width: 80%;
+    }
+
+    .login-icon > * {
+        height: 150px;
+    }
+}
+
+@media only screen and (min-width: 992px){
+    .form-container {
+        width: 60%;
+    }
+
+    .login-icon > * {
+        height: 175px;
+    }
+}
+
+@media only screen and (min-width: 1200px){
+    .form-container {
+        width:50%;
+    }
+
+    .login-icon > * {
+        height: 175px;
+    }
+}
