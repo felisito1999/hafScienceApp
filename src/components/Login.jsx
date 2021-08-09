@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from 'react';
+import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 import { ReactComponent as HafIcon } from '../images/tabla-periodica.svg';
 import '../styles/Login.css';
 
-const Login = () => {
+const Login = (props) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+    const history = useHistory();
     const handleUsernameChange = (event) => {
         event.preventDefault();
         setUsername(event.target.value);
@@ -24,8 +26,13 @@ const Login = () => {
             username: username,
             password: password
         }
+        
+        props.setLoginState(true);
+        const mainPath = '/'
+        history.push(mainPath);
 
         console.log(data);
+        console.log(props);
     }
 
     return (

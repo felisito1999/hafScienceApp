@@ -1,20 +1,32 @@
 import './styles/App.css';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { useState } from 'react';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    Redirect,
+} from 'react-router-dom';
 import PeriodicTable from './components/PeriodicTable';
-import Login from './components/Login'
+import Login from './components/Login';
+import ErrorPage from './components/ErrorPage';
 
 const App = () => {
+    const [loggedIn, setLoggedIn] = useState(false);
     return (
-      <Router>
-        <Switch>
-          <Route path='/login'>
-            <Login/>
-          </Route>
-          <Route path="/">
-              <PeriodicTable/>
-          </Route>
-        </Switch>
-      </Router>
+        <Router>
+            <Switch>
+                <Route exact path="/">
+                    {loggedIn ? <PeriodicTable /> : <Redirect to="/login" />}
+                </Route>
+                <Route path="/login">
+                    <Login setLoginState={setLoggedIn}/>
+                </Route>
+                <Route>
+                    <ErrorPage />
+                </Route>
+            </Switch>
+        </Router>
     );
 };
 
