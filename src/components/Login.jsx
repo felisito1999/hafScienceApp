@@ -26,17 +26,28 @@ const Login = (props) => {
             username: username,
             password: password
         }
+
+        //Login completado
         
-        props.setLoginState(true);
+
         const mainPath = '/'
         history.push(mainPath);
 
+        props.setLoginState(true);
+        props.setNavbarState(true);
+        props.setFooterState(true);
+        
         console.log(data);
         console.log(props);
     }
 
+    useEffect(() => {
+        props.setNavbarState(false);
+        props.setFooterState(false);
+    }, [])
+
     return (
-        <section className="container">
+        <section id="login-form-container" className="bg-login">
             <div className="form-container">
                 <div className="login-icon">
                     <HafIcon />
@@ -79,7 +90,7 @@ const Login = (props) => {
                     </div>
                     <div className="form-group">
                         <button
-                            className="sign-in-button"
+                            className="btn sign-in-button"
                             onClick={submitLogin}
                         >Iniciar sesión</button>
                     </div>

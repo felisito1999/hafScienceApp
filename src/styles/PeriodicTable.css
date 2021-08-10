@@ -1,5 +1,9 @@
-body {
+/* body + footer{
   background-color: white;
+} */
+
+.periodic-table-bg{
+  background-color: rgba(248, 249, 250, 0.8);
 }
 .periodic:after {
     clear: both;
@@ -118,18 +122,19 @@ body {
     width: 70%;
     cursor: pointer;
   }
-  body {
+  /* body {
     font-family: Arial;
     -webkit-transform: translateZ(0);
     -ms-transform: translateZ(0);
     transform: translateZ(0);
     padding: 1%;
-  }
+  } */
   .periodic {
     position: relative;
     height: 200px;
     margin-right: -1px;
     text-shadow: none;
+    width: 100%;
   }
   .periodic-row {
     clear: both;

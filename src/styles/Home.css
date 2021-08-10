@@ -1,0 +1,19 @@
+body {
+    background-image: url("../images/chemistry-image.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: bottom;
+    background-size: auto;
+}
+
+#welcome-banner {
+    background-color: rgba(248, 249, 250, 0.8);
+}
+
+#welcome-banner-title{
+    font-weight: 700;
+}
+
+#welcome-banner-text{
+
+}
