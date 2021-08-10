@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
-import axios from 'axios';
+import axios from 'axios'; // eslint-disable-line
 import { ReactComponent as HafIcon } from '../images/tabla-periodica.svg';
 import '../styles/Login.css';
 
@@ -44,7 +44,7 @@ const Login = (props) => {
     useEffect(() => {
         props.setNavbarState(false);
         props.setFooterState(false);
-    }, [])
+    }, []) // eslint-disable-line
 
     return (
         <section id="login-form-container" className="bg-login">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaBars, FaUsers } from 'react-icons/fa';
+import { FaUsers } from 'react-icons/fa';
 import { AiFillHome, AiOutlineTable } from 'react-icons/ai';
 import { IoGameController } from 'react-icons/io5';
 import { CgNotes } from 'react-icons/cg';

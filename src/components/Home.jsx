@@ -6,10 +6,10 @@ import {ReactComponent as PeriodicTableImageV2} from '../images/tabla-periodica-
 const Home = (props) => {
     return (
         <div className="h-100">
-            <section id="welcome-banner" className="container rounded-3 shadow mt-5">
-                <h2 id="welcome-banner-title" className="text-center pt-5 m-0">
+            <section id="welcome-banner" className="container rounded-3 shadow mt-5 mb-5">
+                <h1 id="welcome-banner-title" className="text-center pt-5 m-0">
                     Bienvenido a HAF Science
-                </h2>
+                </h1>
                 <div className="d-flex align-items-center justify-content-center pt-5">
                     <PeriodicTableImageV1 height="100"/>
                     <PeriodicTableImageV2 height="100"/>

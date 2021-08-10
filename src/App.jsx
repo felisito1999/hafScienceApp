@@ -4,10 +4,8 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link,
     Redirect,
 } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
 import PeriodicTable from './components/PeriodicTable';
 import Login from './components/Login';
 import ErrorPage from './components/ErrorPage';
