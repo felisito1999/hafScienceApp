@@ -1,6 +1,6 @@
 .bg-login{
     min-height: 100vh;
-    background: linear-gradient(-45deg, #1DE9B6, #4bb325, #319c0b);
+    background: linear-gradient(-45deg, #4DB6AC, #4bb325, #319c0b);
     background-size: 400%, 400%;
     animation: change 6s ease-in-out infinite;
 }
@@ -53,7 +53,7 @@
 .form .form-group button {
     height: 100%;
     width: 100%;
-    background-color: #1DE9B6;
+    background-color: #4DB6AC;
     font-size: 16px;
     border: none;
     border: 2px solid #05668d;
@@ -106,7 +106,7 @@
     bottom: 0px;
     height: 100%;
     width: 100%;
-    background: #1DE9B6;
+    background: #4DB6AC;
     transform: scaleX(0);
     transition: transform 0.6s ease;
 } 
