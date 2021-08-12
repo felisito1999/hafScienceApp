@@ -12,7 +12,7 @@ import { ReactComponent as HafIcon } from '../images/tabla-periodica.svg';
 const NavigationBar = (props) => {
     return (
         <>
-            <Navbar collapseOnSelect expand="lg" variant="light">
+            <Navbar collapseOnSelect expand="lg" fixed="top" variant="light">
                 {/* <Container> */}
                 <Link to="/" className="navbar-brand">
                     <HafIcon

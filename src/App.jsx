@@ -7,9 +7,7 @@ import {
     Redirect,
 } from 'react-router-dom';
 import Home from './components/Home';
-
 import Login from './components/Login';
-import SignUp from './components/SignUp';
 import PeriodicTable from './components/PeriodicTable';
 import NavigationBar from './components/NavigationBar';
 import PuzzleGame from './components/PuzzleGame';
@@ -42,7 +40,7 @@ const App = () => {
                         )}
                     </Route>
                     <Route path="/admin-usuarios">
-                        {loggedIn ? <Redirect to="/" /> : <SignUp />}
+                        <p>Este es el módulo de administración de usuarios</p>
                     </Route>
                     <Route path="/tabla-periodica">
                         <PeriodicTable />

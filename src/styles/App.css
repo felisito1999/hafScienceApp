@@ -22,7 +22,8 @@ main{
     flex: 1 1 auto;
 }
 
-footer{
-
+.component-wrapper {
+    margin-top: 7rem;
 }
+
 
