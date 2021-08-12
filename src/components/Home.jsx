@@ -1,4 +1,5 @@
 import React from 'react';
+import PeriodicTable from './PeriodicTable'
 import '../styles/Home.css';
 import {ReactComponent as PeriodicTableImageV1} from '../images/tabla-periodica.svg';
 import {ReactComponent as PeriodicTableImageV2} from '../images/tabla-periodica-colorida.svg';
@@ -25,7 +26,10 @@ const Home = (props) => {
                     investigaciones teóricas sobre estructuras desconocidas
                     hasta el momento.
                 </p>
+
+                <PeriodicTable />
             </section>
+
         </div>
     );
 };

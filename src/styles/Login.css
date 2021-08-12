@@ -19,13 +19,15 @@
 }
 
 #login-form-container {
-    height: 100vh;
     display: flex;
-    margin: auto;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
+} 
+
+/* #root { 
+    display: block;
+} */
 
 .form-container {
     background-color: #fff;

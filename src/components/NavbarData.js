@@ -1,9 +1,10 @@
 import React from 'react';
 import { FaUsers } from 'react-icons/fa';
 import { AiFillHome, AiOutlineTable } from 'react-icons/ai';
-import { IoGameController } from 'react-icons/io5';
+import { IoGameController, IoAdd } from 'react-icons/io5';
 import { CgNotes } from 'react-icons/cg';
 import { SiGoogleclassroom } from 'react-icons/si';
+import { RiDashboardFill } from 'react-icons/ri';
 
 export const NavbarData = [
     {
@@ -13,13 +14,6 @@ export const NavbarData = [
         className: 'nav-link',
         childs: null,
         roles: ['Administrator', 'Teacher', 'Student'],
-    },
-    {
-        title: 'Tabla periódica',
-        path: '/tabla-periodica',
-        icon: <AiOutlineTable />,
-        className: 'nav-link',
-        childs: null,
     },
     {
         title: 'Pruebas diagnósticas',
@@ -47,6 +41,19 @@ export const NavbarData = [
         path: '/admin-usuarios',
         icon: <FaUsers />,
         className: 'nav-link',
-        childs: null,
+        childs: [
+            {
+                title: 'Panel de usuarios',
+                path: '/admin-usuarios/dashboard',
+                icon: <RiDashboardFill />,
+                className: 'dropdown-item',
+            },
+            {
+                title: 'Agregar usuarios',
+                path: '/admin-usuarios/dashboard/agregar',
+                icon: <IoAdd />,
+                className: 'dropdown-item',
+            },
+        ],
     },
 ];

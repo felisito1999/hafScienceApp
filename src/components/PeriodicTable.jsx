@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 const PeriodicTable = () => {
     return (
         <Container>
-            <div className="periodic periodic-table-bg rounded-3 shadow p-3">
+            <div className="periodic">
                 <div className="periodic-row">
                     <a
                         href="https://es.wikipedia.org/wiki/Hidrógeno"
