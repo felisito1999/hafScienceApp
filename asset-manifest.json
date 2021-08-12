@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/haf-science-gh-pages/static/css/main.a82e69fd.chunk.css",
+    "main.js": "/haf-science-gh-pages/static/js/main.bb2abd7d.chunk.js",
+    "main.js.map": "/haf-science-gh-pages/static/js/main.bb2abd7d.chunk.js.map",
+    "runtime-main.js": "/haf-science-gh-pages/static/js/runtime-main.11e38a61.js",
+    "runtime-main.js.map": "/haf-science-gh-pages/static/js/runtime-main.11e38a61.js.map",
+    "static/css/2.da1eef19.chunk.css": "/haf-science-gh-pages/static/css/2.da1eef19.chunk.css",
+    "static/js/2.057a6327.chunk.js": "/haf-science-gh-pages/static/js/2.057a6327.chunk.js",
+    "static/js/2.057a6327.chunk.js.map": "/haf-science-gh-pages/static/js/2.057a6327.chunk.js.map",
+    "static/js/3.60089695.chunk.js": "/haf-science-gh-pages/static/js/3.60089695.chunk.js",
+    "static/js/3.60089695.chunk.js.map": "/haf-science-gh-pages/static/js/3.60089695.chunk.js.map",
+    "index.html": "/haf-science-gh-pages/index.html",
+    "static/css/2.da1eef19.chunk.css.map": "/haf-science-gh-pages/static/css/2.da1eef19.chunk.css.map",
+    "static/css/main.a82e69fd.chunk.css.map": "/haf-science-gh-pages/static/css/main.a82e69fd.chunk.css.map",
+    "static/js/2.057a6327.chunk.js.LICENSE.txt": "/haf-science-gh-pages/static/js/2.057a6327.chunk.js.LICENSE.txt",
+    "static/media/404-error-icon.51b6c20d.svg": "/haf-science-gh-pages/static/media/404-error-icon.51b6c20d.svg",
+    "static/media/Home.css": "/haf-science-gh-pages/static/media/chemistry-image.f334a30a.jpg",
+    "static/media/tabla-periodica-colorida.a1aceb70.svg": "/haf-science-gh-pages/static/media/tabla-periodica-colorida.a1aceb70.svg",
+    "static/media/tabla-periodica.f6da4874.svg": "/haf-science-gh-pages/static/media/tabla-periodica.f6da4874.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.11e38a61.js",
+    "static/css/2.da1eef19.chunk.css",
+    "static/js/2.057a6327.chunk.js",
+    "static/css/main.a82e69fd.chunk.css",
+    "static/js/main.bb2abd7d.chunk.js"
+  ]
+}
