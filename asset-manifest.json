@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/hafScienceApp/static/css/main.33fe4612.chunk.css",
-    "main.js": "/hafScienceApp/static/js/main.bb2abd7d.chunk.js",
-    "main.js.map": "/hafScienceApp/static/js/main.bb2abd7d.chunk.js.map",
+    "main.js": "/hafScienceApp/static/js/main.8d42c3d0.chunk.js",
+    "main.js.map": "/hafScienceApp/static/js/main.8d42c3d0.chunk.js.map",
     "runtime-main.js": "/hafScienceApp/static/js/runtime-main.42d1544e.js",
     "runtime-main.js.map": "/hafScienceApp/static/js/runtime-main.42d1544e.js.map",
     "static/css/2.da1eef19.chunk.css": "/hafScienceApp/static/css/2.da1eef19.chunk.css",
@@ -24,6 +24,6 @@
     "static/css/2.da1eef19.chunk.css",
     "static/js/2.057a6327.chunk.js",
     "static/css/main.33fe4612.chunk.css",
-    "static/js/main.bb2abd7d.chunk.js"
+    "static/js/main.8d42c3d0.chunk.js"
   ]
 }
