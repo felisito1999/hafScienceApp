@@ -10,17 +10,20 @@ import { FaUserCheck } from 'react-icons/fa';
 import { ReactComponent as HafIcon } from '../images/tabla-periodica.svg';
 
 const NavigationBar = (props) => {
+
+    const host = process.env.REACT_APP_HOST_NAME;
+
     return (
         <>
             <Navbar collapseOnSelect expand="lg" fixed="top" variant="light">
                 {/* <Container> */}
-                <Link to="/" className="navbar-brand">
+                <Link to={`${host}`} className="navbar-brand">
                     <HafIcon
                         className="d-inline-block align-to"
                         width="40"
                         height="40"
                     />
-                    HAF SCIENCE
+                    <span className="fw-bold">HAF Science</span>
                 </Link>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">

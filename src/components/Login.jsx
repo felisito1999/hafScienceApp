@@ -31,7 +31,7 @@ const Login = (props) => {
         //Login completado
         
 
-        const mainPath = '/'
+        const mainPath = process.env.REACT_APP_HOST_NAME;
         history.push(mainPath);
 
         props.setLoginState(true);

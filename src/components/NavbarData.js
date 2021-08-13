@@ -6,10 +6,12 @@ import { CgNotes } from 'react-icons/cg';
 import { SiGoogleclassroom } from 'react-icons/si';
 import { RiDashboardFill } from 'react-icons/ri';
 
+const host = process.env.REACT_APP_HOST_NAME;
+
 export const NavbarData = [
     {
         title: 'Página principal',
-        path: '/',
+        path: `${host}`,
         icon: <AiFillHome />,
         className: 'nav-link',
         childs: null,
@@ -17,43 +19,43 @@ export const NavbarData = [
     },
     {
         title: 'Pruebas diagnósticas',
-        path: '/pruebas',
+        path: `${host}pruebas-diagnosticas`,
         icon: <CgNotes />,
         className: 'nav-link',
         childs: null,
     },
     {
         title: 'Juegos',
-        path: '/juegos',
+        path: `${host}juegos`,
         icon: <IoGameController />,
         className: 'nav-link',
         childs: null,
     },
-    {
-        title: 'Administración de sesiones',
-        path: '/admin-sesiones',
-        icon: <SiGoogleclassroom />,
-        className: 'nav-link',
-        childs: null,
-    },
-    {
-        title: 'Administración de usuarios',
-        path: '/admin-usuarios',
-        icon: <FaUsers />,
-        className: 'nav-link',
-        childs: [
-            {
-                title: 'Panel de usuarios',
-                path: '/admin-usuarios/dashboard',
-                icon: <RiDashboardFill />,
-                className: 'dropdown-item',
-            },
-            {
-                title: 'Agregar usuarios',
-                path: '/admin-usuarios/dashboard/agregar',
-                icon: <IoAdd />,
-                className: 'dropdown-item',
-            },
-        ],
-    },
+    // {
+    //     title: 'Administración de sesiones',
+    //     path: '/admin-sesiones',
+    //     icon: <SiGoogleclassroom />,
+    //     className: 'nav-link',
+    //     childs: null,
+    // },
+    // {
+    //     title: 'Administración de usuarios',
+    //     path: '/admin-usuarios',
+    //     icon: <FaUsers />,
+    //     className: 'nav-link',
+    //     childs: [
+    //         {
+    //             title: 'Panel de usuarios',
+    //             path: '/admin-usuarios/dashboard',
+    //             icon: <RiDashboardFill />,
+    //             className: 'dropdown-item',
+    //         },
+    //         {
+    //             title: 'Agregar usuarios',
+    //             path: '/admin-usuarios/dashboard/agregar',
+    //             icon: <IoAdd />,
+    //             className: 'dropdown-item',
+    //         },
+    //     ],
+    // },
 ];

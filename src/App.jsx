@@ -10,9 +10,12 @@ import Home from './components/Home';
 import Login from './components/Login';
 import PeriodicTable from './components/PeriodicTable';
 import NavigationBar from './components/NavigationBar';
+import GameSelector from './components/GameSelector';
 import PuzzleGame from './components/PuzzleGame';
 import ErrorPage from './components/ErrorPage';
 import Footer from './components/Footer';
+import TestAttempt from './components/TestAttempt';
+import { useEffect } from 'react';
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -20,17 +23,22 @@ const App = () => {
     const [footerShowing, setFooterShowing] = useState(true);
 
     const reload = () => window.location.reload
+    const host = process.env.REACT_APP_HOST_NAME;
+    const devHost = '/'
+    useEffect(() => {
+        console.log(host);
+    }, [])
     return (
         <Router>
             {navbarShowing ? <NavigationBar /> : null}
             <main>
                 <Switch>
-                    <Route exact path="/">
-                        {loggedIn ? <Home /> : <Redirect to="/login" />}
+                    <Route exact path={`${host}`}>
+                        {loggedIn ? <Home /> : <Redirect to={`${host}login`} />}
                     </Route>
-                    <Route path="/login">
+                    <Route path={`${host}login`}>
                         {loggedIn ? (
-                            <Redirect to="/" />
+                            <Redirect to={`${host}`} />
                         ) : (
                             <Login
                                 setNavbarState={setNavbarShowing}
@@ -39,16 +47,15 @@ const App = () => {
                             />
                         )}
                     </Route>
+                    <Route path={`${host}pruebas-diagnosticas`}>
+                        <TestAttempt />
+                    </Route>
+                    <Route path={`${host}juegos`}>
+                        <GameSelector />
+                    </Route>
                     <Route path="/admin-usuarios">
                         <p>Este es el módulo de administración de usuarios</p>
                     </Route>
-                    <Route path="/tabla-periodica">
-                        <PeriodicTable />
-                    </Route>
-                    <Route path="/puzzle">
-                        <PuzzleGame></PuzzleGame>
-                    </Route>
-                    <Route path="/puzzle.html" onEnter={reload} />
                     <Route>
                         <ErrorPage />
                     </Route>
