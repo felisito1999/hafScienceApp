@@ -6,13 +6,11 @@ import {
     Route,
     Redirect,
 } from 'react-router-dom';
-import Home from './components/public-components/Home';
-import Login from './components/public-components/Login';
-import PeriodicTable from './components/public-components/PeriodicTable';
+import Home from './components/Home';
+import Login from './components/Login';
 import NavigationBar from './components/NavigationBar';
-import GameSelector from './components/students-componets/GameSelector';
-import PuzzleGame from './components/students-componets/PuzzleGame';
-import ErrorPage from './components/public-components/ErrorPage';
+import GameSelector from './components/GameSelector';
+import ErrorPage from './components/ErrorPage';
 import Footer from './components/Footer';
 import TestAttempt from './components/TestAttempt';
 import { useEffect } from 'react';
