@@ -14,6 +14,7 @@ import ErrorPage from './components/ErrorPage';
 import Footer from './components/Footer';
 import TestAttempt from './components/TestAttempt';
 import { useEffect } from 'react';
+import UsersDashboard from './components/UsersDashboard';
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -23,9 +24,7 @@ const App = () => {
     const reload = () => window.location.reload
     const host = process.env.REACT_APP_HOST_NAME;
     const devHost = '/'
-    useEffect(() => {
-        console.log(host);
-    }, [])
+
     return (
         <Router>
             {navbarShowing ? <NavigationBar /> : null}
@@ -54,6 +53,7 @@ const App = () => {
                     <Route path="/admin-usuarios">
                         <p>Este es el módulo de administración de usuarios</p>
                     </Route>
+                    <Route path={`${host}mostrar-usuarios`} component={UsersDashboard} />
                     <Route>
                         <ErrorPage />
                     </Route>

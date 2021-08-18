@@ -1,5 +1,6 @@
-export const students = [
+export const testStudents = [
     {
+        Codigo: 1,
         Nombres: 'Félix Junior',
         Apellidos: 'Pérez Peguero',
         FechaNacimiento: '1999/09/01',
@@ -9,20 +10,22 @@ export const students = [
         Estado: 'Activo',
     },
     {
+        Codigo: 2,
         Nombres: 'Hansel Alberto',
         Apellidos: 'Mendoza Bastardo',
         FechaNacimiento: '1999/02/01',
         Telefono: '809-000-0000',
-        NombreUsuario: 'usuario_prueba1',
+        NombreUsuario: 'usuario_prueba2',
         CorreoElectronico: 'pruebacorreo2@hotmail.com',
         Estado: 'Activo',
     },
     {
+        Codigo: 3,
         Nombres: 'Abel Teomar',
         Apellidos: 'Suarez Peña',
         FechaNacimiento: '1999/06/26',
         Telefono: '809-000-0000',
-        NombreUsuario: 'usuario_prueba1',
+        NombreUsuario: 'usuario_prueba3',
         CorreoElectronico: 'pruebacorreo3@hotmail.com',
         Estado: 'Activo',
     },
