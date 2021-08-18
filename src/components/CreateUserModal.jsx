@@ -7,7 +7,9 @@ function CreateUserModal(props) {
         nombres: '',
         apellidos: '',
         fechaNacimiento: '2000-01-01',
-        telefono: ''
+        telefono: '',
+        correoElectronico: '',
+        username: ''
     });
 
     const handleNombresChange = (e) => {
@@ -31,24 +33,37 @@ function CreateUserModal(props) {
         });
     };
 
-    const telefonoInputMask = () => {
-        
-    }
+    const telefonoInputMask = (telephone) => {
+        if (telephone.length >= 3){}
+    };
 
     const handleTelefonoChange = (e) => {
-        
         setUser({
             ...user,
-            telefono: e.target.value
+            telefono: e.target.value,
+        });
+    };
+
+    const handleCorreoElectronicoChange = (e) => {
+        setUser({
+            ...user,
+            correoElectronico: e.target.value,
+        });
+    };
+
+    const handleUsernameChange = (e) => {
+        setUser({
+            ...user, 
+            username : e.target.value
         })
-    }
+    };
 
     const handleNewUserSubmit = async (e) => {
         e.preventDefault();
         const data = user;
 
         const config = {
-            url: `Laparamusical`,
+            url: `url`,
             method: 'post',
             headers: {},
             body: data,
@@ -116,21 +131,38 @@ function CreateUserModal(props) {
                             required
                         />
                         <label htmlFor="fecha-nacimiento" className="">
-                            <span className="label-content">Fecha de nacimiento</span>
+                            <span className="label-content">
+                                Fecha de nacimiento
+                            </span>
                         </label>
                         <div className="underline"></div>
                     </div>
                     <div className="form-group">
                         <input
-                            type="date"
+                            type="tel"
                             name="telefono"
                             id="telefono"
+                            pattern="(0-9){3}-[0-9]{3}-[0-9]{4}"
                             value={user.telefono}
                             onChange={handleTelefonoChange}
                             required
                         />
                         <label htmlFor="telefono" className="">
                             <span className="label-content">Telefono</span>
+                        </label>
+                        <div className="underline"></div>
+                    </div>
+                    <div className="form-group">
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            value={user.correoElectronico}
+                            onChange={handleCorreoElectronicoChange}
+                            required
+                        />
+                        <label htmlFor="telefono" className="">
+                            <span className="label-content">Correo electronico</span>
                         </label>
                         <div className="underline"></div>
                     </div>
@@ -148,7 +180,6 @@ function CreateUserModal(props) {
                     </div>
                 </form>
             </Modal.Body>
-            <Modal.Footer className="d-flex flex-row justify-content-center"></Modal.Footer>
         </Modal>
     );
 }

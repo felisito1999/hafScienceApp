@@ -44,16 +44,9 @@ const App = () => {
                             />
                         )}
                     </Route>
-                    <Route path={`${host}pruebas-diagnosticas`}>
-                        <TestAttempt />
-                    </Route>
-                    <Route path={`${host}juegos`}>
-                        <GameSelector />
-                    </Route>
-                    <Route path="/admin-usuarios">
-                        <p>Este es el módulo de administración de usuarios</p>
-                    </Route>
-                    <Route path={`${host}mostrar-usuarios`} component={UsersDashboard} />
+                    <Route path={`${host}pruebas-diagnosticas`} component={TestAttempt} />
+                    <Route path={`${host}juegos`} component={GameSelector} />
+                    <Route path={`${host}admin-usuarios`} component={UsersDashboard} />
                     <Route>
                         <ErrorPage />
                     </Route>
