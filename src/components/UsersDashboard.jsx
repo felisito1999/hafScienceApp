@@ -1,36 +1,88 @@
 import React, { useEffect, useState } from 'react';
-import { testStudents } from '../test_data/test_data';
+import { testUsers } from '../test_data/test_data';
 import axios from 'axios';
 import CreateUserModal from './CreateUserModal';
+import EditUserModal from './EditUserModal';
+import DeleteUserModal from './DeleteUserModal';
 
 const UsersDashboard = (props) => {
-    const [students, setStudents] = useState([]);
+    const [users, setUsers] = useState([]);
+    const [isFilteringData, setIsFilteringData] = useState(true);
+
     const [isCreateModalShowing, setIsCreateModalShowing] = useState(false);
+
     const [isEditModalShowing, setIsEditModalShowing] = useState(false);
+    const [editUserId, setEditUserId] = useState(null);
+
     const [isDeleteModalShowing, setIsDeleteModalShowing] = useState(false);
 
-    const getStudents = async () => {
-        // const config = {
-        // }
-        // const data = await axios.get(config)
+    const getUsers = async () => {
+
+        const config = {
+            method: 'get',
+            url: `${process.env.REACT_APP_API_URL}usuarios`,
+            headers: {
+
+            },
+            data: null
+        }
+
+        try {
+            const response = await axios(config);
+            setUsers(response.data);
+        } catch (error) {
+            console.log(error);
+            alert("No se han podido mostrar los usuarios solicitados, intente de nuevo");
+        }
+
     };
+
+    const getFilteredData = async (filteredValues) => {
+        const config = {
+            method: 'get',
+            url: `${process.env.REACT_APP_API_URL}usuarios`,
+            params: {
+
+            },
+            headers: {
+
+            },
+            data: null
+        }
+
+        try {
+            const response = await axios(config);
+            setUsers(response.data);
+        } catch (error) {
+            console.log(error);
+            alert("No se han podido mostrar los usuarios solicitados, intente de nuevo");
+        }
+    }
+
+    const handleEditModalSelection = () => {
+        
+    }
 
     const handleCreateUserModalState = () => {
-        
         setIsCreateModalShowing(!isCreateModalShowing);
+        getUsers();
     };
 
-    // const showCreateUserModal = () => {
-    //     setIsCreateModalShowing(true);
-    // }
-
-    // const hideCreateUserModal = () => {
-    //     setIsCreateModalShowing(false)
-    // }
+    const handleEditUserModalState = (id) => {
+        setIsEditModalShowing(!isEditModalShowing);
+        getUsers();
+    }
+    const handleDeleteUserModalState = () => {
+        setIsDeleteModalShowing(!isDeleteModalShowing);
+        getUsers();
+    }
+    useEffect(() => {
+        getUsers();
+    }, []);
 
     useEffect(() => {
-        setStudents(testStudents);
-    }, []);
+
+    },[])
     return (
         <div className="component-wrapper">
             <section className="banner-bg container rounded-3 shadow py-5 my-5">
@@ -49,15 +101,17 @@ const UsersDashboard = (props) => {
                         <tr>
                             <th>Nombre completo</th>
                             <th>Nombre de usuario</th>
+                            <th>Correo electronico</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {students.map((student) => (
-                            <tr key={student.Codigo}>
+                        {users.map((user) => (
+                            <tr key={user.usuarioId}>
                                 <td>
-                                    {student.Nombres} {student.Apellidos}
+                                    {user && user.usuarioDetalle && user.usuarioDetalle.nombres} {user && user.usuarioDetalle && user.usuarioDetalle.apellidos}
                                 </td>
-                                <td>{student.NombreUsuario}</td>
+                                <td>{user.nombreUsuario}</td>
+                                <td>{user && user.usuarioDetalle && user.usuarioDetalle.correoElectronico}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -66,6 +120,18 @@ const UsersDashboard = (props) => {
                 <CreateUserModal
                     show={isCreateModalShowing}
                     onHide={handleCreateUserModalState}
+                    dataUpdate={getUsers}
+                />
+                <EditUserModal
+                    show={isEditModalShowing}
+                    onHide={handleEditUserModalState}
+                    dataUpdate={getUsers}
+                    UserId={}
+                />
+                <DeleteUserModal
+                    show={isDeleteModalShowing}
+                    onHide={handleDeleteModalState}
+                    dataUpdate={}
                 />
             </section>
         </div>

@@ -1,4 +1,4 @@
-export const testStudents = [
+export const testUsers = [
     {
         Codigo: 1,
         Nombres: 'Félix Junior',

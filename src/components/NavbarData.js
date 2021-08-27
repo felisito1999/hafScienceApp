@@ -38,24 +38,25 @@ export const NavbarData = [
     //     className: 'nav-link',
     //     childs: null,
     // },
-    // {
-    //     title: 'Administración de usuarios',
-    //     path: '/admin-usuarios',
-    //     icon: <FaUsers />,
-    //     className: 'nav-link',
-    //     childs: [
-    //         {
-    //             title: 'Panel de usuarios',
-    //             path: '/admin-usuarios/dashboard',
-    //             icon: <RiDashboardFill />,
-    //             className: 'dropdown-item',
-    //         },
-    //         {
-    //             title: 'Agregar usuarios',
-    //             path: '/admin-usuarios/dashboard/agregar',
-    //             icon: <IoAdd />,
-    //             className: 'dropdown-item',
-    //         },
-    //     ],
-    // },
+    {
+        title: 'Administración de usuarios',
+        path: `${host}admin-usuarios`,
+        icon: <FaUsers />,
+        className: 'nav-link',
+        childs: null 
+        //[
+        //     {
+        //         title: 'Panel de usuarios',
+        //         path: '/admin-usuarios/dashboard',
+        //         icon: <RiDashboardFill />,
+        //         className: 'dropdown-item',
+        //     },
+        //     {
+        //         title: 'Agregar usuarios',
+        //         path: '/admin-usuarios/dashboard/agregar',
+        //         icon: <IoAdd />,
+        //         className: 'dropdown-item',
+        //     },
+        // ],
+    },
 ];

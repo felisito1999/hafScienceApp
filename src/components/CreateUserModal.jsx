@@ -9,8 +9,28 @@ function CreateUserModal(props) {
         fechaNacimiento: '2000-01-01',
         telefono: '',
         correoElectronico: '',
-        username: ''
+        nombreUsuario: '',
+        rolId: 1,
+        estadoId: 1,
     });
+
+    const [roles, setRoles] = useState([null]);
+
+    const getInitRoles = async () => {
+        const config = {
+            method: 'get',
+            url: `${process.env.REACT_APP_API_URL}roles/`,
+            headers: {},
+            data: null,
+        };
+        try {
+            const response = await axios(config);
+            setRoles(response.data);
+            console.log(roles);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const handleNombresChange = (e) => {
         setUser({
@@ -34,7 +54,8 @@ function CreateUserModal(props) {
     };
 
     const telefonoInputMask = (telephone) => {
-        if (telephone.length >= 3){}
+        if (telephone.length >= 3) {
+        }
     };
 
     const handleTelefonoChange = (e) => {
@@ -51,11 +72,18 @@ function CreateUserModal(props) {
         });
     };
 
-    const handleUsernameChange = (e) => {
+    const handleNombreUsuarioChange = (e) => {
         setUser({
-            ...user, 
-            username : e.target.value
-        })
+            ...user,
+            nombreUsuario: e.target.value,
+        });
+    };
+
+    const handleRolChange = (e) => {
+        setUser({
+            ...user,
+            rolId: e.target.value,
+        });
     };
 
     const handleNewUserSubmit = async (e) => {
@@ -63,18 +91,27 @@ function CreateUserModal(props) {
         const data = user;
 
         const config = {
-            url: `url`,
             method: 'post',
+            url: `${process.env.REACT_APP_API_URL}usuarios`,
             headers: {},
-            body: data,
+            data: data,
         };
 
-        const response = await axios.post(config);
+        try {
+            const response = await axios(config);
+            console.log(user);
+            console.log(response);
+            alert("El usuario se ha agregado exitosamente!");
+        } catch (error) {
+            console.log(error);
+            alert("No se ha podido completar la solicitud");
+        }
+        props.onHide();
     };
 
     useEffect(() => {
-        console.log(user);
-    }, [user]);
+        getInitRoles();
+    }, []);
 
     return (
         <Modal
@@ -87,7 +124,11 @@ function CreateUserModal(props) {
                 Ingrese los datos del nuevo usuario
             </Modal.Header>
             <Modal.Body>
-                <form autoComplete="off" className="form">
+                <form
+                    autoComplete="off"
+                    className="form"
+                    onSubmit={handleNewUserSubmit}
+                >
                     <div className="form-group">
                         <input
                             type="text"
@@ -142,7 +183,7 @@ function CreateUserModal(props) {
                             type="tel"
                             name="telefono"
                             id="telefono"
-                            pattern="(0-9){3}-[0-9]{3}-[0-9]{4}"
+                            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                             value={user.telefono}
                             onChange={handleTelefonoChange}
                             required
@@ -161,13 +202,56 @@ function CreateUserModal(props) {
                             onChange={handleCorreoElectronicoChange}
                             required
                         />
-                        <label htmlFor="telefono" className="">
-                            <span className="label-content">Correo electronico</span>
+                        <label htmlFor="email" className="">
+                            <span className="label-content">
+                                Correo electronico
+                            </span>
                         </label>
                         <div className="underline"></div>
                     </div>
+                    <div className="form-group">
+                        <input
+                            type="text"
+                            name="username"
+                            id="username"
+                            value={user.nombreUsuario}
+                            onChange={handleNombreUsuarioChange}
+                            required
+                        />
+                        <label htmlFor="username" className="">
+                            <span className="label-content">
+                                Nombre de usuario
+                            </span>
+                        </label>
+                        <div className="underline"></div>
+                    </div>
+                    <div className="form-group">
+                        <select
+                            className="form-control"
+                            name="rol"
+                            id="rol"
+                            onChange={handleRolChange}
+                        >
+                            {roles.map((rol) => (
+                                <option
+                                    key={rol && rol.rolId}
+                                    value={rol && rol.rolId}
+                                >
+                                    {rol && rol.nombreRol}
+                                </option>
+                            ))}
+                        </select>
+                        {/* <label htmlFor="rol" className="label">
+                            <span className="">Nombre de usuario</span>
+                        </label> */}
+                        {/* <div className="underline"></div> */}
+                    </div>
                     <div className="d-flex justify-content-between mt-5">
-                        <button className="btn btn-success" onClick={() => {}}>
+                        <button
+                            type="submit"
+                            className="btn btn-success"
+                            onClick={() => {}}
+                        >
                             Agregar usuario
                         </button>
                         <button

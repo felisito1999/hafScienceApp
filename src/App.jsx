@@ -21,9 +21,7 @@ const App = () => {
     const [navbarShowing, setNavbarShowing] = useState(true);
     const [footerShowing, setFooterShowing] = useState(true);
 
-    const reload = () => window.location.reload
     const host = process.env.REACT_APP_HOST_NAME;
-    const devHost = '/'
 
     return (
         <Router>
