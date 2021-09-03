@@ -10,9 +10,14 @@ function EditUserModal(props) {
         telefono: '',
         correoElectronico: '',
         nombreUsuario: '',
-        rolId: 1,
-        estadoId: 1,
+        roles: {},
+        estados: {},
     });
+    
+    const [formData, setFormData] = useState({
+        roles: [],
+
+    })
 
     const handleNombresChange = (e) => {
         setUser({
@@ -73,7 +78,8 @@ function EditUserModal(props) {
     }
     return (
         <Modal
-            {...props}
+            show={props.show}
+            onHide={props.onHide}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
@@ -190,7 +196,7 @@ function EditUserModal(props) {
                             id="rol"
                             onChange={handleRolChange}
                         >
-                            {roles.map((rol) => (
+                            {formData && formData.roles.map((rol) => (
                                 <option
                                     key={rol && rol.rolId}
                                     value={rol && rol.rolId}

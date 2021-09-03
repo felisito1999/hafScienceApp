@@ -9,7 +9,7 @@ const TestAttempt = (props) => {
                 key={1}
                 className="h-100 w-100"
                 src={`${host}quiz.html`}
-                frameborder="0"
+                frameBorder="0"
             ></iframe>
         </div>
     );

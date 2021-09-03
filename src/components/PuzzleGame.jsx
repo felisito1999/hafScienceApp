@@ -6,7 +6,7 @@ const PuzzleGame = () => {
     
     return (
         <div className=" h-100">
-            <iframe key={1} className=" h-100 w-100" src={`${host}puzzle.html`} frameborder="0"></iframe>
+            <iframe key={1} className=" h-100 w-100" src={`${host}puzzle.html`} frameBorder="0"></iframe>
         </div>
     );
 };

@@ -43,4 +43,17 @@ main{
     
 }
 
+@keyframes icon-rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+.rotating-icon {
+    animation: icon-rotation 1s infinite linear;
+}
+
 
