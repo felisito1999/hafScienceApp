@@ -13,20 +13,20 @@ const PeriodicTable = () => {
                         rel="noreferrer"
                     >
                         <div class="cell">
-                            <div class="element type-4 cat-3">
-                                <div class="masa">1.00794</div>
-                                <div class="at_num">1</div>
-                                <div class="ener">1312.0</div>
-                                <div class="elec">2.20</div>
-                                <div class="estad">
+                        <div className="element type-4 cat-3">
+                                {/* <div className="masa">1.00794</div> */}
+                                <div className="at_num">1</div>
+                                {/* <div className="ener">1312.0</div>
+                                <div className="elec">2.20</div>
+                                <div className="estad">
                                     <li>+1</li>
                                     <li>-1</li>
-                                </div>
-                                <div class="symbol">H</div>
-                                <div class="at_details">
+                                </div> */}
+                                <div className="symbol">H</div>
+                                <div className="at_details">
                                     Hidrógeno
-                                    <br />
-                                    1s<sup>1</sup>
+                                    {/* <br />
+                                    1s<sup>1</sup> */}
                                 </div>
                             </div>
                         </div>
