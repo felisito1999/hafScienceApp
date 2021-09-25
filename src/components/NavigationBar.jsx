@@ -10,7 +10,6 @@ import { FaUserCheck } from 'react-icons/fa';
 import { ReactComponent as HafIcon } from '../images/tabla-periodica.svg';
 
 const NavigationBar = (props) => {
-
     const host = process.env.REACT_APP_HOST_NAME;
 
     return (
@@ -29,73 +28,66 @@ const NavigationBar = (props) => {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                         {NavbarData.map((navItem, index) => {
-                            if (navItem.childs) {
-                                return (
-                                    //Arreglar que funcionen los links del dropdown
-                                    <NavDropdown
-                                        id="collasible-nav-dropdown"
-                                        title={navItem.title}
-                                        key={index}
-                                    >
-                                        {navItem.childs.map(
-                                            (child, childIndex) => {
-                                                return (
-                                                    <NavDropdown.Item key={childIndex}>
-                                                        <Link
+                            if (navItem.roles.includes(JSON.parse(localStorage.getItem('userData')).nombreRol)){
+                                if (navItem.childs) {
+                                    return (
+                                        //Arreglar que funcionen los links del dropdown
+                                        <NavDropdown
+                                            id="collasible-nav-dropdown"
+                                            title={navItem.title}
+                                            key={index}
+                                        >
+                                            {navItem.childs.map(
+                                                (child, childIndex) => {
+                                                    return (
+                                                        <NavDropdown.Item
                                                             key={childIndex}
-                                                            to={child.path}
-                                                            className={
-                                                                child.className
-                                                            }
                                                         >
-                                                            {child.icon}{' '}
-                                                            <span>
-                                                                {child.title}
-                                                            </span>
-                                                        </Link>
-                                                    </NavDropdown.Item>
-                                                );
-                                            }
-                                        )}
-                                    </NavDropdown>
-                                );
-                            } else {
-                                return (
-                                    <Link
-                                        key={index}
-                                        to={navItem.path}
-                                        className={navItem.className}
-                                    >
-                                        {navItem.icon}{' '}
-                                        <span>{navItem.title}</span>
-                                    </Link>
-                                );
+                                                            <Link
+                                                                key={childIndex}
+                                                                to={child.path}
+                                                                className={
+                                                                    child.className
+                                                                }
+                                                            >
+                                                                {child.icon}{' '}
+                                                                <span>
+                                                                    {child.title}
+                                                                </span>
+                                                            </Link>
+                                                        </NavDropdown.Item>
+                                                    );
+                                                }
+                                            )}
+                                        </NavDropdown>
+                                    );
+                                } else {
+                                    return (
+                                        <Link
+                                            key={index}
+                                            to={navItem.path}
+                                            className={navItem.className}
+                                        >
+                                            {navItem.icon}{' '}
+                                            <span>{navItem.title}</span>
+                                        </Link>
+                                    );
+                                }
+                            }
+                            else {
+                                return null;
                             }
                         })}
-
-                        {/* <NavDropdown
-                                title="Dropdown"
-                                id="collasible-nav-dropdown"
-                            >
-                                <NavDropdown.Item href="#action/3.1">
-                                    Action
-                                </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">
-                                    Another action
-                                </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">
-                                    Something
-                                </NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action/3.4">
-                                    Separated link
-                                </NavDropdown.Item>
-                            </NavDropdown> */}
                     </Nav>
                     <Nav>
-                        <Link to="/login" className="nav-link">
-                            <IoLogIn /> <span>Iniciar sesión</span>
-                        </Link>
+                        {localStorage.getItem('token') != null &&
+                        localStorage.getItem('userData') != null ? (
+                            <Link>Hola</Link>
+                        ) : (
+                            <Link to="/login" className="nav-link">
+                                <IoLogIn /> <span>Iniciar sesión</span>
+                            </Link>
+                        )}
                         {/* <Link to="/registro" className="nav-link"><FaUserCheck />  <span>Registrarse</span></Link> */}
                     </Nav>
                 </Navbar.Collapse>

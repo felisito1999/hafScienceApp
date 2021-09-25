@@ -12,6 +12,7 @@ function CreateUserModal(props) {
         nombreUsuario: '',
         rolId: 1,
         estadoId: 1,
+        centroEducativoId: 1
     });
 
     const [roles, setRoles] = useState([null]);

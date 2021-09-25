@@ -1,51 +1,43 @@
-import React, {useState, useEffect} from 'react';
-import {useHistory} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios'; // eslint-disable-line
-
 import { ReactComponent as HafIcon } from '../images/tabla-periodica.svg';
 import '../styles/Login.css';
+import authService from '../services/authService.js';
 
 const Login = (props) => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     const history = useHistory();
     const handleUsernameChange = (event) => {
         event.preventDefault();
         setUsername(event.target.value);
-    }
+    };
 
     const handlePasswordChange = (event) => {
         event.preventDefault();
         setPassword(event.target.value);
-    }
+    };
 
-    const submitLogin = (event) => {
+    const submitLogin = async (event) => {
         event.preventDefault();
 
-        const data = {
-            username: username,
-            password: password
+        let requestStatus = await authService.signIn(username, password);
+        
+        if (requestStatus === 200) {
+            const mainPath = process.env.REACT_APP_HOST_NAME;
+            history.push(mainPath);
+            props.setLoginState(true);
+            props.setNavbarState(true);
+            props.setFooterState(true);
+            console.log(props);
         }
-
-        //Login completado
-        
-
-        const mainPath = process.env.REACT_APP_HOST_NAME;
-        history.push(mainPath);
-
-        props.setLoginState(true);
-        props.setNavbarState(true);
-        props.setFooterState(true);
-        
-        console.log(data);
-        console.log(props);
-    }
+    };
 
     useEffect(() => {
-        props.setNavbarState(false);
-        props.setFooterState(false);
-    }, []) // eslint-disable-line
+
+    }, []); // eslint-disable-line
 
     return (
         <section id="login-form-container" className="bg-login">
@@ -93,7 +85,9 @@ const Login = (props) => {
                         <button
                             className="btn sign-in-button"
                             onClick={submitLogin}
-                        >Iniciar sesión</button>
+                        >
+                            Iniciar sesión
+                        </button>
                     </div>
                 </form>
             </div>

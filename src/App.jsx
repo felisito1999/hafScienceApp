@@ -1,5 +1,5 @@
 import './styles/App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     BrowserRouter as Router,
     Switch,
@@ -13,15 +13,39 @@ import GameSelector from './components/GameSelector';
 import ErrorPage from './components/ErrorPage';
 import Footer from './components/Footer';
 import TestAttempt from './components/TestAttempt';
-import { useEffect } from 'react';
 import UsersDashboard from './components/UsersDashboard';
+import authService from './services/authService';
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
-    const [navbarShowing, setNavbarShowing] = useState(true);
-    const [footerShowing, setFooterShowing] = useState(true);
+    const [navbarShowing, setNavbarShowing] = useState(false);
+    const [footerShowing, setFooterShowing] = useState(false);
 
     const host = process.env.REACT_APP_HOST_NAME;
+
+    //Checks if the user is logged in when loading the App component.
+    useEffect(() => {
+        const checkIsLoggedIn = async () => {
+            if (
+                (await authService.isSignedIn()) &&
+                localStorage.getItem('token') != null &&
+                localStorage.getItem('userData') != null
+            ) {
+                setLoggedIn(true);
+                setNavbarShowing(true);
+                setFooterShowing(true);
+            } else {
+                localStorage.removeItem('userData');
+                localStorage.removeItem('token');
+
+                setLoggedIn(false);
+                setNavbarShowing(false);
+                setFooterShowing(false);
+            }
+        };
+
+        checkIsLoggedIn();
+    }, []);
 
     return (
         <Router>
@@ -42,9 +66,15 @@ const App = () => {
                             />
                         )}
                     </Route>
-                    <Route path={`${host}pruebas-diagnosticas`} component={TestAttempt} />
+                    <Route
+                        path={`${host}pruebas-diagnosticas`}
+                        component={TestAttempt}
+                    />
                     <Route path={`${host}juegos`} component={GameSelector} />
-                    <Route path={`${host}admin-usuarios`} component={UsersDashboard} />
+                    <Route
+                        path={`${host}admin-usuarios`}
+                        component={UsersDashboard}
+                    />
                     <Route>
                         <ErrorPage />
                     </Route>

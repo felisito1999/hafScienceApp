@@ -15,7 +15,7 @@ export const NavbarData = [
         icon: <AiFillHome />,
         className: 'nav-link',
         childs: null,
-        roles: ['Administrator', 'Teacher', 'Student'],
+        roles: ['Administrador', 'Docente', 'Estudiante'],
     },
     {
         title: 'Pruebas diagnósticas',
@@ -23,6 +23,7 @@ export const NavbarData = [
         icon: <CgNotes />,
         className: 'nav-link',
         childs: null,
+        roles: ['Docente', 'Estudiante'],
     },
     {
         title: 'Juegos',
@@ -30,6 +31,7 @@ export const NavbarData = [
         icon: <IoGameController />,
         className: 'nav-link',
         childs: null,
+        roles: ['Docente', 'Estudiante'],
     },
     // {
     //     title: 'Administración de sesiones',
@@ -43,7 +45,8 @@ export const NavbarData = [
         path: `${host}admin-usuarios`,
         icon: <FaUsers />,
         className: 'nav-link',
-        childs: null 
+        childs: null,
+        roles: ['Administrador'], 
         //[
         //     {
         //         title: 'Panel de usuarios',
