@@ -5,6 +5,7 @@ import {
     Switch,
     Route,
     Redirect,
+    useHistory
 } from 'react-router-dom';
 import Home from './components/Home';
 import Login from './components/Login';
@@ -20,8 +21,17 @@ const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [navbarShowing, setNavbarShowing] = useState(false);
     const [footerShowing, setFooterShowing] = useState(false);
-
+    
+    const history = useHistory();
     const host = process.env.REACT_APP_HOST_NAME;
+
+    const handleLogout = () => {
+        localStorage.removeItem('userData');
+        localStorage.removeItem('token');
+        setLoggedIn(false)
+        setNavbarShowing(false);
+        setFooterShowing(false);
+    };
 
     //Checks if the user is logged in when loading the App component.
     useEffect(() => {
@@ -49,7 +59,7 @@ const App = () => {
 
     return (
         <Router>
-            {navbarShowing ? <NavigationBar /> : null}
+            {navbarShowing ? <NavigationBar handleLogout={handleLogout}/> : null}
             <main>
                 <Switch>
                     <Route exact path={`${host}`}>

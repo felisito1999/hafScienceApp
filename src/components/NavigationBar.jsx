@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 import '../styles/Navbar.css';
 import { NavbarData } from './NavbarData';
 import { IoLogIn } from 'react-icons/io5';
-import { FaUserCheck } from 'react-icons/fa';
+import { FaUser } from 'react-icons/fa';
+import { BiLogOut } from 'react-icons/bi';
 import { ReactComponent as HafIcon } from '../images/tabla-periodica.svg';
 
 const NavigationBar = (props) => {
@@ -82,10 +83,18 @@ const NavigationBar = (props) => {
                     <Nav>
                         {localStorage.getItem('token') != null &&
                         localStorage.getItem('userData') != null ? (
-                            <Link>Hola</Link>
+                            <>
+                            <Link to="perfil" className="nav-link">
+                                <FaUser/>{' '}
+                                <span className="pl-2">{JSON.parse(localStorage.getItem('userData')).nombres} {JSON.parse(localStorage.getItem('userData')).apellidos}</span>
+                            </Link>
+                            <Link to={`${host}`} onClick={props.handleLogout} className="nav-link">
+                                <BiLogOut />{' '}<span className="pl-2">Cerrar sesión</span>
+                            </Link>
+                            </>
                         ) : (
                             <Link to="/login" className="nav-link">
-                                <IoLogIn /> <span>Iniciar sesión</span>
+                                <IoLogIn />{' '}<span>Iniciar sesión</span>
                             </Link>
                         )}
                         {/* <Link to="/registro" className="nav-link"><FaUserCheck />  <span>Registrarse</span></Link> */}

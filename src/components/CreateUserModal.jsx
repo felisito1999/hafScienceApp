@@ -11,17 +11,20 @@ function CreateUserModal(props) {
         correoElectronico: '',
         nombreUsuario: '',
         rolId: 1,
-        estadoId: 1,
+        estadoId: 2,
         centroEducativoId: 1
     });
 
     const [roles, setRoles] = useState([null]);
+    const [centrosEducativos, setCentrosEducativos] = useState([null])
 
     const getInitRoles = async () => {
         const config = {
             method: 'get',
-            url: `${process.env.REACT_APP_API_URL}roles/`,
-            headers: {},
+            url: `${process.env.REACT_APP_API_URL}roles`,
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}` 
+            },
             data: null,
         };
         try {
@@ -32,6 +35,25 @@ function CreateUserModal(props) {
             console.log(error);
         }
     };
+
+    const getInitCentrosEducativos = async () => {
+        const config = {
+            method: 'get',
+            url: `${process.env.REACT_APP_API_URL}centroseducativos`,
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}` 
+            },
+            data: null
+        };
+        try {
+            const response = await axios(config);
+            setCentrosEducativos(response.data);
+            console.log(centrosEducativos) 
+        } catch (error) {
+            // throw new Error(error)
+            console.log(error);
+        }
+    }
 
     const handleNombresChange = (e) => {
         setUser({
@@ -87,14 +109,23 @@ function CreateUserModal(props) {
         });
     };
 
+    const handleCentroEducativoChange = (e) => {
+        setUser({
+            ...user,
+            centroEducativoId: e.target.value
+        })
+    }
+
     const handleNewUserSubmit = async (e) => {
         e.preventDefault();
         const data = user;
 
         const config = {
             method: 'post',
-            url: `${process.env.REACT_APP_API_URL}usuarios`,
-            headers: {},
+            url: `${process.env.REACT_APP_API_URL}auth/register`,
+            headers: {
+                'Authorization' : `Bearer ${localStorage.getItem('token')}`
+            },
             data: data,
         };
 
@@ -112,6 +143,7 @@ function CreateUserModal(props) {
 
     useEffect(() => {
         getInitRoles();
+        getInitCentrosEducativos();
     }, []);
 
     return (
@@ -138,7 +170,7 @@ function CreateUserModal(props) {
                             id="nombres"
                             value={user.nombres}
                             autoComplete="off"
-                            minLength="6"
+                            minLength="2"
                             maxLength="25"
                             onChange={handleNombresChange}
                             required
@@ -154,7 +186,7 @@ function CreateUserModal(props) {
                             name="apellidos"
                             id="apellidos"
                             autoComplete="off"
-                            minLength="6"
+                            minLength="2"
                             maxLength="25"
                             onChange={handleApellidosChange}
                             required
@@ -200,6 +232,8 @@ function CreateUserModal(props) {
                             type="email"
                             name="email"
                             id="email"
+                            minLength="6"
+                            maxLength="254"
                             value={user.correoElectronico}
                             onChange={handleCorreoElectronicoChange}
                             required
@@ -236,10 +270,10 @@ function CreateUserModal(props) {
                         >
                             {roles.map((rol) => (
                                 <option
-                                    key={rol && rol.rolId}
-                                    value={rol && rol.rolId}
+                                    key={rol && rol.id}
+                                    value={rol && rol.id}
                                 >
-                                    {rol && rol.nombreRol}
+                                    {rol && rol.nombre}
                                 </option>
                             ))}
                         </select>
@@ -248,20 +282,31 @@ function CreateUserModal(props) {
                         </label> */}
                         {/* <div className="underline"></div> */}
                     </div>
+                    <div className="form-group">
+                        <select name="centroEducativo" id="centroEducativo" className="form-control" onChange={handleCentroEducativoChange}>
+                            {
+                                centrosEducativos.map((centroEducativo) => (
+                                    <option key={centroEducativo && centroEducativo.id} value={centroEducativo && centroEducativo.id}>
+                                        {centroEducativo && centroEducativo.nombre}
+                                    </option>
+                                ))
+                            }
+                        </select>
+                    </div>
                     <div className="d-flex justify-content-between mt-5">
+                    <button
+                            type="button"
+                            className="btn btn-danger"
+                            onClick={props.onHide}
+                        >
+                            cancelar
+                        </button>
                         <button
                             type="submit"
                             className="btn btn-success"
                             onClick={() => {}}
                         >
                             Agregar usuario
-                        </button>
-                        <button
-                            type="button"
-                            className="btn btn-danger"
-                            onClick={props.onHide}
-                        >
-                            cancelar
                         </button>
                     </div>
                 </form>

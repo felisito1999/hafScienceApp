@@ -56,4 +56,41 @@ main{
     animation: icon-rotation 1s infinite linear;
 }
 
+.pagination > li > button
+{
+    background-color: white;
+    color: #212529;
+}
+
+.pagination > li > button:focus,
+.pagination > li > button:hover,
+.pagination > li > button:focus,
+.pagination > li > button:hover
+{
+    color: #5a5a5a;
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+.pagination > .active > button
+{
+    color: white;
+    background-color: #4DB6AC !Important;
+    border: solid 1px #4DB6AC !Important;
+}
+
+.pagination > .active > button:hover
+{
+    background-color: #28A745 !Important;
+    border: solid 1px #28A745;
+}
+
+.table > tbody > tr:hover {
+    cursor: pointer;
+}
+
+.btn .btn-success button{
+    background-color: black;
+}
+
 

@@ -10,7 +10,7 @@
     content: "";
     display: table;
   }
-  .empty:hover {
+  .cell_empty:hover {
     box-shadow: none;
     transform: none;
   }
@@ -56,16 +56,14 @@
   .type-11 {
     background:#c8c8c8 ;
   }
-  .type-12 {
-    background: ;
-  }
+
   
-        .legend {
-      position: absolute;
-      top: 3%;
-      left: 34%;
-      padding: 0px;
-      font-size: 13px;
+  .legend {
+    position: absolute;
+    top: 3%;
+    left: 34%;
+    padding: 0px;
+    font-size: 13px;
   }
   
   .legend:after {
@@ -140,11 +138,17 @@
     clear: both;
     height: 10%;
   }
-  .cell {
+  .cell, .cell_empty {
     float: left;
     position: relative;
     width: 5.55%;
     height: 100%;
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none;      
+    -khtml-user-select: none;   
+    -moz-user-select: none;   
+    -ms-user-select: none;  
+    user-select: none;
   }
   .cell1 {
       float: left;
@@ -192,11 +196,14 @@
     transition: all 200ms ease;
     background-color: rgba(0, 128, 128, 0.6);
   }
+  .cell:hover{
+    cursor: pointer;
+  }
   .cell:hover .element {
     border-color: rgba(0, 0, 0, 0.1);
-    -webkit-transform: scale(3, 3);
-    -ms-transform: scale(3, 3);
-    transform: scale(3, 3);
+    -webkit-transform: scale(1.2, 1.2);
+    -ms-transform: scale(1.2, 1.2);
+    transform: scale(1.2, 1.2);
     z-index: 1;
     background-color: rgba(0, 128, 128, 0.9);
   }
@@ -207,7 +214,7 @@
   .elec,
   .estad {
     position: absolute;
-    font-size: 4px;
+    font-size: 14px;
     color: #000;
     opacity: 0;
   }
@@ -255,7 +262,7 @@
   .cell:nth-child(-n+2) .element{
     background-color: rgb(255, 224, 141);
   }
-  .cell:nth-child(-n+2):hover .element, {
+  .cell:nth-child(-n+2):hover .element {
     background-color: rgb(255, 224, 141);
   }
   .periodic-row:nth-child(-n+6) .cell:nth-child(18) .element {
@@ -485,7 +492,7 @@
       bottom: 2px;
     }
     .at_details, .ener,.elec{
-      font-size: 4px;
+      font-size: 14px;
       opacity: 1;
     }
     .estad {
@@ -550,7 +557,7 @@
       height: 680px;
     }
     .at_details, .ener, .elec, .estad {
-      font-size: 5px;
+      font-size: 10px;
     }
     .estad {
       top: 20px;
@@ -571,7 +578,7 @@
       height: 800px;
     }
     .at_details, .ener, .elec, .estad {
-      font-size: 6px;
+      font-size: 10px;
     }
     .masa{
       font-size: 7px;
@@ -650,3 +657,38 @@
   .element{
       border-radius: 10px;
   }
+
+  .modalBG{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    z-index: 5;
+    display: flex;
+    align-items: left;
+  }
+
+  .modalDetail{
+    padding-left: 20px;
+    background: #fff;
+    width: 500px;
+    height: 700px;
+    margin: auto;
+    text-align: left;
+}
+
+.pt-det-group-label{
+  display: flex;
+  margin-top: 20px;
+}
+
+.pt-det-element-info-box{
+  padding-top: 10px;
+}
+
+.label-data{
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
