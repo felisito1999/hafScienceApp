@@ -9,7 +9,13 @@ import { AiOutlineUserAdd } from 'react-icons/ai';
 import { ReactComponent as AgregarUsuario } from '../images/agregarUsuario.svg';
 import UserDetailsModal from './UserDetailsModal';
 import Pagination from './Pagination';
-import Collapse from 'react-bootstrap/Collapse'
+import Collapse from 'react-bootstrap/Collapse';
+import { ReactComponent as FilterIcon } from '../images/filtro.svg';
+import Card from 'react-bootstrap/Card';
+import { FaUser } from 'react-icons/fa';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import AsyncSelect from 'react-select/async'
 
 const UsersDashboard = (props) => {
     //variables for handling incoming data
@@ -73,22 +79,27 @@ const UsersDashboard = (props) => {
         }
     };
 
-    const OpenUserDetailsModal = (e, userId) => {
-        e.preventDefault();
+    const OpenUserDetailsModal = (userId) => {
         setSelectedUser(users.find((user) => user.id === userId));
         setIsUserDetailsModalShowing(true);
     };
-    const closeUserDetailsModal = () => {
+    const closeUserDetailsModal = (isSuccess) => {
         setIsUserDetailsModalShowing(false);
-        getUsers(selectedPage, pageSize);
+
+        if (isSuccess) {
+            getUsers(selectedPage, pageSize);
+        }
     };
 
     const openCreateUserModal = () => {
         setIsCreateModalShowing(true);
     };
-    const closeCreateUserModal = () => {
+    const closeCreateUserModal = (isSuccess) => {
         setIsCreateModalShowing(false);
-        getUsers(selectedPage, pageSize);
+
+        if (isSuccess) {
+            getUsers(selectedPage, pageSize);
+        }
     };
 
     const openEditModalSelection = () => {
@@ -111,7 +122,6 @@ const UsersDashboard = (props) => {
     const handlePageChange = (selectedPage) => {
         setSelectedPage(selectedPage);
         getUsers(selectedPage, pageSize);
-        console.log(selectedPage);
     };
 
     const handleFilterOpen = (e) => {
@@ -126,13 +136,13 @@ const UsersDashboard = (props) => {
 
     return (
         <div className="component-wrapper">
-            <section className="banner-bg container rounded-3 shadow py-5 my-5">
+            <section className="banner-bg container rounded-3 shadow py-3 my-5">
                 <h1 className="banner-title text-center">Usuarios</h1>
                 <div className="d-flex justify-content-end">
                     <button
                         type="button"
-                        className="btn"
-                        onClick={setIsCreateModalShowing}
+                        className="btn me-1 p-1 btn-success rounded-circle"
+                        onClick={openCreateUserModal}
                     >
                         {/* <AgregarUsuario 
                         height={20}
@@ -142,37 +152,147 @@ const UsersDashboard = (props) => {
                 </div>
                 <div>
                     <form>
-                        <div className="row g-3">
-                            <div className="col">
+                        <div className="d-flex">
+                            <div className="py-2 pr-2 flex-grow-1">
                                 <input
                                     type="text"
                                     placeholder="Nombre"
                                     className="form-control"
                                 />
                             </div>
-                            <div className="col">
+                            <div className="p-2">
                                 <button className="btn btn-success">
                                     Buscar
                                 </button>
                             </div>
-                            <div className="col">
-                                <button
+                            <div className="p-2">
+                                {/* <button
                                     className="btn btn-light dropdown-toggle"
                                     onClick={handleFilterOpen}
                                     aria-controls="user-filters-options-collapse"
                                     aria-expanded={isFilterCollapseOpen}
                                 >
                                     Filtros
-                                </button>
+                                </button> */}
+                                <FilterIcon
+                                    className={
+                                        isFilterCollapseOpen
+                                            ? 'p-2 rounded-circle pointer-cursor bg-success'
+                                            : 'p-2 pointer-cursor'
+                                    }
+                                    height={40}
+                                    width={40}
+                                    onClick={handleFilterOpen}
+                                    aria-controls="user-filters-options-collapse"
+                                    aria-expanded={isFilterCollapseOpen}
+                                />
                             </div>
                         </div>
                     </form>
                     <Collapse in={isFilterCollapseOpen}>
-                        <div id="user-filters-options-collapse">
-                            Anim pariatur cliche reprehenderit, enim eiusmod
-                            high life accusamus terry richardson ad squid. Nihil
-                            anim keffiyeh helvetica, craft beer labore wes
-                            anderson cred nesciunt sapiente ea proident.
+                        <div
+                            className="p-2 mb-2 banner-bg"
+                            id="user-filters-options-collapse"
+                        >
+                            {/* <div class="form-check">
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="flexRadioDefault"
+                                    id="flexRadioDefault1"
+                                />
+                                <label
+                                    class="form-check-label"
+                                    for="flexRadioDefault1"
+                                >
+                                    Default radio
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="flexRadioDefault"
+                                    id="flexRadioDefault2"
+                                    checked
+                                />
+                                <label
+                                    class="form-check-label"
+                                    for="flexRadioDefault2"
+                                >
+                                    Default checked radio
+                                </label>
+                            </div> */}
+                            <div className="d-flex flex-column flex-lg-row">
+                                <div className="p-1 d-flex flex-column align-items-start flex-sm-row align-items-sm-center bg-light">
+                                    <div>Roles:</div>
+                                    <div className="p-1">
+                                        <input
+                                            type="radio"
+                                            className="btn-check"
+                                            name="role-options"
+                                            id="btn-radio-role-todos"
+                                            defaultChecked
+                                            autoComplete="off"
+                                        />
+                                        <label
+                                            className="p-1 btn btn-outline-success"
+                                            htmlFor="btn-radio-role-todos"
+                                        >
+                                            Todos
+                                        </label>
+                                    </div>
+                                    <div className="p-1">
+                                        <input
+                                            type="radio"
+                                            className="btn-check"
+                                            name="role-options"
+                                            id="btn-radio-role-administrador"
+                                            autoComplete="off"
+                                        />
+                                        <label
+                                            className="p-1 btn btn-outline-success"
+                                            htmlFor="btn-radio-role-administrador"
+                                        >
+                                            Administrador
+                                        </label>
+                                    </div>
+                                    <div className="p-1">
+                                        <input
+                                            type="radio"
+                                            className="btn-check"
+                                            name="role-options"
+                                            id="btn-radio-role-docente"
+                                            autoComplete="off"
+                                        />
+                                        <label
+                                            className="p-1 btn btn-outline-success"
+                                            htmlFor="btn-radio-role-docente"
+                                        >
+                                            Docente
+                                        </label>
+                                    </div>
+                                    <div className="p-1">
+                                        <input
+                                            type="radio"
+                                            className="btn-check"
+                                            name="role-options"
+                                            id="btn-radio-role-estudiante"
+                                            autoComplete="off"
+                                        />
+                                        <label
+                                            className="p-1 btn btn-outline-success"
+                                            htmlFor="btn-radio-role-estudiante"
+                                        >
+                                            Estudiante
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="d-flex align-items-center">
+                                    <div>Centros Educativos:</div>
+                                    
+                                </div>
+                            </div>
                         </div>
                     </Collapse>
                 </div>
@@ -189,7 +309,7 @@ const UsersDashboard = (props) => {
                     </div>
                 ) : (
                     <>
-                        <table className="table table-hover">
+                        {/* <table className="table table-responsive table-hover">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
@@ -217,7 +337,43 @@ const UsersDashboard = (props) => {
                                 ))}
                             </tbody>
                             <tfoot></tfoot>
-                        </table>
+                        </table> */}
+                        <Row xs={1} md={2} className="g-2 pb-2">
+                            {users.map((user) => (
+                                <Col key={user.id}>
+                                    <Card
+                                        className="pointer-cursor bg-light h-100"
+                                        onClick={(e) =>
+                                            OpenUserDetailsModal(user.id)
+                                        }
+                                    >
+                                        <div className="p-2 d-flex flex-row">
+                                            <div className="mr-2 d-flex justify-content-center align-items-center">
+                                                <FaUser size="50" />
+                                            </div>
+                                            <div className="ms-3 d-flex flex-column justify-content-start align-items-start">
+                                                <p className="fw-bold">
+                                                    {user.nombres}{' '}
+                                                    {user.apellidos}
+                                                </p>
+                                                <p>
+                                                    <span className="fw-bold">
+                                                        Nombre de usuario:{' '}
+                                                    </span>
+                                                    {user.nombreUsuario}
+                                                </p>
+                                                <p>
+                                                    <span className="fw-bold">
+                                                        Centro educativo:{' '}
+                                                    </span>
+                                                    {user.nombreCentroEducativo}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </Card>
+                                </Col>
+                            ))}
+                        </Row>
                         <Pagination
                             actualPage={selectedPage}
                             recordsTotal={recordsTotal}

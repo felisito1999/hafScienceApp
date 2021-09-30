@@ -41,25 +41,19 @@ export const NavbarData = [
     //     childs: null,
     // },
     {
-        title: 'Administración de usuarios',
+        title: 'Usuarios',
         path: `${host}admin-usuarios`,
         icon: <FaUsers />,
         className: 'nav-link',
         childs: null,
         roles: ['Administrador'], 
-        //[
-        //     {
-        //         title: 'Panel de usuarios',
-        //         path: '/admin-usuarios/dashboard',
-        //         icon: <RiDashboardFill />,
-        //         className: 'dropdown-item',
-        //     },
-        //     {
-        //         title: 'Agregar usuarios',
-        //         path: '/admin-usuarios/dashboard/agregar',
-        //         icon: <IoAdd />,
-        //         className: 'dropdown-item',
-        //     },
-        // ],
     },
+    {
+        title: 'Centros educativos',
+        path: `${host}admin-centros`,
+        icon: <FaUsers />,
+        className: 'nav-link',
+        childs: null,
+        roles: ['Administrador'],
+    }
 ];

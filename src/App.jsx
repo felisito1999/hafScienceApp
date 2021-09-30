@@ -36,8 +36,10 @@ const App = () => {
     //Checks if the user is logged in when loading the App component.
     useEffect(() => {
         const checkIsLoggedIn = async () => {
+            
+            const loginState = await authService.isSignedIn();
             if (
-                (await authService.isSignedIn()) &&
+                loginState.value === true &&
                 localStorage.getItem('token') != null &&
                 localStorage.getItem('userData') != null
             ) {
@@ -55,7 +57,7 @@ const App = () => {
         };
 
         checkIsLoggedIn();
-    }, []);
+    }, [history]);
 
     return (
         <Router>

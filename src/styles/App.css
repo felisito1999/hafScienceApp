@@ -93,4 +93,7 @@ main{
     background-color: black;
 }
 
+.pointer-cursor {
+    cursor: pointer;
+}
 

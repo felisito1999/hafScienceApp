@@ -4,19 +4,19 @@ import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from 'react-router-dom';
 import '../styles/Navbar.css';
-import { NavbarData } from './NavbarData';
+import { NavbarData } from '../data/NavbarData';
 import { IoLogIn } from 'react-icons/io5';
 import { FaUser } from 'react-icons/fa';
 import { BiLogOut } from 'react-icons/bi';
 import { ReactComponent as HafIcon } from '../images/tabla-periodica.svg';
+import Container from 'react-bootstrap/Container';
 
 const NavigationBar = (props) => {
     const host = process.env.REACT_APP_HOST_NAME;
 
     return (
         <>
-            <Navbar collapseOnSelect expand="lg" fixed="top" variant="light">
-                {/* <Container> */}
+            <Navbar className="px-2" collapseOnSelect expand="lg" fixed="top" variant="light">
                 <Link to={`${host}`} className="navbar-brand">
                     <HafIcon
                         className="d-inline-block align-to"
@@ -29,7 +29,12 @@ const NavigationBar = (props) => {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                         {NavbarData.map((navItem, index) => {
-                            if (navItem.roles.includes(JSON.parse(localStorage.getItem('userData')).nombreRol)){
+                            if (
+                                navItem.roles.includes(
+                                    JSON.parse(localStorage.getItem('userData'))
+                                        .nombreRol
+                                )
+                            ) {
                                 if (navItem.childs) {
                                     return (
                                         //Arreglar que funcionen los links del dropdown
@@ -53,7 +58,9 @@ const NavigationBar = (props) => {
                                                             >
                                                                 {child.icon}{' '}
                                                                 <span>
-                                                                    {child.title}
+                                                                    {
+                                                                        child.title
+                                                                    }
                                                                 </span>
                                                             </Link>
                                                         </NavDropdown.Item>
@@ -74,8 +81,7 @@ const NavigationBar = (props) => {
                                         </Link>
                                     );
                                 }
-                            }
-                            else {
+                            } else {
                                 return null;
                             }
                         })}
@@ -84,23 +90,38 @@ const NavigationBar = (props) => {
                         {localStorage.getItem('token') != null &&
                         localStorage.getItem('userData') != null ? (
                             <>
-                            <Link to="perfil" className="nav-link">
-                                <FaUser/>{' '}
-                                <span className="pl-2">{JSON.parse(localStorage.getItem('userData')).nombres} {JSON.parse(localStorage.getItem('userData')).apellidos}</span>
-                            </Link>
-                            <Link to={`${host}`} onClick={props.handleLogout} className="nav-link">
-                                <BiLogOut />{' '}<span className="pl-2">Cerrar sesión</span>
-                            </Link>
+                                <Link to="perfil" className="nav-link">
+                                    <FaUser />{' '}
+                                    <span className="pl-2">
+                                        {
+                                            JSON.parse(
+                                                localStorage.getItem('userData')
+                                            ).nombres
+                                        }{' '}
+                                        {
+                                            JSON.parse(
+                                                localStorage.getItem('userData')
+                                            ).apellidos
+                                        }
+                                    </span>
+                                </Link>
+                                <Link
+                                    to={`${host}`}
+                                    onClick={props.handleLogout}
+                                    className="nav-link"
+                                >
+                                    <BiLogOut />{' '}
+                                    <span className="pl-2">Cerrar sesión</span>
+                                </Link>
                             </>
                         ) : (
                             <Link to="/login" className="nav-link">
-                                <IoLogIn />{' '}<span>Iniciar sesión</span>
+                                <IoLogIn /> <span>Iniciar sesión</span>
                             </Link>
                         )}
                         {/* <Link to="/registro" className="nav-link"><FaUserCheck />  <span>Registrarse</span></Link> */}
                     </Nav>
                 </Navbar.Collapse>
-                {/* </Container> */}
             </Navbar>
         </>
     );

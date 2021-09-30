@@ -13,7 +13,6 @@ const Pagination = (props) => {
                 newPages.push(i + 1);
             }
         }
-        console.log(newPages.length);
         setPages(newPages);
     };
 
@@ -21,10 +20,6 @@ const Pagination = (props) => {
         setPagesItems(props.recordsTotal, props.pageSize);
         setActualPage(props.actualPage);
     }, [props.selectedPage]);
-
-    useEffect(() => {
-        console.log(pages.length);
-    }, []);
 
     return (
         <div className="d-flex justify-content-center align-items-center">

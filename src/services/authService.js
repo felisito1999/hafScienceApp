@@ -11,7 +11,7 @@ authService.signIn = async (username, password) => {
     const source = CancelToken.source();
     const timeout = setTimeout(() => {
         source.cancel();
-        throw new Error('Ha pasado el tiempo máximo de respuesta');
+        console.log('Ha pasado el tiempo máximo de respuesta');
     }, 5000);
 
     const config = {
@@ -68,6 +68,13 @@ authService.logout = async () => {
 };
 
 authService.isSignedIn = async () => {
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+    const timeout = setTimeout(() => {
+        source.cancel();
+        alert('Ha pasado el tiempo máximo de respuesta para la solicitud');
+    }, 5000);
+
     const config = {
         url: `${process.env.REACT_APP_API_URL}auth/check`,
         method: 'post',
@@ -77,9 +84,21 @@ authService.isSignedIn = async () => {
         data: null,
     };
 
-    const response = await axios(config);
-
-    return response.data;
+    try {
+        const response = await axios(config)
+        clearTimeout(timeout);
+        return {
+            value: response.data,
+            message: 'El usuario tiene una sesión iniciada'
+        }
+    } catch (error) {
+        console.log(error);
+        clearTimeout(timeout);
+        return {
+            value: false,
+            message: 'Ha ocurrido un error al verificar el estado de la sesión' 
+        }
+    }
 };
 
 export default authService;

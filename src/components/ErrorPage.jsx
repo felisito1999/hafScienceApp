@@ -19,7 +19,7 @@ const ErrorPage = () => {
                         <p>
                             No pudimos encontrar la página que está solicitando.
                             Puede dirigirse a la página principal, a la página
-                            anterior o contantarse con nuestro equipo de
+                            anterior o contactarse con nuestro equipo de
                             soporte.
                         </p>
                     </div>
