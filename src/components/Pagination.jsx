@@ -1,7 +1,8 @@
+import { tsTypeParameterInstantiation } from '@babel/types';
 import React, { useEffect, useState } from 'react';
 
 const Pagination = (props) => {
-    const [pages, setPages] = useState([null]);
+    const [pages, setPages] = useState([]);
     const [actualPage, setActualPage] = useState(1);
 
     const setPagesItems = (totalCount, pageSize) => {
@@ -13,19 +14,24 @@ const Pagination = (props) => {
                 newPages.push(i + 1);
             }
         }
+
+        console.log(newPages.length)
         setPages(newPages);
     };
 
     useEffect(() => {
-        setPagesItems(props.recordsTotal, props.pageSize);
         setActualPage(props.actualPage);
-    }, [props.selectedPage]);
+    }, [props.actualPage]);
+
+    useEffect(() => {
+        setPagesItems(props.recordsTotal, props.pageSize)
+    },[props.recordsTotal])
 
     return (
         <div className="d-flex justify-content-center align-items-center">
             <nav aria-label="users-dashboard-pagination">
                 <ul className="pagination">
-                    {actualPage === 1 ? (
+                    {actualPage === 1 || pages.length === 0 ? (
                         <li className="page-item disabled">
                             <button className="page-link">Anterior</button>
                         </li>
@@ -91,7 +97,7 @@ const Pagination = (props) => {
                         }
                         return null;
                     })}
-                    {actualPage === pages.length ? (
+                    {actualPage >= pages.length ? (
                         <li className="page-item disabled">
                             <button className="page-link">Siguiente</button>
                         </li>

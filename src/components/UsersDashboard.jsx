@@ -33,7 +33,9 @@ const UsersDashboard = (props) => {
 
     //search parameters variables
     const [searchParameters, setSearchParameters] = useState({
+        name: '',
         username: '',
+        email: '',
         schoolId: null,
         roleId: null,
     });
@@ -53,7 +55,7 @@ const UsersDashboard = (props) => {
         const timeout = setTimeout(() => {
             source.cancel();
             throw 'Ha pasado el tiempo máximo de respuesta';
-        }, 5000);
+        }, 10000);
 
         const config = {
             method: 'get',
@@ -62,6 +64,11 @@ const UsersDashboard = (props) => {
             params: {
                 page: pageNumber,
                 pageSize: pageSize,
+                centroEducativoId: searchParameters.schoolId,
+                username: searchParameters.username,
+                name: searchParameters.name,
+                correoElectronico: searchParameters.email,
+                rolId: searchParameters.roleId
             },
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -147,6 +154,13 @@ const UsersDashboard = (props) => {
         });
     };
 
+    const handleNameChange = (e) => {
+        setSearchParameters({
+            ...searchParameters,
+            name: e.target.value
+        })
+    };
+
     const handleRolesChange = (e) => {
         setSearchParameters({
             ...searchParameters,
@@ -157,9 +171,13 @@ const UsersDashboard = (props) => {
     const handleUserSearchSubmit = (e) => {
         e.preventDefault();
 
-        if (validationService.isNullOrWhiteSpace(searchParameters.username)) {
+        if (validationService.isNullOrWhiteSpace(searchParameters.name)) {
             alert('El campo de nombre se encuentra vacío');
+            
+            getUsers(selectedPage, pageSize);
         }
+
+        getUsers(selectedPage, pageSize);
         console.log(searchParameters);
     };
 
@@ -191,7 +209,7 @@ const UsersDashboard = (props) => {
                                     type="text"
                                     placeholder="Nombre"
                                     className="form-control"
-                                    onChange={handleUsernameChange}
+                                    onChange={handleNameChange}
                                 />
                             </div>
                             <div className="p-2">
