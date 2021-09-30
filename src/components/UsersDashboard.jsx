@@ -15,7 +15,8 @@ import Card from 'react-bootstrap/Card';
 import { FaUser } from 'react-icons/fa';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import AsyncSelect from 'react-select/async'
+import SelectAsync from './SelectAsync';
+import validationService from '../services/validationService';
 
 const UsersDashboard = (props) => {
     //variables for handling incoming data
@@ -31,9 +32,11 @@ const UsersDashboard = (props) => {
     const [isDataMissing, setIsDataMissing] = useState(false);
 
     //search parameters variables
-    const [usernameSearchValue, setUsernameSearchValue] = useState(null);
-    const [schoolSearchValue, setSchoolSearchValue] = useState(null);
-    const [userRoleValue, setUserRoleValue] = useState(null);
+    const [searchParameters, setSearchParameters] = useState({
+        username: '',
+        schoolId: null,
+        roleId: null,
+    });
 
     //variables for showing crud related modals and collapse
     const [isUserDetailsModalShowing, setIsUserDetailsModalShowing] =
@@ -130,6 +133,36 @@ const UsersDashboard = (props) => {
         setIsFilterCollapseOpen(!isFilterCollapseOpen);
     };
 
+    const handleSchoolsChange = (value) => {
+        setSearchParameters({
+            ...searchParameters,
+            schoolId: value.id,
+        });
+    };
+
+    const handleUsernameChange = (e) => {
+        setSearchParameters({
+            ...searchParameters,
+            username: e.target.value,
+        });
+    };
+
+    const handleRolesChange = (e) => {
+        setSearchParameters({
+            ...searchParameters,
+            roleId: e.target.value === '' ? null : e.target.value,
+        });
+    };
+
+    const handleUserSearchSubmit = (e) => {
+        e.preventDefault();
+
+        if (validationService.isNullOrWhiteSpace(searchParameters.username)) {
+            alert('El campo de nombre se encuentra vacío');
+        }
+        console.log(searchParameters);
+    };
+
     useEffect(() => {
         getUsers(selectedPage, pageSize);
     }, []);
@@ -141,23 +174,24 @@ const UsersDashboard = (props) => {
                 <div className="d-flex justify-content-end">
                     <button
                         type="button"
-                        className="btn me-1 p-1 btn-success rounded-circle"
+                        className="btn me-2 p-1 btn-success rounded-circle"
                         onClick={openCreateUserModal}
                     >
                         {/* <AgregarUsuario 
                         height={20}
                         width={20}/> */}
-                        <AiOutlineUserAdd size={35} />
+                        <AiOutlineUserAdd size={32} />
                     </button>
                 </div>
                 <div>
-                    <form>
+                    <form onSubmit={handleUserSearchSubmit}>
                         <div className="d-flex">
                             <div className="py-2 pr-2 flex-grow-1">
                                 <input
                                     type="text"
                                     placeholder="Nombre"
                                     className="form-control"
+                                    onChange={handleUsernameChange}
                                 />
                             </div>
                             <div className="p-2">
@@ -191,40 +225,11 @@ const UsersDashboard = (props) => {
                     </form>
                     <Collapse in={isFilterCollapseOpen}>
                         <div
-                            className="p-2 mb-2 banner-bg"
+                            className="p-2 mb-2 bg-light"
                             id="user-filters-options-collapse"
                         >
-                            {/* <div class="form-check">
-                                <input
-                                    class="form-check-input"
-                                    type="radio"
-                                    name="flexRadioDefault"
-                                    id="flexRadioDefault1"
-                                />
-                                <label
-                                    class="form-check-label"
-                                    for="flexRadioDefault1"
-                                >
-                                    Default radio
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input
-                                    class="form-check-input"
-                                    type="radio"
-                                    name="flexRadioDefault"
-                                    id="flexRadioDefault2"
-                                    checked
-                                />
-                                <label
-                                    class="form-check-label"
-                                    for="flexRadioDefault2"
-                                >
-                                    Default checked radio
-                                </label>
-                            </div> */}
                             <div className="d-flex flex-column flex-lg-row">
-                                <div className="p-1 d-flex flex-column align-items-start flex-sm-row align-items-sm-center bg-light">
+                                <div className="p-1 d-flex flex-column align-items-start flex-sm-row align-items-sm-center">
                                     <div>Roles:</div>
                                     <div className="p-1">
                                         <input
@@ -234,6 +239,8 @@ const UsersDashboard = (props) => {
                                             id="btn-radio-role-todos"
                                             defaultChecked
                                             autoComplete="off"
+                                            value={''}
+                                            onChange={handleRolesChange}
                                         />
                                         <label
                                             className="p-1 btn btn-outline-success"
@@ -242,13 +249,14 @@ const UsersDashboard = (props) => {
                                             Todos
                                         </label>
                                     </div>
-                                    <div className="p-1">
+                                    {/* <div className="p-1">
                                         <input
                                             type="radio"
                                             className="btn-check"
                                             name="role-options"
                                             id="btn-radio-role-administrador"
                                             autoComplete="off"
+                                            onChange={handleRolesChange}
                                         />
                                         <label
                                             className="p-1 btn btn-outline-success"
@@ -256,7 +264,7 @@ const UsersDashboard = (props) => {
                                         >
                                             Administrador
                                         </label>
-                                    </div>
+                                    </div> */}
                                     <div className="p-1">
                                         <input
                                             type="radio"
@@ -264,6 +272,8 @@ const UsersDashboard = (props) => {
                                             name="role-options"
                                             id="btn-radio-role-docente"
                                             autoComplete="off"
+                                            value={2}
+                                            onChange={handleRolesChange}
                                         />
                                         <label
                                             className="p-1 btn btn-outline-success"
@@ -279,6 +289,8 @@ const UsersDashboard = (props) => {
                                             name="role-options"
                                             id="btn-radio-role-estudiante"
                                             autoComplete="off"
+                                            value={3}
+                                            onChange={handleRolesChange}
                                         />
                                         <label
                                             className="p-1 btn btn-outline-success"
@@ -288,9 +300,15 @@ const UsersDashboard = (props) => {
                                         </label>
                                     </div>
                                 </div>
-                                <div className="d-flex align-items-center">
+                                <div className="p-1 d-flex flex-fill align-items-center">
                                     <div>Centros Educativos:</div>
-                                    
+                                    <div className="ms-2 flex-grow-1">
+                                        <SelectAsync
+                                            handleSchoolChange={
+                                                handleSchoolsChange
+                                            }
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
