@@ -17,6 +17,7 @@ function CreateUserModal(props) {
 
     const [roles, setRoles] = useState([null]);
     const [centrosEducativos, setCentrosEducativos] = useState([null])
+    const [isSuccess, setIsSuccess] = useState(false);
 
     const getInitRoles = async () => {
         const config = {
@@ -131,14 +132,13 @@ function CreateUserModal(props) {
 
         try {
             const response = await axios(config);
-            console.log(user);
-            console.log(response);
+            setIsSuccess(true);
             alert("El usuario se ha agregado exitosamente!");
         } catch (error) {
             console.log(error);
             alert("No se ha podido completar la solicitud");
         }
-        props.onHide();
+        props.onHide(true);
     };
 
     useEffect(() => {

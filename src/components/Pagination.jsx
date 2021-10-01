@@ -25,7 +25,7 @@ const Pagination = (props) => {
 
     useEffect(() => {
         setPagesItems(props.recordsTotal, props.pageSize)
-    },[props.recordsTotal])
+    },[props.recordsTotal, props.pageSize])
 
     return (
         <div className="d-flex justify-content-center align-items-center">

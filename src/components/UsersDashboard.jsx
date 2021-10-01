@@ -93,23 +93,17 @@ const UsersDashboard = (props) => {
         setSelectedUser(users.find((user) => user.id === userId));
         setIsUserDetailsModalShowing(true);
     };
-    const closeUserDetailsModal = (isSuccess) => {
+    const closeUserDetailsModal = () => {
         setIsUserDetailsModalShowing(false);
-
-        if (isSuccess) {
-            getUsers(selectedPage, pageSize);
-        }
+        // getUsers(selectedPage, pageSize);
     };
 
     const openCreateUserModal = () => {
         setIsCreateModalShowing(true);
     };
-    const closeCreateUserModal = (isSuccess) => {
+    const closeCreateUserModal = () => {
         setIsCreateModalShowing(false);
-
-        if (isSuccess) {
-            getUsers(selectedPage, pageSize);
-        }
+        getUsers(selectedPage, pageSize);
     };
 
     const openEditModalSelection = () => {
@@ -171,11 +165,11 @@ const UsersDashboard = (props) => {
     const handleUserSearchSubmit = (e) => {
         e.preventDefault();
 
-        if (validationService.isNullOrWhiteSpace(searchParameters.name)) {
-            alert('El campo de nombre se encuentra vacío');
+        // if (validationService.isNullOrWhiteSpace(searchParameters.name)) {
+        //     alert('El campo de nombre se encuentra vacío. Se mostrarán todos los usuarios');
             
-            getUsers(selectedPage, pageSize);
-        }
+        //     getUsers(selectedPage, pageSize);
+        // }
 
         getUsers(selectedPage, pageSize);
         console.log(searchParameters);
