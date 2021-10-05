@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import axios from 'axios';
 import CreateUserModal from './CreateUserModal';
 import EditUserModal from './EditUserModal';
 import DeleteUserModal from './DeleteUserModal';
-// import { IoAddOutline } from 'react-icons/io5';
 import { AiOutlineUserAdd } from 'react-icons/ai';
-import { ReactComponent as AgregarUsuario } from '../images/agregarUsuario.svg';
 import UserDetailsModal from './UserDetailsModal';
 import Pagination from './Pagination';
 import Collapse from 'react-bootstrap/Collapse';
@@ -16,31 +13,30 @@ import { FaUser } from 'react-icons/fa';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import SelectAsync from './SelectAsync';
-import validationService from '../services/validationService';
+import userService from '../services/usersService';
 
 const UsersDashboard = (props) => {
-    //variables for handling incoming data
+    //Variables de estado para controlar la información que viene de
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [selectedPage, setSelectedPage] = useState(1);
     const [recordsTotal, setRecordsTotal] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-    //const [isFilteringData, setIsFilteringData] = useState(true);
 
-    //varibales for user feedback on data loading
+    //Variables de estado para manejar la muestra del estado de carga de la información
     const [isDataLoading, setIsDataLoading] = useState(true);
     const [isDataMissing, setIsDataMissing] = useState(false);
 
-    //search parameters variables
+    //Variable de estado con un objeto que maneja los parametros de búsqueda de los usuarios.
     const [searchParameters, setSearchParameters] = useState({
         name: '',
         username: '',
-        email: '',
-        schoolId: null,
-        roleId: null,
+        correoElectronico: '',
+        centroEducativoId: null,
+        rolId: null,
     });
 
-    //variables for showing crud related modals and collapse
+    //Variables de estado para manejar los modales de crud.
     const [isUserDetailsModalShowing, setIsUserDetailsModalShowing] =
         useState(false);
     const [isCreateModalShowing, setIsCreateModalShowing] = useState(false);
@@ -48,54 +44,36 @@ const UsersDashboard = (props) => {
     const [isDeleteModalShowing, setIsDeleteModalShowing] = useState(false);
     const [isFilterCollapseOpen, setIsFilterCollapseOpen] = useState(false);
 
+    //Función para obtener los usuarios dependiendo de los parámetros de búscqueda que se proporcionen.
     const getUsers = async (pageNumber, pageSize) => {
         setIsDataLoading(true);
-        const source = axios.CancelToken.source();
-
-        const timeout = setTimeout(() => {
-            source.cancel();
-            throw 'Ha pasado el tiempo máximo de respuesta';
-        }, 10000);
-
-        const config = {
-            method: 'get',
-            cancelToken: source.token,
-            url: `${process.env.REACT_APP_API_URL}usuarios`,
-            params: {
-                page: pageNumber,
-                pageSize: pageSize,
-                centroEducativoId: searchParameters.schoolId,
-                username: searchParameters.username,
-                name: searchParameters.name,
-                correoElectronico: searchParameters.email,
-                rolId: searchParameters.roleId
-            },
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-            data: null,
-        };
 
         try {
-            const response = await axios(config);
-            clearTimeout(timeout);
-            setUsers(response.data.records);
-            setRecordsTotal(response.data.recordsTotal);
+            const response = await userService.getAllPaginatedUsersBy(
+                pageNumber,
+                pageSize,
+                searchParameters
+            );
+            setUsers(response.records);
+            setRecordsTotal(response.recordsTotal);
             setIsDataLoading(false);
+            if (isDataMissing) {
+                setIsDataMissing(false);
+            }
         } catch (error) {
-            clearTimeout(timeout);
             setIsDataLoading(false);
             setIsDataMissing(true);
         }
     };
 
+    //Declaración de las funciones para el menejo de las variables de estado.
     const OpenUserDetailsModal = (userId) => {
         setSelectedUser(users.find((user) => user.id === userId));
         setIsUserDetailsModalShowing(true);
     };
     const closeUserDetailsModal = () => {
         setIsUserDetailsModalShowing(false);
-        // getUsers(selectedPage, pageSize);
+        getUsers(selectedPage, pageSize);
     };
 
     const openCreateUserModal = () => {
@@ -137,41 +115,35 @@ const UsersDashboard = (props) => {
     const handleSchoolsChange = (value) => {
         setSearchParameters({
             ...searchParameters,
-            schoolId: value.id,
+            centroEducativoId: value.id,
         });
     };
 
-    const handleUsernameChange = (e) => {
-        setSearchParameters({
-            ...searchParameters,
-            username: e.target.value,
-        });
-    };
+    // const handleUsernameChange = (e) => {
+    //     setSearchParameters({
+    //         ...searchParameters,
+    //         username: e.target.value,
+    //     });
+    // };
 
     const handleNameChange = (e) => {
         setSearchParameters({
             ...searchParameters,
-            name: e.target.value
-        })
+            name: e.target.value,
+        });
     };
 
     const handleRolesChange = (e) => {
         setSearchParameters({
             ...searchParameters,
-            roleId: e.target.value === '' ? null : e.target.value,
+            rolId: e.target.value === '' ? null : e.target.value,
         });
     };
 
     const handleUserSearchSubmit = (e) => {
         e.preventDefault();
-
-        // if (validationService.isNullOrWhiteSpace(searchParameters.name)) {
-        //     alert('El campo de nombre se encuentra vacío. Se mostrarán todos los usuarios');
-            
-        //     getUsers(selectedPage, pageSize);
-        // }
-
-        getUsers(selectedPage, pageSize);
+        getUsers(1, pageSize);
+        setSelectedPage(1);
         console.log(searchParameters);
     };
 
@@ -212,14 +184,6 @@ const UsersDashboard = (props) => {
                                 </button>
                             </div>
                             <div className="p-2">
-                                {/* <button
-                                    className="btn btn-light dropdown-toggle"
-                                    onClick={handleFilterOpen}
-                                    aria-controls="user-filters-options-collapse"
-                                    aria-expanded={isFilterCollapseOpen}
-                                >
-                                    Filtros
-                                </button> */}
                                 <FilterIcon
                                     className={
                                         isFilterCollapseOpen
@@ -241,7 +205,7 @@ const UsersDashboard = (props) => {
                             id="user-filters-options-collapse"
                         >
                             <div className="d-flex flex-column flex-lg-row">
-                                <div className="p-1 d-flex flex-column align-items-start flex-sm-row align-items-sm-center">
+                                <div className="p-1 d-flex flex-column align-items-start flex-sm-row align-items-sm-center ">
                                     <div>Roles:</div>
                                     <div className="p-1">
                                         <input
@@ -261,22 +225,6 @@ const UsersDashboard = (props) => {
                                             Todos
                                         </label>
                                     </div>
-                                    {/* <div className="p-1">
-                                        <input
-                                            type="radio"
-                                            className="btn-check"
-                                            name="role-options"
-                                            id="btn-radio-role-administrador"
-                                            autoComplete="off"
-                                            onChange={handleRolesChange}
-                                        />
-                                        <label
-                                            className="p-1 btn btn-outline-success"
-                                            htmlFor="btn-radio-role-administrador"
-                                        >
-                                            Administrador
-                                        </label>
-                                    </div> */}
                                     <div className="p-1">
                                         <input
                                             type="radio"
@@ -312,9 +260,9 @@ const UsersDashboard = (props) => {
                                         </label>
                                     </div>
                                 </div>
-                                <div className="p-1 d-flex flex-fill align-items-center">
+                                <div className="p-1 d-flex flex-fill flex-column align-items-start flex-sm-row align-items-sm-center ">
                                     <div>Centros Educativos:</div>
-                                    <div className="ms-2 flex-grow-1">
+                                    <div className="ms-2 w-90 flex-fill flex-grow-1">
                                         <SelectAsync
                                             handleSchoolChange={
                                                 handleSchoolsChange
@@ -330,79 +278,58 @@ const UsersDashboard = (props) => {
                     <div className="d-flex justify-content-center mt-3">
                         <AiOutlineLoading3Quarters
                             size={50}
-                            className="rotating-icon"
+                            className="rotating-icon m-5"
                         />
                     </div>
                 ) : isDataMissing ? (
-                    <div className="d-flex justify-content-center mt-3">
+                    <div className="d-flex justify-content-center mt-3 p-2">
                         <h3>Ha ocurrido un error, intente de nuevo</h3>
                     </div>
                 ) : (
                     <>
-                        {/* <table className="table table-responsive table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Usuario</th>
-                                    <th>Centro</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {users.map((user) => (
-                                    <tr
-                                        key={user.id}
-                                        onClick={(e) =>
-                                            OpenUserDetailsModal(e, user.id)
-                                        }
-                                    >
-                                        <td>
-                                            {user && user.nombres}{' '}
-                                            {user && user.apellidos}
-                                        </td>
-                                        <td>{user.nombreUsuario}</td>
-                                        <td>
-                                            {user && user.nombreCentroEducativo}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                            <tfoot></tfoot>
-                        </table> */}
                         <Row xs={1} md={2} className="g-2 pb-2">
-                            {users.map((user) => (
-                                <Col key={user.id}>
-                                    <Card
-                                        className="pointer-cursor bg-light h-100"
-                                        onClick={(e) =>
-                                            OpenUserDetailsModal(user.id)
-                                        }
-                                    >
-                                        <div className="p-2 d-flex flex-row">
-                                            <div className="mr-2 d-flex justify-content-center align-items-center">
-                                                <FaUser size="50" />
+                            {users.length > 0 ? (
+                                users.map((user) => (
+                                    <Col key={user.id}>
+                                        <Card
+                                            className="pointer-cursor bg-light h-100"
+                                            onClick={(e) =>
+                                                OpenUserDetailsModal(user.id)
+                                            }
+                                        >
+                                            <div className="p-2 d-flex flex-row">
+                                                <div className="mr-2 d-flex justify-content-center align-items-center">
+                                                    <FaUser size="50" />
+                                                </div>
+                                                <div className="ms-3 d-flex flex-column justify-content-start align-items-start">
+                                                    <p className="fw-bold">
+                                                        {user.nombres}{' '}
+                                                        {user.apellidos}
+                                                    </p>
+                                                    <p>
+                                                        <span className="fw-bold">
+                                                            Nombre de usuario:{' '}
+                                                        </span>
+                                                        {user.nombreUsuario}
+                                                    </p>
+                                                    <p>
+                                                        <span className="fw-bold">
+                                                            Centro educativo:{' '}
+                                                        </span>
+                                                        {user.nombreCentroEducativo}
+                                                    </p>
+                                                </div>
                                             </div>
-                                            <div className="ms-3 d-flex flex-column justify-content-start align-items-start">
-                                                <p className="fw-bold">
-                                                    {user.nombres}{' '}
-                                                    {user.apellidos}
-                                                </p>
-                                                <p>
-                                                    <span className="fw-bold">
-                                                        Nombre de usuario:{' '}
-                                                    </span>
-                                                    {user.nombreUsuario}
-                                                </p>
-                                                <p>
-                                                    <span className="fw-bold">
-                                                        Centro educativo:{' '}
-                                                    </span>
-                                                    {user.nombreCentroEducativo}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </Card>
-                                </Col>
-                            ))}
+                                        </Card>
+                                    </Col>
+                                ))
+                            ) : 
+                            (
+                                <div className="w-100 p-5 d-flex flex-row align-items-center justify-content-center">
+                                    <h2>No se encontraron usuarios</h2>
+                                </div>
+                            )
+                            }
                         </Row>
                         <Pagination
                             actualPage={selectedPage}

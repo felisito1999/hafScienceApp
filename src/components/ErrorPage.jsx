@@ -3,8 +3,8 @@ import { ReactComponent as ErrorIcon } from '../images/404-error-icon.svg';
 
 const ErrorPage = () => {
     return (
-        <div className="h-100">
-            <article className="container d-flex flex-column bg-light rounded-3 shadow mt-5 mb-5">
+        <div className="component-wrapper">
+            <article className="container d-flex flex-column bg-light rounded-3 shadow">
                 <section className="text-center d-flex justify-content-center align-items-center pt-5">
                     <div className="p-2">
                         <ErrorIcon height="100" />

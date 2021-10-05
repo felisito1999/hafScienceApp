@@ -55,7 +55,6 @@ const App = () => {
                 setFooterShowing(false);
             }
         };
-
         checkIsLoggedIn();
     }, [history]);
 
@@ -83,10 +82,14 @@ const App = () => {
                         component={TestAttempt}
                     />
                     <Route path={`${host}juegos`} component={GameSelector} />
-                    <Route
-                        path={`${host}admin-usuarios`}
-                        component={UsersDashboard}
-                    />
+                    <Route path={`${host}admin-usuarios`}>
+                        {localStorage.getItem("token") && JSON.parse(localStorage.getItem("userData")).nombreRol === "Administrador" ? (
+                            <UsersDashboard />
+                        ) :
+                        (
+                            <Redirect to={host} />
+                        )}
+                    </Route>
                     <Route>
                         <ErrorPage />
                     </Route>

@@ -6,7 +6,8 @@ import {
     Redirect,
     Link
 } from 'react-router-dom';
-import PuzzleGame from './PuzzleGame'
+import PuzzleGame from './PuzzleGameDifficult';
+import PuzzleSelector from './PuzzleSelector';
 import { ReactComponent as PuzzleIcon } from '../images/rompecabezas.svg';
 import { ReactComponent as Agrupamiento } from '../images/agrupamiento.svg';
 
@@ -44,7 +45,7 @@ const GameSelector = (props) => {
                 </div>
             </Route>
             <Route path={`${host}juegos/rompecabezas`}>
-                <PuzzleGame />
+                <PuzzleSelector />
             </Route>
         </Switch>
     );

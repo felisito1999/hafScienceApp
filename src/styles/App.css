@@ -17,8 +17,7 @@ body {
 
 html, body, #root{
     height: 100vh;
-
-  }
+}
 
 
 #root {
@@ -95,5 +94,9 @@ main{
 
 .pointer-cursor {
     cursor: pointer;
+}
+
+#user-dropdown::after {
+    display: none;
 }
 

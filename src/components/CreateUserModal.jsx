@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
+import userService from '../services/usersService';
 
 function CreateUserModal(props) {
     const [user, setUser] = useState({
@@ -119,24 +120,35 @@ function CreateUserModal(props) {
 
     const handleNewUserSubmit = async (e) => {
         e.preventDefault();
-        const data = user;
+        // const data = user;
 
-        const config = {
-            method: 'post',
-            url: `${process.env.REACT_APP_API_URL}auth/register`,
-            headers: {
-                'Authorization' : `Bearer ${localStorage.getItem('token')}`
-            },
-            data: data,
-        };
+        // const config = {
+        //     method: 'post',
+        //     url: `${process.env.REACT_APP_API_URL}auth/register`,
+        //     headers: {
+        //         'Authorization' : `Bearer ${localStorage.getItem('token')}`
+        //     },
+        //     data: data,
+        // };
 
+        // try {
+        //     const response = await axios(config);
+        //     setIsSuccess(true);
+        //     alert("El usuario se ha agregado exitosamente!");
+        // } catch (error) {
+        //     console.log(error);
+        //     alert("No se ha podido completar la solicitud");
+        // }
         try {
-            const response = await axios(config);
-            setIsSuccess(true);
-            alert("El usuario se ha agregado exitosamente!");
+            const response = await userService.registerUser(user);
+            
+            if (response.status === 200){
+                setIsSuccess(true);
+            }
         } catch (error) {
             console.log(error);
-            alert("No se ha podido completar la solicitud");
+
+            alert("No se pudo completar la solicitud");
         }
         props.onHide(true);
     };

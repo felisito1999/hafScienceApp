@@ -73,7 +73,7 @@ authService.isSignedIn = async () => {
     const timeout = setTimeout(() => {
         source.cancel();
         alert('Ha pasado el tiempo máximo de respuesta para la solicitud');
-    }, 5000);
+    }, 10000);
 
     const config = {
         url: `${process.env.REACT_APP_API_URL}auth/check`,

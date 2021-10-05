@@ -1,5 +1,5 @@
-import { tsTypeParameterInstantiation } from '@babel/types';
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 const Pagination = (props) => {
     const [pages, setPages] = useState([]);
@@ -119,5 +119,10 @@ const Pagination = (props) => {
         </div>
     );
 };
-
+Pagination.propTypes = {
+    actualPage: PropTypes.number.isRequired,
+    recordsTotal: PropTypes.number.isRequired,
+    pageSize: PropTypes.number.isRequired,
+    handlePageChange: PropTypes.func.isRequired
+}
 export default Pagination;
