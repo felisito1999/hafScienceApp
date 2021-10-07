@@ -18,7 +18,7 @@ import userService from '../services/usersService';
 const UsersDashboard = (props) => {
     //Variables de estado para controlar la información que viene de
     const [users, setUsers] = useState([]);
-    const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedUserId, setSelectedUserId] = useState(null);
     const [selectedPage, setSelectedPage] = useState(1);
     const [recordsTotal, setRecordsTotal] = useState(0);
     const [pageSize, setPageSize] = useState(10);
@@ -68,7 +68,7 @@ const UsersDashboard = (props) => {
 
     //Declaración de las funciones para el menejo de las variables de estado.
     const OpenUserDetailsModal = (userId) => {
-        setSelectedUser(users.find((user) => user.id === userId));
+        setSelectedUserId(userId);
         setIsUserDetailsModalShowing(true);
     };
     const closeUserDetailsModal = () => {
@@ -343,7 +343,7 @@ const UsersDashboard = (props) => {
                     <UserDetailsModal
                         show={isUserDetailsModalShowing}
                         onHide={closeUserDetailsModal}
-                        userData={selectedUser}
+                        userId={selectedUserId}
                     />
                 ) : null}
                 {isCreateModalShowing ? (
@@ -358,14 +358,14 @@ const UsersDashboard = (props) => {
                         show={isEditModalShowing}
                         onHide={closeUserDetailsModal}
                         dataupdate={getUsers}
-                        UserId={selectedUser}
+                        UserId={selectedUserId}
                     />
                 ) : null}
                 {isDeleteModalShowing ? (
                     <DeleteUserModal
                         show={isDeleteModalShowing}
                         onHide={closeDeleteUserModal}
-                        userId={selectedUser}
+                        userId={selectedUserId}
                     />
                 ) : null}
             </section>

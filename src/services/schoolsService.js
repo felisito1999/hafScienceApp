@@ -6,7 +6,7 @@ schoolsService.getAllPaginatedSchools = async (page, pageSize) => {
     const config = {
         url: `${process.env.REACT_APP_API_URL}centroseducativos`,
         method: 'get',
-        parameters: {
+        params: {
             page: page,
             pageSize: pageSize 
         },

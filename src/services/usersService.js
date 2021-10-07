@@ -79,7 +79,7 @@ userService.getById = async (id) => {
     }, 20000);
 
     const config = {
-        method: 'delete',
+        method: 'get',
         url: `${apiUrl}usuarios`,
         cancelToken: source.token,
         params: {

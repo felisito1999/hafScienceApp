@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { format } from 'date-fns';
 import es from 'date-fns/locale/es';
-import UsersDashboard from './UsersDashboard';
 import rolesService from '../services/rolesService';
 import centrosEducativosService from '../services/centrosEducativosService';
 import userService from '../services/usersService';
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
 
 const UserDetailsModal = (props) => {
-    const [user, setUser] = useState(props.userData);
+    const [user, setUser] = useState(null);
     const [roles, setRoles] = useState([]);
     const [centrosEducativos, setCentrosEducativos] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
@@ -121,6 +120,11 @@ const UserDetailsModal = (props) => {
 
     useEffect(() => {
         const getInitData = async () => {
+            const userData = await userService.getById(props.userId);
+            console.log(userData)
+            if (userData !== null){
+                setUser(userData.data);
+            }
             const initRoles = await rolesService.getAll();
 
             if (initRoles.status && initRoles.status === 200) {
@@ -136,7 +140,6 @@ const UserDetailsModal = (props) => {
                 setCentrosEducativos(initCentrosEducativos.data);
             }
         };
-        console.log(props.userData);
         getInitData();
     }, []);
     return (
@@ -335,29 +338,29 @@ const UserDetailsModal = (props) => {
                             <div className="d-flex flex-column align-items-center justify-content-center">
                                 <p className="fw-bold">Nombre Completo</p>
                                 <p>
-                                    {props.userData.nombres}{' '}
-                                    {props.userData.apellidos}
+                                    {user && user.nombres}{' '}
+                                    {user && user.apellidos}
                                 </p>
                                 <p className="fw-bold">Nombre de usuario</p>
-                                <p>{props.userData.nombreUsuario}</p>
+                                <p>{user && user.nombreUsuario}</p>
                                 <p className="fw-bold">Rol</p>
-                                <p>{props.userData.nombreRol}</p>
+                                <p>{user && user.nombreRol}</p>
                                 <p className="fw-bold">Fecha de nacimiento</p>
                                 <p>
-                                    {format(
+                                    {user && user.fechaNacimiento ? (format(
                                         Date.parse(
-                                            props.userData.fechaNacimiento
+                                            user && user.fechaNacimiento
                                         ),
                                         'PPP',
                                         { locale: es }
-                                    )}
+                                    )) : '01-01-2000'}
                                 </p>
                                 <p className="fw-bold">Número de teléfono</p>
-                                <p>{props.userData.telefono}</p>
+                                <p>{user && user.telefono}</p>
                                 <p className="fw-bold">Correo electrónico</p>
-                                <p>{props.userData.correoElectronico}</p>
+                                <p>{user && user.correoElectronico}</p>
                                 <p className="fw-bold">Centro educativo</p>
-                                <p>{props.userData.nombreCentroEducativo}</p>
+                                <p>{user && user.nombreCentroEducativo}</p>
                                 {/* Agregar la parte de la fecha de ingreso en el sistema */}
                             </div>
                         )}

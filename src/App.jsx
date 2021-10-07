@@ -5,7 +5,7 @@ import {
     Switch,
     Route,
     Redirect,
-    useHistory
+    useHistory,
 } from 'react-router-dom';
 import Home from './components/Home';
 import Login from './components/Login';
@@ -16,19 +16,20 @@ import Footer from './components/Footer';
 import TestAttempt from './components/TestAttempt';
 import UsersDashboard from './components/UsersDashboard';
 import authService from './services/authService';
+import SchoolsDashboard from './components/SchoolsDashboard';
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [navbarShowing, setNavbarShowing] = useState(false);
     const [footerShowing, setFooterShowing] = useState(false);
-    
+
     const history = useHistory();
     const host = process.env.REACT_APP_HOST_NAME;
 
     const handleLogout = () => {
         localStorage.removeItem('userData');
         localStorage.removeItem('token');
-        setLoggedIn(false)
+        setLoggedIn(false);
         setNavbarShowing(false);
         setFooterShowing(false);
     };
@@ -36,7 +37,6 @@ const App = () => {
     //Checks if the user is logged in when loading the App component.
     useEffect(() => {
         const checkIsLoggedIn = async () => {
-            
             const loginState = await authService.isSignedIn();
             if (
                 loginState.value === true &&
@@ -60,7 +60,9 @@ const App = () => {
 
     return (
         <Router>
-            {navbarShowing ? <NavigationBar handleLogout={handleLogout}/> : null}
+            {navbarShowing ? (
+                <NavigationBar handleLogout={handleLogout} />
+            ) : null}
             <main>
                 <Switch>
                     <Route exact path={`${host}`}>
@@ -83,13 +85,26 @@ const App = () => {
                     />
                     <Route path={`${host}juegos`} component={GameSelector} />
                     <Route path={`${host}admin-usuarios`}>
-                        {localStorage.getItem("token") && JSON.parse(localStorage.getItem("userData")).nombreRol === "Administrador" ? (
+                        {localStorage.getItem('token') &&
+                        JSON.parse(localStorage.getItem('userData'))
+                            .nombreRol === 'Administrador' ? (
                             <UsersDashboard />
-                        ) :
-                        (
+                        ) : (
                             <Redirect to={host} />
                         )}
                     </Route>
+                    <Route
+                        path={`${host}admin-centros`}
+                        render={(renderProps) => {
+                            if (
+                                localStorage.getItem('token') &&
+                                JSON.parse(localStorage.getItem('userData'))
+                                    .nombreRol === 'Administrador'
+                            ) {
+                                return <SchoolsDashboard {...renderProps} />;
+                            }
+                        }}
+                    />
                     <Route>
                         <ErrorPage />
                     </Route>

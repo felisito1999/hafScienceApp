@@ -97,7 +97,7 @@ const NavigationBar = (props) => {
                         {localStorage.getItem('token') != null &&
                         localStorage.getItem('userData') != null ? (
                             <>
-                                <Dropdown>
+                                <Dropdown className="nav-link">
                                     <Dropdown.Toggle
                                         className="nav-link"
                                         variant="success"
