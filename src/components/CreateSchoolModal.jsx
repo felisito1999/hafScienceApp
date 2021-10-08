@@ -1,162 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import userService from '../services/usersService';
+import schoolsService from '../services/schoolsService';
 
-const CreateUserModal = (props) => {
-    const [user, setUser] = useState({
-        nombres: '',
-        apellidos: '',
-        fechaNacimiento: '2000-01-01',
-        telefono: '',
-        correoElectronico: '',
-        nombreUsuario: '',
-        rolId: null,
-        centroEducativoId: null
+const CreateSchoolModal = (props) => {
+    const [school, setSchool] = useState({
+        nombre: '',
+        direccion: '',
     });
 
-    const [roles, setRoles] = useState([null]);
-    const [centrosEducativos, setCentrosEducativos] = useState([null])
-    const [isSuccess, setIsSuccess] = useState(false);
+    const saveSchool = async (e) => {
+        e.preventDefault(); 
 
-    const getInitRoles = async () => {
-        const config = {
-            method: 'get',
-            url: `${process.env.REACT_APP_API_URL}roles`,
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}` 
-            },
-            data: null,
-        };
         try {
-            const response = await axios(config);
-            setRoles(response.data);
-            console.log(roles);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+            const response = await schoolsService.saveSchool(school);
 
-    const getInitCentrosEducativos = async () => {
-        const config = {
-            method: 'get',
-            url: `${process.env.REACT_APP_API_URL}centroseducativos/getall`,
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}` 
-            },
-            data: null
-        };
-        try {
-            const response = await axios(config);
-            setCentrosEducativos(response.data);
-            console.log(centrosEducativos) 
-        } catch (error) {
-            // throw new Error(error)
-            console.log(error);
-        }
-    }
-
-    const handleNombresChange = (e) => {
-        setUser({
-            ...user,
-            nombres: e.target.value,
-        });
-    };
-
-    const handleApellidosChange = (e) => {
-        setUser({
-            ...user,
-            apellidos: e.target.value,
-        });
-    };
-
-    const handleFechaNacimientoChange = (e) => {
-        setUser({
-            ...user,
-            fechaNacimiento: e.target.value,
-        });
-    };
-
-    const telefonoInputMask = (telephone) => {
-        if (telephone.length >= 3) {
-        }
-    };
-
-    const handleTelefonoChange = (e) => {
-        setUser({
-            ...user,
-            telefono: e.target.value,
-        });
-    };
-
-    const handleCorreoElectronicoChange = (e) => {
-        setUser({
-            ...user,
-            correoElectronico: e.target.value,
-        });
-    };
-
-    const handleNombreUsuarioChange = (e) => {
-        setUser({
-            ...user,
-            nombreUsuario: e.target.value,
-        });
-    };
-
-    const handleRolChange = (e) => {
-        setUser({
-            ...user,
-            rolId: e.target.value,
-        });
-    };
-
-    const handleCentroEducativoChange = (e) => {
-        setUser({
-            ...user,
-            centroEducativoId: e.target.value
-        })
-    }
-
-    const handleNewUserSubmit = async (e) => {
-        e.preventDefault();
-        // const data = user;
-
-        // const config = {
-        //     method: 'post',
-        //     url: `${process.env.REACT_APP_API_URL}auth/register`,
-        //     headers: {
-        //         'Authorization' : `Bearer ${localStorage.getItem('token')}`
-        //     },
-        //     data: data,
-        // };
-
-        // try {
-        //     const response = await axios(config);
-        //     setIsSuccess(true);
-        //     alert("El usuario se ha agregado exitosamente!");
-        // } catch (error) {
-        //     console.log(error);
-        //     alert("No se ha podido completar la solicitud");
-        // }
-        try {
-            const response = await userService.registerUser(user);
-            
-            if (response.status === 200){
-                setIsSuccess(true);
+            if (response.status === 200) {
+                alert('Se ha agregado el centro educativo exitosamente')
             }
         } catch (error) {
             console.log(error);
 
-            alert("No se pudo completar la solicitud");
+            alert('No se ha podido completar la solicitud');
         }
-        props.onHide();
+    }
+
+    const handleNombreChange = (e) => {
+        e.preventDefault();
+
+        setSchool({
+            ...school,
+            nombre: e.target.value,
+        });
     };
 
-    useEffect(() => {
-        getInitRoles();
-        getInitCentrosEducativos();
-    }, []);
+    const handleDireccionChange = (e) => {
+        e.preventDefault();
 
+        setSchool({
+            ...school,
+            direccion: e.target.value,
+        });
+    };
+
+    const handleSchoolSubmit = (e) => {
+        e.preventDefault();
+
+        saveSchool(school);
+        props.onHide();
+    }
     return (
         <Modal
             show={props.show}
@@ -166,7 +57,7 @@ const CreateUserModal = (props) => {
             centered
         >
             <Modal.Header className="fw-bold text-center" closeButton>
-                Ingrese los datos del nuevo usuario
+                Ingrese los datos de la nueva escuela
             </Modal.Header>
             <Modal.Body>
                 <form
@@ -177,13 +68,13 @@ const CreateUserModal = (props) => {
                     <div className="form-group">
                         <input
                             type="text"
-                            name="nombres"
-                            id="nombres"
-                            value={user.nombres}
+                            name="nombre"
+                            id="nombre"
+                            value={school.nombres}
                             autoComplete="off"
                             minLength="2"
                             maxLength="25"
-                            onChange={handleNombresChange}
+                            onChange={handleNombreChange}
                             required
                         />
                         <label htmlFor="nombres" className="label-top">
@@ -289,23 +180,31 @@ const CreateUserModal = (props) => {
                             ))}
                         </select>
                         {/* <label htmlFor="rol" className="label">
-                            <span className="">Nombre de usuario</span>
-                        </label> */}
+                        <span className="">Nombre de usuario</span>
+                    </label> */}
                         {/* <div className="underline"></div> */}
                     </div>
                     <div className="form-group">
-                        <select name="centroEducativo" id="centroEducativo" className="form-control" onChange={handleCentroEducativoChange}>
-                            {
-                                centrosEducativos.map((centroEducativo) => (
-                                    <option key={centroEducativo && centroEducativo.id} value={centroEducativo && centroEducativo.id}>
-                                        {centroEducativo && centroEducativo.nombre}
-                                    </option>
-                                ))
-                            }
+                        <select
+                            name="centroEducativo"
+                            id="centroEducativo"
+                            className="form-control"
+                            onChange={handleCentroEducativoChange}
+                        >
+                            {centrosEducativos.map((centroEducativo) => (
+                                <option
+                                    key={centroEducativo && centroEducativo.id}
+                                    value={
+                                        centroEducativo && centroEducativo.id
+                                    }
+                                >
+                                    {centroEducativo && centroEducativo.nombre}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <div className="d-flex justify-content-between mt-5">
-                    <button
+                        <button
                             type="button"
                             className="btn btn-danger"
                             onClick={props.onHide}
@@ -324,6 +223,6 @@ const CreateUserModal = (props) => {
             </Modal.Body>
         </Modal>
     );
-}
+};
 
-export default CreateUserModal;
+export default CreateSchoolModal;

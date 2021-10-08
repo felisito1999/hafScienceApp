@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import { format } from 'date-fns';
 import es from 'date-fns/locale/es';
 import rolesService from '../services/rolesService';
-import centrosEducativosService from '../services/centrosEducativosService';
+import schoolsService from '../services/schoolsService';
 import userService from '../services/usersService';
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
 
@@ -132,7 +132,9 @@ const UserDetailsModal = (props) => {
             }
 
             const initCentrosEducativos =
-                await centrosEducativosService.getAll();
+                await schoolsService.getAll();
+                console.log(initCentrosEducativos)
+                setCentrosEducativos(initCentrosEducativos)
             if (
                 initCentrosEducativos.status &&
                 initCentrosEducativos.status === 200
