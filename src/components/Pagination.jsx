@@ -14,8 +14,6 @@ const Pagination = (props) => {
                 newPages.push(i + 1);
             }
         }
-
-        console.log(newPages.length)
         setPages(newPages);
     };
 

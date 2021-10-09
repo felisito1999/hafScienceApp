@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import CreateUserModal from './CreateUserModal';
-import EditUserModal from './EditUserModal';
-import { AiOutlineUserAdd } from 'react-icons/ai';
+import CreateSchoolModal from './CreateSchoolModal';
 import UserDetailsModal from './UserDetailsModal';
 import Pagination from './Pagination';
 import Card from 'react-bootstrap/Card';
@@ -10,6 +8,7 @@ import { FaSchool } from 'react-icons/fa';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import schoolsService from '../services/schoolsService';
+import { GrAdd } from 'react-icons/gr';
 
 const SchoolsDashboard = (props) => {
         //Variables de estado para controlar la información de los centros educativos
@@ -35,17 +34,15 @@ const SchoolsDashboard = (props) => {
 
     
         //Función para obtener los centros educativos dependiendo de los parámetros de búscqueda que se proporcionen.
-        const getSchools = async (pageNumber, pageSize) => {
+        const getSchools = async (pageNumber, pageSize, se) => {
             setIsDataLoading(true);
     
             try {
-                const response = await schoolsService.getAllPaginatedSchools(
+                const response = await schoolsService.getAllPaginatedSchoolsBy(
                     pageNumber,
                     pageSize,
+                    searchParameters
                 );
-
-                console.log(response)
-
                 setSchools(response.records);
                 setRecordsTotal(response.recordsTotal);
                 setIsDataLoading(false);
@@ -88,15 +85,14 @@ const SchoolsDashboard = (props) => {
             });
         };
     
-        const handleSchoolsearchSubmit = (e) => {
-            e.preventDefault();
+        const handleSchoolSearchSubmit = async (e) => {
+            e.preventDefault();      
             getSchools(1, pageSize);
             setSelectedPage(1);
-            console.log(searchParameters);
         };
 
         useEffect(() => {
-            getSchools(selectedPage, pageSize);
+            getSchools(selectedPage, pageSize, searchParameters);
         }, [])
     return (
         <div className="component-wrapper">
@@ -105,17 +101,17 @@ const SchoolsDashboard = (props) => {
                 <div className="d-flex justify-content-end">
                     <button
                         type="button"
-                        className="btn me-2 p-1 btn-success rounded-circle"
+                        className="btn me-2 p-1 btn-success rounded"
                         onClick={openCreateSchoolModal}
                     >
                         {/* <AgregarUsuario 
                         height={20}
                         width={20}/> */}
-                        <AiOutlineUserAdd size={32} />
+                        <GrAdd size={25} />
                     </button>
                 </div>
                 <div>
-                    <form onSubmit={handleSchoolsearchSubmit}>
+                    <form onSubmit={handleSchoolSearchSubmit}>
                         <div className="d-flex">
                             <div className="py-2 pr-2 flex-grow-1">
                                 <input
@@ -199,7 +195,7 @@ const SchoolsDashboard = (props) => {
                     />
                 ) : null}
                 {isCreateModalShowing ? (
-                    <CreateUserModal
+                    <CreateSchoolModal
                         show={isCreateModalShowing}
                         onHide={closeCreateSchoolModal}
                         dataupdate={getSchools}

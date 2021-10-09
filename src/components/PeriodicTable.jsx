@@ -17,7 +17,7 @@ const PeriodicTable = () => {
     const [appearance, setAppearance] = useState("");
     const [atomic_mass, setAtomic_mass] = useState(0);
     const [boil, setBoil] = useState(0);
-    const [category, setCategory] = useState("");
+    //const [category, setCategory] = useState("");
     const [density, setDensity] = useState(0);
     const [discovered_by, setDiscovered_by] = useState("");
     const [melt, setMelt] = useState(0);
@@ -26,7 +26,7 @@ const PeriodicTable = () => {
     let [numero, setNumero] = useState(0);
     const [period, setPeriod] = useState(0);
     const [phase, setPhase] = useState("");
-    const [source, setSource] = useState("");
+    //const [source, setSource] = useState("");
     const [summary, setSummary] = useState("");
     const [simbolo, setSimbolo] = useState("");
     const [confgElect, setConfgElect] = useState("");
@@ -45,7 +45,7 @@ const PeriodicTable = () => {
     }
 
     const handleButtonClickLArrow = (e) => {
-        if(numero == 1)
+        if(numero === 1)
         {
             numero = 118;
         }
@@ -57,7 +57,7 @@ const PeriodicTable = () => {
     }
 
     const handleButtonClickRArrow = (e) => {
-        if(numero == 118)
+        if(numero === 118)
         {
             numero = 1;
         }
@@ -78,12 +78,12 @@ const PeriodicTable = () => {
 
     const getElementData = (number) => {
         let data = loadData.find(data => data.number === number);
-        if(number == 1)
+        if(number === 1)
         {
             setPrevName(loadData.find(data => data.number === 118).name);
             setPostName(loadData.find(data => data.number === number+1).name);
         }
-        else if(number == 118){
+        else if(number === 118){
             setPrevName(loadData.find(data => data.number === number-1).name);
             setPostName(loadData.find(data => data.number === 1).name);
         }

@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import CreateUserModal from './CreateUserModal';
-import EditUserModal from './EditUserModal';
-import DeleteUserModal from './DeleteUserModal';
 import { AiOutlineUserAdd } from 'react-icons/ai';
 import UserDetailsModal from './UserDetailsModal';
 import Pagination from './Pagination';
@@ -14,6 +11,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import SelectAsync from './SelectAsync';
 import userService from '../services/usersService';
+import LoadingIcon from './LoadingIcon';
+import MissingData from './MissingData';
 
 const UsersDashboard = (props) => {
     //Variables de estado para controlar la información que viene de
@@ -40,8 +39,6 @@ const UsersDashboard = (props) => {
     const [isUserDetailsModalShowing, setIsUserDetailsModalShowing] =
         useState(false);
     const [isCreateModalShowing, setIsCreateModalShowing] = useState(false);
-    const [isEditModalShowing, setIsEditModalShowing] = useState(false);
-    const [isDeleteModalShowing, setIsDeleteModalShowing] = useState(false);
     const [isFilterCollapseOpen, setIsFilterCollapseOpen] = useState(false);
 
     //Función para obtener los usuarios dependiendo de los parámetros de búscqueda que se proporcionen.
@@ -82,23 +79,6 @@ const UsersDashboard = (props) => {
     const closeCreateUserModal = () => {
         setIsCreateModalShowing(false);
         getUsers(selectedPage, pageSize);
-    };
-
-    const openEditModalSelection = () => {
-        setIsEditModalShowing(true);
-    };
-    const closeEditUserModal = (id) => {
-        setIsEditModalShowing(false);
-        getUsers(selectedPage, pageSize);
-    };
-
-    const openDeleteUserModal = () => {
-        setIsDeleteModalShowing(true);
-        getUsers(selectedPage, pageSize);
-    };
-    const closeDeleteUserModal = () => {
-        setIsDeleteModalShowing(false);
-        getUsers(selectedPage);
     };
 
     const handlePageChange = (selectedPage) => {
@@ -144,7 +124,6 @@ const UsersDashboard = (props) => {
         e.preventDefault();
         getUsers(1, pageSize);
         setSelectedPage(1);
-        console.log(searchParameters);
     };
 
     useEffect(() => {
@@ -275,16 +254,9 @@ const UsersDashboard = (props) => {
                     </Collapse>
                 </div>
                 {isDataLoading ? (
-                    <div className="d-flex justify-content-center mt-3">
-                        <AiOutlineLoading3Quarters
-                            size={50}
-                            className="rotating-icon m-5"
-                        />
-                    </div>
+                    <LoadingIcon />
                 ) : isDataMissing ? (
-                    <div className="d-flex justify-content-center mt-3 p-2">
-                        <h3>Ha ocurrido un error, intente de nuevo</h3>
-                    </div>
+                    <MissingData />
                 ) : (
                     <>
                         <Row xs={1} md={2} className="g-2 pb-2">
@@ -316,20 +288,20 @@ const UsersDashboard = (props) => {
                                                         <span className="fw-bold">
                                                             Centro educativo:{' '}
                                                         </span>
-                                                        {user.nombreCentroEducativo}
+                                                        {
+                                                            user.nombreCentroEducativo
+                                                        }
                                                     </p>
                                                 </div>
                                             </div>
                                         </Card>
                                     </Col>
                                 ))
-                            ) : 
-                            (
+                            ) : (
                                 <div className="w-100 p-5 d-flex flex-row align-items-center justify-content-center">
                                     <h2>No se encontraron usuarios</h2>
                                 </div>
-                            )
-                            }
+                            )}
                         </Row>
                         <Pagination
                             actualPage={selectedPage}
@@ -351,21 +323,6 @@ const UsersDashboard = (props) => {
                         show={isCreateModalShowing}
                         onHide={closeCreateUserModal}
                         dataupdate={getUsers}
-                    />
-                ) : null}
-                {isEditModalShowing ? (
-                    <EditUserModal
-                        show={isEditModalShowing}
-                        onHide={closeUserDetailsModal}
-                        dataupdate={getUsers}
-                        UserId={selectedUserId}
-                    />
-                ) : null}
-                {isDeleteModalShowing ? (
-                    <DeleteUserModal
-                        show={isDeleteModalShowing}
-                        onHide={closeDeleteUserModal}
-                        userId={selectedUserId}
                     />
                 ) : null}
             </section>

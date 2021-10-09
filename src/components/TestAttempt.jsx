@@ -7,6 +7,7 @@ const TestAttempt = (props) => {
         <div className="pt-5 h-100">
             <iframe
                 key={1}
+                title="quiz"
                 className="h-100 w-100"
                 src={`${host}quiz.html`}
                 frameBorder="0"

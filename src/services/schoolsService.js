@@ -10,15 +10,15 @@ schoolsService.getAll = async () => {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         data: null,
-    }
+    };
 
     try {
         const response = await axios(config);
-        return response.data; 
+        return response.data;
     } catch (error) {
         console.log(error);
     }
-}
+};
 
 schoolsService.getAllPaginatedSchools = async (page, pageSize) => {
     const config = {
@@ -41,6 +41,35 @@ schoolsService.getAllPaginatedSchools = async (page, pageSize) => {
         console.log(error);
     }
 };
+
+schoolsService.getAllPaginatedSchoolsBy = async (
+    pageNumber,
+    pageSize,
+    searchParameters
+) => {
+    const config = {
+        method: 'get',
+        url: `${process.env.REACT_APP_API_URL}centroseducativos`,
+        params: {
+            page: pageNumber,
+            pageSize: pageSize,
+            ...searchParameters,
+        },
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        data: null,
+    };
+
+    try {
+        const response = await axios(config);
+        console.log(response.data)
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 schoolsService.loadByName = async (name) => {
     const config = {
         url: `${process.env.REACT_APP_API_URL}centroseducativos/getByName`,
@@ -66,10 +95,10 @@ schoolsService.loadByName = async (name) => {
 schoolsService.saveSchool = async (school) => {
     const config = {
         method: 'post',
-        url: `${process.env.REACT_APP_API_URL}usuarios`,
+        url: `${process.env.REACT_APP_API_URL}centroseducativos`,
         headers: {
             'Content-type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         data: school,
     };

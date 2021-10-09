@@ -1,6 +1,5 @@
 import React from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
-import {RiNumber1} from "react-icons/ri";
 import { ReactComponent as Number1 } from '../images/number-1-svgrepo-com.svg'
 import { ReactComponent as Number2 } from '../images/number-2-svgrepo-com.svg'
 import PuzzleGameDifficult from './PuzzleGameDifficult';

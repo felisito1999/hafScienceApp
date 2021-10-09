@@ -143,7 +143,7 @@ const UserDetailsModal = (props) => {
             }
         };
         getInitData();
-    }, []);
+    }, [props.userId]);
     return (
         <>
             {isDeleting ? <ConfirmDeleteModal show={isDeleting} onHide={handleCloseDelete} handleConfirmDelete={handleDeleteUser}/> :

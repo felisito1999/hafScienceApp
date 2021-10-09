@@ -1,10 +1,8 @@
 import React from 'react';
 import { FaUsers } from 'react-icons/fa';
-import { AiFillHome, AiOutlineTable } from 'react-icons/ai';
-import { IoGameController, IoAdd } from 'react-icons/io5';
+import { AiFillHome } from 'react-icons/ai';
+import { IoGameController } from 'react-icons/io5';
 import { CgNotes } from 'react-icons/cg';
-import { SiGoogleclassroom } from 'react-icons/si';
-import { RiDashboardFill } from 'react-icons/ri';
 
 const host = process.env.REACT_APP_HOST_NAME;
 

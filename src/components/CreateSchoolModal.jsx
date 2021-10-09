@@ -8,21 +8,19 @@ const CreateSchoolModal = (props) => {
         direccion: '',
     });
 
-    const saveSchool = async (e) => {
-        e.preventDefault(); 
-
+    const saveSchool = async () => {
         try {
             const response = await schoolsService.saveSchool(school);
 
             if (response.status === 200) {
-                alert('Se ha agregado el centro educativo exitosamente')
+                alert('Se ha agregado el centro educativo exitosamente');
             }
         } catch (error) {
             console.log(error);
 
             alert('No se ha podido completar la solicitud');
         }
-    }
+    };
 
     const handleNombreChange = (e) => {
         e.preventDefault();
@@ -47,7 +45,7 @@ const CreateSchoolModal = (props) => {
 
         saveSchool(school);
         props.onHide();
-    }
+    };
     return (
         <Modal
             show={props.show}
@@ -63,7 +61,7 @@ const CreateSchoolModal = (props) => {
                 <form
                     autoComplete="off"
                     className="form"
-                    onSubmit={handleNewUserSubmit}
+                    onSubmit={handleSchoolSubmit}
                 >
                     <div className="form-group">
                         <input
@@ -73,7 +71,7 @@ const CreateSchoolModal = (props) => {
                             value={school.nombres}
                             autoComplete="off"
                             minLength="2"
-                            maxLength="25"
+                            maxLength="50"
                             onChange={handleNombreChange}
                             required
                         />
@@ -82,127 +80,24 @@ const CreateSchoolModal = (props) => {
                         </label>
                         <div className="underline"></div>
                     </div>
-                    <div className="form-group">
-                        <input
+                    <div className="form-group mt-5">
+                        <label htmlFor="direccion" className="form-label mb-4">
+                            <span>Dirección</span>
+                        </label>
+                        <textarea
                             type="text"
-                            name="apellidos"
-                            id="apellidos"
+                            name="direccion"
+                            id="direccion"
+                            className="form-control"
                             autoComplete="off"
-                            minLength="2"
-                            maxLength="25"
-                            onChange={handleApellidosChange}
+                            minLength="25"
+                            maxLength="128"
+                            rows="2"
+                            onChange={handleDireccionChange}
                             required
-                        />
-                        <label htmlFor="apellidos" className="label-top">
-                            <span className="label-content">Apellidos</span>
-                        </label>
-                        <div className="underline"></div>
+                        ></textarea>
                     </div>
-                    <div className="form-group">
-                        <input
-                            type="date"
-                            name="fecha-nacimiento"
-                            id="fecha-nacimiento"
-                            value={user.fechaNacimiento}
-                            onChange={handleFechaNacimientoChange}
-                            required
-                        />
-                        <label htmlFor="fecha-nacimiento" className="">
-                            <span className="label-content">
-                                Fecha de nacimiento
-                            </span>
-                        </label>
-                        <div className="underline"></div>
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="tel"
-                            name="telefono"
-                            id="telefono"
-                            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                            value={user.telefono}
-                            onChange={handleTelefonoChange}
-                            required
-                        />
-                        <label htmlFor="telefono" className="">
-                            <span className="label-content">Telefono</span>
-                        </label>
-                        <div className="underline"></div>
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="email"
-                            name="email"
-                            id="email"
-                            minLength="6"
-                            maxLength="254"
-                            value={user.correoElectronico}
-                            onChange={handleCorreoElectronicoChange}
-                            required
-                        />
-                        <label htmlFor="email" className="">
-                            <span className="label-content">
-                                Correo electronico
-                            </span>
-                        </label>
-                        <div className="underline"></div>
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            name="username"
-                            id="username"
-                            value={user.nombreUsuario}
-                            onChange={handleNombreUsuarioChange}
-                            required
-                        />
-                        <label htmlFor="username" className="">
-                            <span className="label-content">
-                                Nombre de usuario
-                            </span>
-                        </label>
-                        <div className="underline"></div>
-                    </div>
-                    <div className="form-group">
-                        <select
-                            className="form-control"
-                            name="rol"
-                            id="rol"
-                            onChange={handleRolChange}
-                        >
-                            {roles.map((rol) => (
-                                <option
-                                    key={rol && rol.id}
-                                    value={rol && rol.id}
-                                >
-                                    {rol && rol.nombre}
-                                </option>
-                            ))}
-                        </select>
-                        {/* <label htmlFor="rol" className="label">
-                        <span className="">Nombre de usuario</span>
-                    </label> */}
-                        {/* <div className="underline"></div> */}
-                    </div>
-                    <div className="form-group">
-                        <select
-                            name="centroEducativo"
-                            id="centroEducativo"
-                            className="form-control"
-                            onChange={handleCentroEducativoChange}
-                        >
-                            {centrosEducativos.map((centroEducativo) => (
-                                <option
-                                    key={centroEducativo && centroEducativo.id}
-                                    value={
-                                        centroEducativo && centroEducativo.id
-                                    }
-                                >
-                                    {centroEducativo && centroEducativo.nombre}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+
                     <div className="d-flex justify-content-between mt-5">
                         <button
                             type="button"

@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,24 +8,25 @@
 }
 
 body {
-    background-image: url("../images/chemistry-image.jpg");
+    background-image: url('../images/chemistry-image.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: bottom;
     background-size: auto;
 }
 
-html, body, #root{
+html,
+body,
+#root {
     height: 100vh;
 }
-
 
 #root {
     display: flex;
     flex-direction: column;
 }
 
-main{
+main {
     flex: 1 1 auto;
 }
 
@@ -39,7 +40,6 @@ main{
 
 .banner-title {
     font-weight: 700;
-    
 }
 
 @keyframes icon-rotation {
@@ -55,8 +55,7 @@ main{
     animation: icon-rotation 1s infinite linear;
 }
 
-.pagination > li > button
-{
+.pagination > li > button {
     background-color: white;
     color: #212529;
 }
@@ -64,31 +63,28 @@ main{
 .pagination > li > button:focus,
 .pagination > li > button:hover,
 .pagination > li > button:focus,
-.pagination > li > button:hover
-{
+.pagination > li > button:hover {
     color: #5a5a5a;
     background-color: #eee;
     border-color: #ddd;
 }
 
-.pagination > .active > button
-{
+.pagination > .active > button {
     color: white;
-    background-color: #4DB6AC !Important;
-    border: solid 1px #4DB6AC !Important;
+    background-color: #4db6ac !important;
+    border: solid 1px #4db6ac !important;
 }
 
-.pagination > .active > button:hover
-{
-    background-color: #28A745 !Important;
-    border: solid 1px #28A745;
+.pagination > .active > button:hover {
+    background-color: #28a745 !important;
+    border: solid 1px #28a745;
 }
 
 .table > tbody > tr:hover {
     cursor: pointer;
 }
 
-.btn .btn-success button{
+.btn .btn-success button {
     background-color: black;
 }
 
@@ -100,3 +96,13 @@ main{
     display: none;
 }
 
+.form-control:focus {
+    border-width: 0.2rem !important;
+    border-color: #4db6ac !important;
+    box-shadow: 0 0 0 0.3rem rgba(40, 167, 69, 0.25) !important;
+} 
+
+/* .form-control:focus {
+    border-color: #6265e4 !important;
+    box-shadow: 0 0 5px rgba(98, 101, 228, 1) !important;
+  } */

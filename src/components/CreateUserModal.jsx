@@ -77,10 +77,10 @@ const CreateUserModal = (props) => {
         });
     };
 
-    const telefonoInputMask = (telephone) => {
-        if (telephone.length >= 3) {
-        }
-    };
+    // const telefonoInputMask = (telephone) => {
+    //     if (telephone.length >= 3) {
+    //     }
+    // };
 
     const handleTelefonoChange = (e) => {
         setUser({
@@ -119,42 +119,28 @@ const CreateUserModal = (props) => {
 
     const handleNewUserSubmit = async (e) => {
         e.preventDefault();
-        // const data = user;
-
-        // const config = {
-        //     method: 'post',
-        //     url: `${process.env.REACT_APP_API_URL}auth/register`,
-        //     headers: {
-        //         'Authorization' : `Bearer ${localStorage.getItem('token')}`
-        //     },
-        //     data: data,
-        // };
-
-        // try {
-        //     const response = await axios(config);
-        //     setIsSuccess(true);
-        //     alert("El usuario se ha agregado exitosamente!");
-        // } catch (error) {
-        //     console.log(error);
-        //     alert("No se ha podido completar la solicitud");
-        // }
         try {
             const response = await userService.registerUser(user);
             
             if (response.status === 200){
                 setIsSuccess(true);
+                console.log(isSuccess)
             }
+
+            props.onHide();
         } catch (error) {
             console.log(error);
 
             alert("No se pudo completar la solicitud");
         }
-        props.onHide();
     };
 
     useEffect(() => {
-        getInitRoles();
-        getInitCentrosEducativos();
+        const initData = async () => {
+            getInitRoles();
+            getInitCentrosEducativos();
+        }
+        initData();
     }, []);
 
     return (

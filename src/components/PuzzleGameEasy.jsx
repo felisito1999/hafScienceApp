@@ -5,7 +5,7 @@ const PuzzleGameEasy = (props) => {
     
     return (
         <div className="h-100 pt-5">
-            <iframe key={1} className=" h-100 w-100" src={`${host}puzzle-facil.html`} frameBorder="0"></iframe>
+            <iframe key={1} title="puzzle-easy" className=" h-100 w-100" src={`${host}puzzle-facil.html`} frameBorder="0"></iframe>
         </div>
     );
 }

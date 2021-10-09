@@ -1,12 +1,9 @@
 import React from 'react';
 import {
-    BrowserRouter as Router,
     Switch,
     Route,
-    Redirect,
     Link
 } from 'react-router-dom';
-import PuzzleGame from './PuzzleGameDifficult';
 import PuzzleSelector from './PuzzleSelector';
 import { ReactComponent as PuzzleIcon } from '../images/rompecabezas.svg';
 import { ReactComponent as Agrupamiento } from '../images/agrupamiento.svg';
@@ -14,7 +11,6 @@ import { ReactComponent as Agrupamiento } from '../images/agrupamiento.svg';
 const GameSelector = (props) => {
     
     const host = process.env.REACT_APP_HOST_NAME;
-    const devHost = '/'
 
     return (
         <Switch>

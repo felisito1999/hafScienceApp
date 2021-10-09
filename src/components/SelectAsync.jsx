@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import AsyncSelect from 'react-select/async';
-import axios from 'axios';
 import schoolsService from '../services/schoolsService';
 
 const SelectAsync = (props) => {
