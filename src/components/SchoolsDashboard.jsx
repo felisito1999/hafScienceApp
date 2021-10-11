@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import CreateSchoolModal from './CreateSchoolModal';
-import UserDetailsModal from './UserDetailsModal';
 import Pagination from './Pagination';
 import Card from 'react-bootstrap/Card';
 import { FaSchool } from 'react-icons/fa';
@@ -9,91 +8,96 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import schoolsService from '../services/schoolsService';
 import { GrAdd } from 'react-icons/gr';
+import SchoolDetailsModal from './SchoolDetailsModal';
 
 const SchoolsDashboard = (props) => {
-        //Variables de estado para controlar la información de los centros educativos
-        const [schools, setSchools] = useState([]);
-        const [selectedSchoolId, setSelectedSchoolId] = useState(null);
-        const [selectedPage, setSelectedPage] = useState(1);
-        const [recordsTotal, setRecordsTotal] = useState(0);
-        const [pageSize, setPageSize] = useState(10);
-    
-        //Variables de estado para manejar la muestra del estado de carga de la información
-        const [isDataLoading, setIsDataLoading] = useState(true);
-        const [isDataMissing, setIsDataMissing] = useState(false);
-    
-        //Variable de estado con un objeto que maneja los parametros de búsqueda de los centros educativos.
-        const [searchParameters, setSearchParameters] = useState({
-            name: '',
-        });
-    
-        //Variables de estado para manejar los modales de crud.
-        const [isUserDetailsModalShowing, setIsUserDetailsModalShowing] =
-            useState(false);
-        const [isCreateModalShowing, setIsCreateModalShowing] = useState(false);
+    //Variables de estado para controlar la información de los centros educativos
+    const [schools, setSchools] = useState([]);
+    const [selectedSchoolId, setSelectedSchoolId] = useState(null);
+    const [selectedPage, setSelectedPage] = useState(1);
+    const [recordsTotal, setRecordsTotal] = useState(0);
+    const [pageSize, setPageSize] = useState(10);
 
-    
-        //Función para obtener los centros educativos dependiendo de los parámetros de búscqueda que se proporcionen.
-        const getSchools = async (pageNumber, pageSize, se) => {
-            setIsDataLoading(true);
-    
-            try {
-                const response = await schoolsService.getAllPaginatedSchoolsBy(
-                    pageNumber,
-                    pageSize,
-                    searchParameters
-                );
-                setSchools(response.records);
-                setRecordsTotal(response.recordsTotal);
-                setIsDataLoading(false);
-                if (isDataMissing) {
-                    setIsDataMissing(false);
-                }
-            } catch (error) {
-                setIsDataLoading(false);
-                setIsDataMissing(true);
+    //Variables de estado para manejar la muestra del estado de carga de la información
+    const [isDataLoading, setIsDataLoading] = useState(true);
+    const [isDataMissing, setIsDataMissing] = useState(false);
+
+    //Variable de estado con un objeto que maneja los parametros de búsqueda de los centros educativos.
+    const [searchParameters, setSearchParameters] = useState({
+        name: '',
+    });
+
+    //Variables de estado para manejar los modales de crud.
+    const [isUserDetailsModalShowing, setIsUserDetailsModalShowing] =
+        useState(false);
+    const [isCreateModalShowing, setIsCreateModalShowing] = useState(false);
+
+    //Función para obtener los centros educativos dependiendo de los parámetros de búscqueda que se proporcionen.
+    const getSchools = async (pageNumber, pageSize) => {
+        setIsDataLoading(true);
+
+        try {
+            const response = await schoolsService.getAllPaginatedSchoolsBy(
+                pageNumber,
+                pageSize,
+                searchParameters
+            );
+            setSchools(response.records);
+            setRecordsTotal(response.recordsTotal);
+            setIsDataLoading(false);
+            if (isDataMissing) {
+                setIsDataMissing(false);
             }
-        };
-    
-        //Declaración de las funciones para el menejo de las variables de estado.
-        const OpenSchoolDetailsModal = (schoolId) => {
-            setSelectedSchoolId(schoolId);
-            setIsUserDetailsModalShowing(true);
-        };
-        const closeSchoolDetailsModal = () => {
-            setIsUserDetailsModalShowing(false);
-            getSchools(selectedPage, pageSize);
-        };
-    
-        const openCreateSchoolModal = () => {
-            setIsCreateModalShowing(true);
-        };
-        const closeCreateSchoolModal = () => {
-            setIsCreateModalShowing(false);
-            getSchools(selectedPage, pageSize);
-        };
-    
-        const handlePageChange = (selectedPage) => {
-            setSelectedPage(selectedPage);
-            getSchools(selectedPage, pageSize);
-        };
-    
-        const handleNameChange = (e) => {
-            setSearchParameters({
-                ...searchParameters,
-                name: e.target.value,
-            });
-        };
-    
-        const handleSchoolSearchSubmit = async (e) => {
-            e.preventDefault();      
-            getSchools(1, pageSize);
-            setSelectedPage(1);
-        };
+        } catch (error) {
+            setIsDataLoading(false);
+            setIsDataMissing(true);
+        }
+    };
 
-        useEffect(() => {
-            getSchools(selectedPage, pageSize, searchParameters);
-        }, [])
+    //Declaración de las funciones para el menejo de las variables de estado.
+    const OpenSchoolDetailsModal = (schoolId) => {
+        setSelectedSchoolId(schoolId);
+        setIsUserDetailsModalShowing(true);
+    };
+    const closeSchoolDetailsModal = () => {
+        setIsUserDetailsModalShowing(false);
+        if (selectedPage > 1) {
+            setSelectedPage(1);
+            getSchools(1, pageSize);
+        } else {
+            getSchools(selectedPage, pageSize);
+        }
+    };
+
+    const openCreateSchoolModal = () => {
+        setIsCreateModalShowing(true);
+    };
+    const closeCreateSchoolModal = () => {
+        setIsCreateModalShowing(false);
+        getSchools(selectedPage, pageSize);
+    };
+
+    const handlePageChange = (selectedPage) => {
+        setSelectedPage(selectedPage);
+        getSchools(selectedPage, pageSize);
+    };
+
+    const handleNameChange = (e) => {
+        setSearchParameters({
+            ...searchParameters,
+            name: e.target.value,
+        });
+    };
+
+    const handleSchoolSearchSubmit = async (e) => {
+        e.preventDefault();
+        getSchools(1, pageSize);
+        setSelectedPage(1);
+    };
+
+    useEffect(() => {
+        getSchools(selectedPage, pageSize, searchParameters);
+    }, []);
     return (
         <div className="component-wrapper">
             <section className="banner-bg container rounded-3 shadow py-3 my-5">
@@ -107,7 +111,7 @@ const SchoolsDashboard = (props) => {
                         {/* <AgregarUsuario 
                         height={20}
                         width={20}/> */}
-                        <GrAdd size={25} />
+                        <GrAdd size={28} />
                     </button>
                 </div>
                 <div>
@@ -149,7 +153,9 @@ const SchoolsDashboard = (props) => {
                                         <Card
                                             className="pointer-cursor bg-light h-100"
                                             onClick={(e) =>
-                                                OpenSchoolDetailsModal(school.id)
+                                                OpenSchoolDetailsModal(
+                                                    school.id
+                                                )
                                             }
                                         >
                                             <div className="p-2 d-flex flex-row">
@@ -171,13 +177,11 @@ const SchoolsDashboard = (props) => {
                                         </Card>
                                     </Col>
                                 ))
-                            ) : 
-                            (
+                            ) : (
                                 <div className="w-100 p-5 d-flex flex-row align-items-center justify-content-center">
                                     <h2>No se encontraron usuarios</h2>
                                 </div>
-                            )
-                            }
+                            )}
                         </Row>
                         <Pagination
                             actualPage={selectedPage}
@@ -188,7 +192,7 @@ const SchoolsDashboard = (props) => {
                     </>
                 )}
                 {isUserDetailsModalShowing ? (
-                    <UserDetailsModal
+                    <SchoolDetailsModal
                         show={isUserDetailsModalShowing}
                         onHide={closeSchoolDetailsModal}
                         schoolId={selectedSchoolId}
@@ -204,6 +208,6 @@ const SchoolsDashboard = (props) => {
             </section>
         </div>
     );
-}
+};
 
 export default SchoolsDashboard;

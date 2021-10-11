@@ -97,7 +97,7 @@ const UserDetailsModal = (props) => {
 
     const handleOpenDelete = () => {
         setIsDeleting(true);
-    }
+    };
 
     const handleCloseDelete = () => {
         setIsDeleting(false);
@@ -105,24 +105,23 @@ const UserDetailsModal = (props) => {
     };
 
     const handleDeleteUser = async () => {
-
-        if (isDeleting){
+        if (isDeleting) {
             const response = await userService.disableUser(user.id);
 
-            if (response.status && response.status === 200){
+            if (response.status && response.status === 'Success') {
                 props.onHide();
                 alert('Se ha deshabilitado el usuario con éxito');
             } else {
                 alert('No se ha podido deshabilitar el usuario');
             }
         }
-    }
+    };
 
     useEffect(() => {
         const getInitData = async () => {
             const userData = await userService.getById(props.userId);
-            console.log(userData)
-            if (userData !== null){
+            console.log(userData);
+            if (userData !== null) {
                 setUser(userData.data);
             }
             const initRoles = await rolesService.getAll();
@@ -131,10 +130,9 @@ const UserDetailsModal = (props) => {
                 setRoles(initRoles.data);
             }
 
-            const initCentrosEducativos =
-                await schoolsService.getAll();
-                console.log(initCentrosEducativos)
-                setCentrosEducativos(initCentrosEducativos)
+            const initCentrosEducativos = await schoolsService.getAll();
+            console.log(initCentrosEducativos);
+            setCentrosEducativos(initCentrosEducativos);
             if (
                 initCentrosEducativos.status &&
                 initCentrosEducativos.status === 200
@@ -146,9 +144,15 @@ const UserDetailsModal = (props) => {
     }, [props.userId]);
     return (
         <>
-            {isDeleting ? <ConfirmDeleteModal show={isDeleting} onHide={handleCloseDelete} handleConfirmDelete={handleDeleteUser}/> :
-            null}
-            
+            {isDeleting ? (
+                <ConfirmDeleteModal
+                    show={isDeleting}
+                    onHide={handleCloseDelete}
+                    object={'usuario'}
+                    handleConfirmDelete={handleDeleteUser}
+                />
+            ) : null}
+
             <Modal
                 show={props.show}
                 onHide={props.onHide}
@@ -349,13 +353,15 @@ const UserDetailsModal = (props) => {
                                 <p>{user && user.nombreRol}</p>
                                 <p className="fw-bold">Fecha de nacimiento</p>
                                 <p>
-                                    {user && user.fechaNacimiento ? (format(
-                                        Date.parse(
-                                            user && user.fechaNacimiento
-                                        ),
-                                        'PPP',
-                                        { locale: es }
-                                    )) : '01-01-2000'}
+                                    {user && user.fechaNacimiento
+                                        ? format(
+                                              Date.parse(
+                                                  user && user.fechaNacimiento
+                                              ),
+                                              'PPP',
+                                              { locale: es }
+                                          )
+                                        : '01-01-2000'}
                                 </p>
                                 <p className="fw-bold">Número de teléfono</p>
                                 <p>{user && user.telefono}</p>
@@ -374,10 +380,13 @@ const UserDetailsModal = (props) => {
                         >
                             cancelar
                         </button> */}
-                            <button className="btn btn-danger" onClick={(e) => {
-                                e.preventDefault();
-                                handleOpenDelete();
-                            }}>
+                            <button
+                                className="btn btn-danger"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    handleOpenDelete();
+                                }}
+                            >
                                 Deshabilitar usuario
                             </button>
                             {isEditing ? (

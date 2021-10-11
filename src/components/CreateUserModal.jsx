@@ -31,7 +31,6 @@ const CreateUserModal = (props) => {
         try {
             const response = await axios(config);
             setRoles(response.data);
-            console.log(roles);
         } catch (error) {
             console.log(error);
         }
@@ -49,9 +48,7 @@ const CreateUserModal = (props) => {
         try {
             const response = await axios(config);
             setCentrosEducativos(response.data);
-            console.log(centrosEducativos) 
         } catch (error) {
-            // throw new Error(error)
             console.log(error);
         }
     }

@@ -99,13 +99,6 @@ const UsersDashboard = (props) => {
         });
     };
 
-    // const handleUsernameChange = (e) => {
-    //     setSearchParameters({
-    //         ...searchParameters,
-    //         username: e.target.value,
-    //     });
-    // };
-
     const handleNameChange = (e) => {
         setSearchParameters({
             ...searchParameters,
@@ -137,7 +130,7 @@ const UsersDashboard = (props) => {
                 <div className="d-flex justify-content-end">
                     <button
                         type="button"
-                        className="btn me-2 p-1 btn-success rounded-circle"
+                        className="btn me-2 p-1 btn-success rounded"
                         onClick={openCreateUserModal}
                     >
                         {/* <AgregarUsuario 
@@ -166,11 +159,11 @@ const UsersDashboard = (props) => {
                                 <FilterIcon
                                     className={
                                         isFilterCollapseOpen
-                                            ? 'p-2 rounded-circle pointer-cursor bg-success'
+                                            ? 'p-2 rounded pointer-cursor bg-success'
                                             : 'p-2 pointer-cursor'
                                     }
-                                    height={40}
-                                    width={40}
+                                    height={38}
+                                    width={42}
                                     onClick={handleFilterOpen}
                                     aria-controls="user-filters-options-collapse"
                                     aria-expanded={isFilterCollapseOpen}

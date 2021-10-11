@@ -11,12 +11,14 @@ import Home from './components/Home';
 import Login from './components/Login';
 import NavigationBar from './components/NavigationBar';
 import GameSelector from './components/GameSelector';
-import ErrorPage from './components/ErrorPage';
 import Footer from './components/Footer';
 import TestAttempt from './components/TestAttempt';
 import UsersDashboard from './components/UsersDashboard';
 import authService from './services/authService';
 import SchoolsDashboard from './components/SchoolsDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
+import LoginRoute from './components/LoginRoute';
+import NotFound from './components/NotFound';
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -27,6 +29,7 @@ const App = () => {
     const host = process.env.REACT_APP_HOST_NAME;
 
     const handleLogout = () => {
+        // authService.logout();
         localStorage.removeItem('userData');
         localStorage.removeItem('token');
         setLoggedIn(false);
@@ -65,48 +68,33 @@ const App = () => {
             ) : null}
             <main>
                 <Switch>
-                    <Route exact path={`${host}`}>
-                        {loggedIn ? <Home /> : <Redirect to={`${host}login`} />}
-                    </Route>
-                    <Route path={`${host}login`}>
-                        {loggedIn ? (
-                            <Redirect to={`${host}`} />
-                        ) : (
-                            <Login
-                                setNavbarState={setNavbarShowing}
-                                setLoginState={setLoggedIn}
-                                setFooterState={setFooterShowing}
-                            />
-                        )}
-                    </Route>
-                    <Route
+                    <ProtectedRoute exact path={`${host}`} component={Home} />
+                    <LoginRoute
+                        path={`${host}login`}
+                        component={Login}
+                        isLoggedIn={loggedIn}
+                        setNavbarState={setNavbarShowing}
+                        setLoginState={setLoggedIn}
+                        setFooterState={setFooterShowing}
+                    />
+                    <ProtectedRoute
                         path={`${host}pruebas-diagnosticas`}
                         component={TestAttempt}
                     />
-                    <Route path={`${host}juegos`} component={GameSelector} />
-                    <Route path={`${host}admin-usuarios`}>
-                        {localStorage.getItem('token') &&
-                        JSON.parse(localStorage.getItem('userData'))
-                            .nombreRol === 'Administrador' ? (
-                            <UsersDashboard />
-                        ) : (
-                            <Redirect to={host} />
-                        )}
-                    </Route>
-                    <Route
+                    <ProtectedRoute
+                        path={`${host}juegos`}
+                        component={GameSelector}
+                    />
+                    <ProtectedRoute
+                        path={`${host}admin-usuarios`}
+                        component={UsersDashboard}
+                    />
+                    <ProtectedRoute
                         path={`${host}admin-centros`}
-                        render={(renderProps) => {
-                            if (
-                                localStorage.getItem('token') &&
-                                JSON.parse(localStorage.getItem('userData'))
-                                    .nombreRol === 'Administrador'
-                            ) {
-                                return <SchoolsDashboard {...renderProps} />;
-                            }
-                        }}
+                        component={SchoolsDashboard}
                     />
                     <Route>
-                        <ErrorPage />
+                        <NotFound />
                     </Route>
                 </Switch>
             </main>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactComponent as ErrorIcon } from '../images/404-error-icon.svg';
 
-const ErrorPage = () => {
+const NotFound = () => {
     return (
         <div className="component-wrapper">
             <article className="container d-flex flex-column bg-light rounded-3 shadow">
@@ -29,4 +29,4 @@ const ErrorPage = () => {
     );
 };
 
-export default ErrorPage;
+export default NotFound;

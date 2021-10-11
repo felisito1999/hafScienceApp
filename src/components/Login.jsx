@@ -31,7 +31,6 @@ const Login = (props) => {
             props.setLoginState(true);
             props.setNavbarState(true);
             props.setFooterState(true);
-            console.log(props);
         }
     };
 

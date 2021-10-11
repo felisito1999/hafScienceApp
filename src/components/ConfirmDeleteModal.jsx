@@ -9,7 +9,7 @@ const ConfirmDeleteModal = (props) => {
             show={props.show}
             onHide={props.onHide}>
                 <Modal.Body>
-                    ¿Está seguro/a de deshabilitar este usuario?
+                    {`¿Está seguro/a de deshabilitar este ${props.object}?`}
                 </Modal.Body>
                 <Modal.Footer>
                     <button className="btn btn-success" onClick={(e) => {
