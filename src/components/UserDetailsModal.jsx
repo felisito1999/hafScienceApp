@@ -126,7 +126,7 @@ const UserDetailsModal = (props) => {
             }
             const initRoles = await rolesService.getAll();
 
-            if (initRoles.status && initRoles.status === 200) {
+            if (typeof(initRoles) !== 'undefined' && initRoles.status === 200) {
                 setRoles(initRoles.data);
             }
 
@@ -134,11 +134,12 @@ const UserDetailsModal = (props) => {
             console.log(initCentrosEducativos);
             setCentrosEducativos(initCentrosEducativos);
             if (
-                initCentrosEducativos.status &&
+                typeof(initCentrosEducativos) !== 'undefined' &&
                 initCentrosEducativos.status === 200
             ) {
                 setCentrosEducativos(initCentrosEducativos.data);
             }
+            
         };
         getInitData();
     }, [props.userId]);

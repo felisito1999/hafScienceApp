@@ -7,6 +7,9 @@ import {
 import PuzzleSelector from './PuzzleSelector';
 import { ReactComponent as PuzzleIcon } from '../images/rompecabezas.svg';
 import { ReactComponent as Agrupamiento } from '../images/agrupamiento.svg';
+import { ReactComponent as Memoria } from '../images/brain-svgrepo-com.svg';
+import AssociationSelector from './AssociationSelector';
+import MemorySelector from './MemorySelector';
 
 const GameSelector = (props) => {
     
@@ -20,7 +23,7 @@ const GameSelector = (props) => {
                         <h1 className="banner-title text-center">
                             Seleccione el juego al que desea acceder
                         </h1>
-                        <div className="d-flex flex-lg-row flex-sm-column flex-column justify-content-center pt-5 container">
+                        <div className="d-flex flex-lg-row justify-content-lg-between flex-sm-column flex-column justify-content-center pt-5 container">
                             <Link
                                 to={`${host}juegos/rompecabezas`}
                                 className="pb-3 d-flex flex-row flex-md-column align-items-center justify-content-center text-dark text-decoration-none"
@@ -30,10 +33,16 @@ const GameSelector = (props) => {
                                     Rompecabezas
                                 </span>
                             </Link>
-                            <Link className="pt-3 d-flex flex-row flex-sm-row flex-md-column align-items-center justify-content-center text-dark text-decoration-none">
+                            <Link to={`${host}juegos/asociaciones`} className="pt-3 d-flex flex-row flex-sm-row flex-md-column align-items-center justify-content-center text-dark text-decoration-none">
                                 <Agrupamiento height="100" />
                                 <span className="flex-sm-grow-1 text-center flex-md-grow-0 w-100 fw-bold">
                                     Asociación
+                                </span>
+                            </Link>
+                            <Link to={`${host}juegos/memoria`} className="pt-3 d-flex flex-row flex-sm-row flex-md-column align-items-center justify-content-center text-dark text-decoration-none">
+                                <Memoria height="100" />
+                                <span className="flex-sm-grow-1 text-center flex-md-grow-0 w-100 fw-bold">
+                                    Memoria
                                 </span>
                             </Link>
                         </div>
@@ -42,6 +51,12 @@ const GameSelector = (props) => {
             </Route>
             <Route path={`${host}juegos/rompecabezas`}>
                 <PuzzleSelector />
+            </Route>
+            <Route path={`${host}juegos/asociaciones`}>
+                <AssociationSelector />
+            </Route>
+            <Route path={`${host}juegos/memoria`}>
+                <MemorySelector />
             </Route>
         </Switch>
     );

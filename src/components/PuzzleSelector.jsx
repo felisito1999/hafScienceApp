@@ -13,7 +13,7 @@ const PuzzleSelector = (props) => {
                 <div className="component-wrapper">
                     <section className="banner-bg container rounded-3 shadow py-5 my-5">
                         <h1 className="banner-title text-center">
-                            Seleccione el juego al que desea acceder
+                            Seleccione el juego de rompecabezas al que desea acceder
                         </h1>
                         <div className="d-flex flex-lg-row flex-sm-column flex-column align-items-center justify-content-center pt-5 container">
                             <Link

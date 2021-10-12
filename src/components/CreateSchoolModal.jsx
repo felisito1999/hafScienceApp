@@ -55,7 +55,7 @@ const CreateSchoolModal = (props) => {
             centered
         >
             <Modal.Header className="fw-bold text-center" closeButton>
-                Ingrese los datos de la nueva escuela
+                Ingrese los datos del nuevo centro educativo
             </Modal.Header>
             <Modal.Body>
                 <form
@@ -111,7 +111,7 @@ const CreateSchoolModal = (props) => {
                             className="btn btn-success"
                             onClick={() => {}}
                         >
-                            Agregar usuario
+                            Agregar centro educativo
                         </button>
                     </div>
                 </form>

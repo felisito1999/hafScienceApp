@@ -1,8 +1,9 @@
 import React from 'react';
-import { FaUsers } from 'react-icons/fa';
-import { AiFillHome } from 'react-icons/ai';
+import { FaUsers, FaSchool } from 'react-icons/fa';
+import { AiFillHome, AiOutlineFieldTime } from 'react-icons/ai';
 import { IoGameController } from 'react-icons/io5';
 import { CgNotes } from 'react-icons/cg';
+import { ReactComponent as ClassroomIcon } from '../images/classroom-teacher-svgrepo-com.svg';
 
 const host = process.env.REACT_APP_HOST_NAME;
 
@@ -44,14 +45,30 @@ export const NavbarData = [
         icon: <FaUsers />,
         className: 'nav-link',
         childs: null,
-        roles: ['Administrador'], 
+        roles: ['Administrador'],
     },
     {
         title: 'Centros educativos',
         path: `${host}admin-centros`,
-        icon: <FaUsers />,
+        icon: <FaSchool />,
         className: 'nav-link',
         childs: null,
         roles: ['Administrador'],
+    },
+    {
+        title: 'Sesiones',
+        path: `${host}admin-sesiones`,
+        icon: <ClassroomIcon height={20}/>,
+        className: 'nav-link',
+        childs: null,
+        roles: ['Administrador'],
+    },
+    {
+        title: 'Sesiones',
+        path: `${host}prof-sesiones`,
+        icon: <ClassroomIcon height={4}/>,
+        className: 'nav-link',
+        childs: null,
+        roles: ['Docente'],
     }
 ];

@@ -177,7 +177,7 @@ const SchoolDetailsModal = (props) => {
                                     className="btn btn-danger"
                                     onClick={handleEnableUpdate}
                                 >
-                                    Volver a visualizar información del usuario
+                                    Volver a visualizar información del centro educativo
                                 </button>
                             ) : null}
                             <button

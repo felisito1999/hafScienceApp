@@ -19,6 +19,7 @@ import SchoolsDashboard from './components/SchoolsDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoginRoute from './components/LoginRoute';
 import NotFound from './components/NotFound';
+import TeachersSessionsDashboard from './components/TeachersSessionsDashboard';
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -92,6 +93,14 @@ const App = () => {
                     <ProtectedRoute
                         path={`${host}admin-centros`}
                         component={SchoolsDashboard}
+                    />
+                    {/* <ProtectedRoute 
+                        path={`${host}admin-sesiones`}
+                        component={SessionsDashboard}
+                    /> */}
+                    <ProtectedRoute 
+                        path={`${host}prof-sesiones`}
+                        component={TeachersSessionsDashboard}
                     />
                     <Route>
                         <NotFound />

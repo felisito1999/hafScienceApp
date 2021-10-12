@@ -10,6 +10,7 @@ import PuzzleSelector from './PuzzleSelector';
 import GameSelector from './GameSelector';
 import TestAttempt from './TestAttempt';
 import Login from './Login';
+import TeachersSessionsDashboard from './TeachersSessionsDashboard';
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
     const host = process.env.REACT_APP_HOST_NAME;
@@ -21,7 +22,9 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
         SchoolsDetailsModal.name,
     ];
 
-    const teacherComponents = [];
+    const teacherComponents = [
+        TeachersSessionsDashboard.name
+    ];
 
     const studentsComponents = [
         TestAttempt.name,
