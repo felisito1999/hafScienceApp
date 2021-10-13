@@ -36,7 +36,7 @@ userService.getAllPaginatedUsersBy = async (
     pageSize,
     usersSearchParameters
 ) => {
-    const CancelToken = axios.CancelToken; 
+    const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
 
     const timeout = setTimeout(() => {
@@ -83,13 +83,13 @@ userService.getById = async (id) => {
         url: `${apiUrl}usuarios`,
         cancelToken: source.token,
         params: {
-            id: id
+            id: id,
         },
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        data: null
-    }
+        data: null,
+    };
 
     try {
         const response = await axios(config);
@@ -100,7 +100,7 @@ userService.getById = async (id) => {
         clearTimeout(timeout);
         console.log(error);
     }
-}
+};
 
 userService.registerUser = async (user) => {
     const source = axios.CancelToken.source();
@@ -146,39 +146,39 @@ userService.updateUser = async (user) => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        data: user
-    }
+        data: user,
+    };
     console.log(user);
     try {
         const response = await axios(config);
-        clearTimeout(timeout)
+        clearTimeout(timeout);
         return response;
     } catch (error) {
         clearTimeout(timeout);
         console.log(error);
     }
-}
+};
 
 userService.disableUser = async (id) => {
     const source = axios.CancelToken.source();
 
     const timeout = setTimeout(() => {
         source.cancel();
-        alert('Ha pasado el tiempo máximo de respuesta')
+        alert('Ha pasado el tiempo máximo de respuesta');
     }, 20000);
-    
+
     const config = {
         method: 'delete',
         cancelToken: source.token,
         url: `${apiUrl}usuarios`,
         params: {
-            id: id
+            id: id,
         },
         headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        data: null
-    }
+        data: null,
+    };
 
     try {
         const response = await axios(config);
@@ -189,5 +189,5 @@ userService.disableUser = async (id) => {
         console.log(error);
         clearTimeout(timeout);
     }
-}
+};
 export default userService;

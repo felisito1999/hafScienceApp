@@ -101,4 +101,34 @@ authService.isSignedIn = async () => {
     }
 };
 
+authService.getProfileInfo = async () => {
+    const CancelToken = axios.CancelToken; 
+    const source = CancelToken.source();
+
+    const timeout = setInterval(() => {
+        source.cancel();
+        alert('Ha pasado el tiempo máximo de respuesta');
+    }, 20000);
+
+    const config = {
+        cancelToken: source.token,
+        method: 'get',
+        url: `${process.env.REACT_APP_API_URL}auth/info`,
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        data: null
+    }
+
+    try {
+        const response = await axios(config);
+        clearTimeout(timeout);
+
+        return response; 
+    } catch (error) {
+        clearTimeout(timeout);
+        console.log(error);
+    }
+}
+
 export default authService;
