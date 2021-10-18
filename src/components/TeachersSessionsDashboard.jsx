@@ -11,13 +11,14 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import SelectAsync from './SelectAsync';
 import userService from '../services/usersService';
+import sessionsService from '../services/sessionsService'
 import LoadingIcon from './LoadingIcon';
 import MissingData from './MissingData';
 
 const TeachersSessionsDashboard = (props) => {
     //Variables de estado para controlar la información que viene de
-    const [users, setUsers] = useState([]);
-    const [selectedUserId, setSelectedUserId] = useState(null);
+    const [sessions, setSessions] = useState([]);
+    const [selectedSessionId, setSelectedSessionId] = useState(null);
     const [selectedPage, setSelectedPage] = useState(1);
     const [recordsTotal, setRecordsTotal] = useState(0);
     const [pageSize, setPageSize] = useState(10);
@@ -26,32 +27,28 @@ const TeachersSessionsDashboard = (props) => {
     const [isDataLoading, setIsDataLoading] = useState(true);
     const [isDataMissing, setIsDataMissing] = useState(false);
 
-    //Variable de estado con un objeto que maneja los parametros de búsqueda de los usuarios.
+    //Variable de estado con un objeto que maneja los parametros de búsqueda de las sesiones.
     const [searchParameters, setSearchParameters] = useState({
-        name: '',
-        username: '',
-        correoElectronico: '',
-        centroEducativoId: null,
-        rolId: null,
+        name: ''
     });
 
     //Variables de estado para manejar los modales de crud.
-    const [isUserDetailsModalShowing, setIsUserDetailsModalShowing] =
+    const [isSessionDetailsModalShowing, setIsUserSessionDetailsModalShowing] =
         useState(false);
     const [isCreateModalShowing, setIsCreateModalShowing] = useState(false);
     const [isFilterCollapseOpen, setIsFilterCollapseOpen] = useState(false);
 
     //Función para obtener los usuarios dependiendo de los parámetros de búscqueda que se proporcionen.
-    const getUsers = async (pageNumber, pageSize) => {
+    const getSessions = async (pageNumber, pageSize) => {
         setIsDataLoading(true);
 
         try {
-            const response = await userService.getAllPaginatedUsersBy(
+            const response = await sessionsService.getPaginatedTeacherSessionsBy(
                 pageNumber,
                 pageSize,
                 searchParameters
             );
-            setUsers(response.records);
+            setSessions(response.records);
             setRecordsTotal(response.recordsTotal);
             setIsDataLoading(false);
             if (isDataMissing) {
@@ -65,12 +62,12 @@ const TeachersSessionsDashboard = (props) => {
 
     //Declaración de las funciones para el menejo de las variables de estado.
     const OpenUserDetailsModal = (userId) => {
-        setSelectedUserId(userId);
-        setIsUserDetailsModalShowing(true);
+        setSelectedSessionId(userId);
+        setIsUserSessionDetailsModalShowing(true);
     };
     const closeUserDetailsModal = () => {
-        setIsUserDetailsModalShowing(false);
-        getUsers(selectedPage, pageSize);
+        setIsUserSessionDetailsModalShowing(false);
+        getSessions(selectedPage, pageSize);
     };
 
     const openCreateUserModal = () => {
@@ -78,12 +75,12 @@ const TeachersSessionsDashboard = (props) => {
     };
     const closeCreateUserModal = () => {
         setIsCreateModalShowing(false);
-        getUsers(selectedPage, pageSize);
+        getSessions(selectedPage, pageSize);
     };
 
     const handlePageChange = (selectedPage) => {
         setSelectedPage(selectedPage);
-        getUsers(selectedPage, pageSize);
+        getSessions(selectedPage, pageSize);
     };
 
     const handleFilterOpen = (e) => {
@@ -115,12 +112,12 @@ const TeachersSessionsDashboard = (props) => {
 
     const handleUserSearchSubmit = (e) => {
         e.preventDefault();
-        getUsers(1, pageSize);
+        getSessions(1, pageSize);
         setSelectedPage(1);
     };
 
     useEffect(() => {
-        getUsers(selectedPage, pageSize);
+        getSessions(selectedPage, pageSize);
     }, []);
 
     return (
@@ -152,96 +149,8 @@ const TeachersSessionsDashboard = (props) => {
                                     Buscar
                                 </button>
                             </div>
-                            <div className="p-2">
-                                <FilterIcon
-                                    className={
-                                        isFilterCollapseOpen
-                                            ? 'p-2 rounded pointer-cursor bg-success'
-                                            : 'p-2 pointer-cursor'
-                                    }
-                                    height={38}
-                                    width={42}
-                                    onClick={handleFilterOpen}
-                                    aria-controls="user-filters-options-collapse"
-                                    aria-expanded={isFilterCollapseOpen}
-                                />
-                            </div>
                         </div>
                     </form>
-                    <Collapse in={isFilterCollapseOpen}>
-                        <div
-                            className="p-2 mb-2 bg-light"
-                            id="user-filters-options-collapse"
-                        >
-                            <div className="d-flex flex-column flex-lg-row">
-                                <div className="p-1 d-flex flex-column align-items-start flex-sm-row align-items-sm-center ">
-                                    <div>Roles:</div>
-                                    <div className="p-1">
-                                        <input
-                                            type="radio"
-                                            className="btn-check"
-                                            name="role-options"
-                                            id="btn-radio-role-todos"
-                                            defaultChecked
-                                            autoComplete="off"
-                                            value={''}
-                                            onChange={handleRolesChange}
-                                        />
-                                        <label
-                                            className="p-1 btn btn-outline-success"
-                                            htmlFor="btn-radio-role-todos"
-                                        >
-                                            Todos
-                                        </label>
-                                    </div>
-                                    <div className="p-1">
-                                        <input
-                                            type="radio"
-                                            className="btn-check"
-                                            name="role-options"
-                                            id="btn-radio-role-docente"
-                                            autoComplete="off"
-                                            value={2}
-                                            onChange={handleRolesChange}
-                                        />
-                                        <label
-                                            className="p-1 btn btn-outline-success"
-                                            htmlFor="btn-radio-role-docente"
-                                        >
-                                            Docente
-                                        </label>
-                                    </div>
-                                    <div className="p-1">
-                                        <input
-                                            type="radio"
-                                            className="btn-check"
-                                            name="role-options"
-                                            id="btn-radio-role-estudiante"
-                                            autoComplete="off"
-                                            value={3}
-                                            onChange={handleRolesChange}
-                                        />
-                                        <label
-                                            className="p-1 btn btn-outline-success"
-                                            htmlFor="btn-radio-role-estudiante"
-                                        >
-                                            Estudiante
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="p-1 d-flex flex-fill flex-column align-items-start flex-sm-row align-items-sm-center ">
-                                    <div>Centros Educativos:</div>
-                                    <div className="ms-2 w-90 flex-fill flex-grow-1">
-                                        <SelectAsync
-                                            handleSchoolChange={
-                                                handleSchoolsChange
-                                            }
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </Collapse>
                 </div>
                 {isDataLoading ? (
                     <LoadingIcon />
@@ -250,8 +159,8 @@ const TeachersSessionsDashboard = (props) => {
                 ) : (
                     <>
                         <Row xs={1} md={2} className="g-2 pb-2">
-                            {users.length > 0 ? (
-                                users.map((user) => (
+                            {sessions.length > 0 ? (
+                                sessions.map((user) => (
                                     <Col key={user.id}>
                                         <Card
                                             className="pointer-cursor bg-light h-100"
@@ -301,18 +210,18 @@ const TeachersSessionsDashboard = (props) => {
                         />
                     </>
                 )}
-                {isUserDetailsModalShowing ? (
+                {isSessionDetailsModalShowing ? (
                     <UserDetailsModal
-                        show={isUserDetailsModalShowing}
+                        show={isSessionDetailsModalShowing}
                         onHide={closeUserDetailsModal}
-                        userId={selectedUserId}
+                        userId={selectedSessionId}
                     />
                 ) : null}
                 {isCreateModalShowing ? (
                     <CreateUserModal
                         show={isCreateModalShowing}
                         onHide={closeCreateUserModal}
-                        dataupdate={getUsers}
+                        dataupdate={getSessions}
                     />
                 ) : null}
             </section>

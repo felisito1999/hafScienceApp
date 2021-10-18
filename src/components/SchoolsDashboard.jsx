@@ -62,6 +62,7 @@ const SchoolsDashboard = (props) => {
     const closeSchoolDetailsModal = () => {
         setIsUserDetailsModalShowing(false);
         if (selectedPage > 1) {
+            console.log("klk wawawa")
             setSelectedPage(1);
             getSchools(1, pageSize);
         } else {

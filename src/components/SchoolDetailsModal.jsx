@@ -97,7 +97,7 @@ const SchoolDetailsModal = (props) => {
                     className="fw-bold d-flex justify-content-center"
                     closeButton
                 >
-                    <h5 className="text-center">Informacion del usuario</h5>
+                    <h5 className="text-center">Informacion del centro educativo</h5>
                 </Modal.Header>
                 <Modal.Body>
                     <form
