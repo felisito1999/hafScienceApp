@@ -28,7 +28,7 @@ const SchoolsDashboard = (props) => {
     });
 
     //Variables de estado para manejar los modales de crud.
-    const [isUserDetailsModalShowing, setIsUserDetailsModalShowing] =
+    const [isSchoolDetailsModalShowing, seSchoolDetailsModalShowing] =
         useState(false);
     const [isCreateModalShowing, setIsCreateModalShowing] = useState(false);
 
@@ -57,12 +57,11 @@ const SchoolsDashboard = (props) => {
     //Declaración de las funciones para el menejo de las variables de estado.
     const OpenSchoolDetailsModal = (schoolId) => {
         setSelectedSchoolId(schoolId);
-        setIsUserDetailsModalShowing(true);
+        seSchoolDetailsModalShowing(true);
     };
     const closeSchoolDetailsModal = () => {
-        setIsUserDetailsModalShowing(false);
+        seSchoolDetailsModalShowing(false);
         if (selectedPage > 1) {
-            console.log("klk wawawa")
             setSelectedPage(1);
             getSchools(1, pageSize);
         } else {
@@ -192,9 +191,9 @@ const SchoolsDashboard = (props) => {
                         />
                     </>
                 )}
-                {isUserDetailsModalShowing ? (
+                {isSchoolDetailsModalShowing ? (
                     <SchoolDetailsModal
-                        show={isUserDetailsModalShowing}
+                        show={isSchoolDetailsModalShowing}
                         onHide={closeSchoolDetailsModal}
                         schoolId={selectedSchoolId}
                     />

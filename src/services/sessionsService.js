@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { da } from 'date-fns/locale';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -48,7 +49,7 @@ sessionsService.getPaginatedTeacherSessionsBy = async (pageNumber, pageSize, sea
         params: {
             ...searchParameters
         },
-        url: `${apiUrl}sesiones/my-sessions`,
+        url: `${apiUrl}sesiones`,
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
         },
@@ -63,6 +64,38 @@ sessionsService.getPaginatedTeacherSessionsBy = async (pageNumber, pageSize, sea
     } catch (error) {
         console.log(error);
         clearTimeout(timeout);
+    }
+}
+
+sessionsService.saveSession = async (session) => {
+    
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+
+    const timeout = setInterval(() => {
+        source.cancel();
+        alert('Ha pasado el tiempo máximo de espera');
+    }, 10000);
+
+    const config = {
+        method: 'post',
+        cancelToken: source.token,
+        url: `${apiUrl}sesiones`,
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        data: session
+    }
+
+    try {
+        const response = await axios(config);
+        clearTimeout(timeout);
+
+        return response; 
+    } catch (error) {
+        clearTimeout(timeout);
+        console.log(error);
     }
 }
 

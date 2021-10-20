@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import CreateUserModal from './CreateUserModal';
+import CreateSessionModal from './CreateSessionModal';
 import { GrAdd } from 'react-icons/gr'
 import UserDetailsModal from './UserDetailsModal';
 import Pagination from './Pagination';
@@ -89,24 +89,10 @@ const TeachersSessionsDashboard = (props) => {
         setIsFilterCollapseOpen(!isFilterCollapseOpen);
     };
 
-    const handleSchoolsChange = (value) => {
-        setSearchParameters({
-            ...searchParameters,
-            centroEducativoId: value.id,
-        });
-    };
-
     const handleNameChange = (e) => {
         setSearchParameters({
             ...searchParameters,
             name: e.target.value,
-        });
-    };
-
-    const handleRolesChange = (e) => {
-        setSearchParameters({
-            ...searchParameters,
-            rolId: e.target.value === '' ? null : e.target.value,
         });
     };
 
@@ -159,7 +145,7 @@ const TeachersSessionsDashboard = (props) => {
                 ) : (
                     <>
                         <Row xs={1} md={2} className="g-2 pb-2">
-                            {sessions.length > 0 ? (
+                            {sessions && sessions.length > 0 ? (
                                 sessions.map((user) => (
                                     <Col key={user.id}>
                                         <Card
@@ -218,7 +204,7 @@ const TeachersSessionsDashboard = (props) => {
                     />
                 ) : null}
                 {isCreateModalShowing ? (
-                    <CreateUserModal
+                    <CreateSessionModal
                         show={isCreateModalShowing}
                         onHide={closeCreateUserModal}
                         dataupdate={getSessions}

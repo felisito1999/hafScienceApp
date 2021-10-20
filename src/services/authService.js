@@ -72,11 +72,15 @@ authService.isSignedIn = async () => {
     const source = CancelToken.source();
     const timeout = setTimeout(() => {
         source.cancel();
-        alert('Ha pasado el tiempo máximo de respuesta para la solicitud');
-    }, 10000);
+        return {
+            value: false, 
+            message: 'No se pudo lograr la conexión con el servidor'
+        }
+    }, 5000);
 
     const config = {
         url: `${process.env.REACT_APP_API_URL}auth/check`,
+        cancelToken: source.token,
         method: 'post',
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -85,7 +89,8 @@ authService.isSignedIn = async () => {
     };
 
     try {
-        const response = await axios(config)
+        console.log()
+        const response = await axios(config);
         clearTimeout(timeout);
         return {
             value: response.data,

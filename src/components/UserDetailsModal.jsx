@@ -374,13 +374,6 @@ const UserDetailsModal = (props) => {
                             </div>
                         )}
                         <Modal.Footer className="d-flex justify-content-evenly mt-5">
-                            {/* <button
-                            type="button"
-                            className="btn btn-danger"
-                            onClick={props.onHide}
-                        >
-                            cancelar
-                        </button> */}
                             <button
                                 className="btn btn-danger"
                                 onClick={(e) => {

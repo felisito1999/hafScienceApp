@@ -42,9 +42,9 @@ const SchoolDetailsModal = (props) => {
             console.log(response);
             if (typeof(response) !== 'undefined' && response.status === 'Success') {
                 props.onHide();
-                alert('Se ha deshabilitado el usuario con éxito');
+                alert('Se ha deshabilitado el centro educativo con éxito');
             } else {
-                alert('No se ha podido deshabilitar el usuario');
+                alert('No se ha podido deshabilitar el centro educativo');
             }
         }
     };
@@ -60,9 +60,9 @@ const SchoolDetailsModal = (props) => {
             const response = await schoolsService.updateSchool(school);
             if (typeof(response) !== 'undefined' && response.status === 'Success') {
                 props.onHide();
-                alert('Se ha modificado el usuario con éxito');
+                alert('Se ha modificado el centro educativo con éxito');
             } else {
-                alert('No se ha podido modificar el usuario');
+                alert('No se ha podido modificar el centro educativo');
             }
         }
     };

@@ -4,7 +4,6 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Redirect,
     useHistory,
 } from 'react-router-dom';
 import Home from './components/Home';
@@ -20,6 +19,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import LoginRoute from './components/LoginRoute';
 import NotFound from './components/NotFound';
 import TeachersSessionsDashboard from './components/TeachersSessionsDashboard';
+import UserProfile from './components/UserProfile';
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -42,6 +42,9 @@ const App = () => {
     useEffect(() => {
         const checkIsLoggedIn = async () => {
             const loginState = await authService.isSignedIn();
+            console.log(loginState.value === true &&
+                localStorage.getItem('token') != null &&
+                localStorage.getItem('userData') != null)
             if (
                 loginState.value === true &&
                 localStorage.getItem('token') != null &&
@@ -60,7 +63,7 @@ const App = () => {
             }
         };
         checkIsLoggedIn();
-    }, [history]);
+    }, []);
 
     return (
         <Router>
@@ -70,6 +73,10 @@ const App = () => {
             <main>
                 <Switch>
                     <ProtectedRoute exact path={`${host}`} component={Home} />
+                    <ProtectedRoute
+                        path={`${host}perfil`}
+                        component={UserProfile}
+                    />
                     <LoginRoute
                         path={`${host}login`}
                         component={Login}
@@ -98,7 +105,7 @@ const App = () => {
                         path={`${host}admin-sesiones`}
                         component={SessionsDashboard}
                     /> */}
-                    <ProtectedRoute 
+                    <ProtectedRoute
                         path={`${host}prof-sesiones`}
                         component={TeachersSessionsDashboard}
                     />
