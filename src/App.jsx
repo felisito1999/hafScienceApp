@@ -26,7 +26,6 @@ const App = () => {
     const [navbarShowing, setNavbarShowing] = useState(false);
     const [footerShowing, setFooterShowing] = useState(false);
 
-    const history = useHistory();
     const host = process.env.REACT_APP_HOST_NAME;
 
     const handleLogout = () => {
@@ -42,9 +41,6 @@ const App = () => {
     useEffect(() => {
         const checkIsLoggedIn = async () => {
             const loginState = await authService.isSignedIn();
-            console.log(loginState.value === true &&
-                localStorage.getItem('token') != null &&
-                localStorage.getItem('userData') != null)
             if (
                 loginState.value === true &&
                 localStorage.getItem('token') != null &&

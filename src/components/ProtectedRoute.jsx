@@ -49,7 +49,6 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
                             return <Redirect to={`${host}`} />;
                         }
                     } else if (teacherComponents.includes(Component.name)) {
-                        console.log('teacher')
                         if (
                             JSON.parse(localStorage.getItem('userData'))
                                 .nombreRol === 'Docente'

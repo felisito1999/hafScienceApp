@@ -271,10 +271,6 @@ const CreateUserModal = (props) => {
                                 </option>
                             ))}
                         </select>
-                        {/* <label htmlFor="rol" className="label">
-                            <span className="">Nombre de usuario</span>
-                        </label> */}
-                        {/* <div className="underline"></div> */}
                     </div>
                     <div className="form-group">
                         <select name="centroEducativo" id="centroEducativo" className="form-control" onChange={handleCentroEducativoChange}>
@@ -298,7 +294,6 @@ const CreateUserModal = (props) => {
                         <button
                             type="submit"
                             className="btn btn-success"
-                            onClick={() => {}}
                         >
                             Agregar usuario
                         </button>

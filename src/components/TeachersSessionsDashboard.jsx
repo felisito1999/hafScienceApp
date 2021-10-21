@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import CreateSessionModal from './CreateSessionModal';
-import { GrAdd } from 'react-icons/gr'
-import UserDetailsModal from './UserDetailsModal';
+import { GrAdd } from 'react-icons/gr';
 import Pagination from './Pagination';
-import Collapse from 'react-bootstrap/Collapse';
-import { ReactComponent as FilterIcon } from '../images/filtro.svg';
 import Card from 'react-bootstrap/Card';
 import { FaUser } from 'react-icons/fa';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import SelectAsync from './SelectAsync';
-import userService from '../services/usersService';
-import sessionsService from '../services/sessionsService'
+import sessionsService from '../services/sessionsService';
 import LoadingIcon from './LoadingIcon';
 import MissingData from './MissingData';
+import SessionDetailsModal from './SessionDetailsModal';
 
 const TeachersSessionsDashboard = (props) => {
     //Variables de estado para controlar la información que viene de
@@ -29,7 +25,7 @@ const TeachersSessionsDashboard = (props) => {
 
     //Variable de estado con un objeto que maneja los parametros de búsqueda de las sesiones.
     const [searchParameters, setSearchParameters] = useState({
-        name: ''
+        name: '',
     });
 
     //Variables de estado para manejar los modales de crud.
@@ -43,13 +39,15 @@ const TeachersSessionsDashboard = (props) => {
         setIsDataLoading(true);
 
         try {
-            const response = await sessionsService.getPaginatedTeacherSessionsBy(
-                pageNumber,
-                pageSize,
-                searchParameters
-            );
-            setSessions(response.records);
-            setRecordsTotal(response.recordsTotal);
+            const response =
+                await sessionsService.getPaginatedTeacherSessionsBy(
+                    pageNumber,
+                    pageSize,
+                    searchParameters
+                );
+            setSessions(response.data.records);
+            setRecordsTotal(response.data.recordsTotal);
+            
             setIsDataLoading(false);
             if (isDataMissing) {
                 setIsDataMissing(false);
@@ -61,19 +59,19 @@ const TeachersSessionsDashboard = (props) => {
     };
 
     //Declaración de las funciones para el menejo de las variables de estado.
-    const OpenUserDetailsModal = (userId) => {
+    const OpenSessionDetailsModal = (userId) => {
         setSelectedSessionId(userId);
         setIsUserSessionDetailsModalShowing(true);
     };
-    const closeUserDetailsModal = () => {
+    const closeSessionDetailsModal = () => {
         setIsUserSessionDetailsModalShowing(false);
         getSessions(selectedPage, pageSize);
     };
 
-    const openCreateUserModal = () => {
+    const openCreateSessionModal = () => {
         setIsCreateModalShowing(true);
     };
-    const closeCreateUserModal = () => {
+    const closeCreateSessionModal = () => {
         setIsCreateModalShowing(false);
         getSessions(selectedPage, pageSize);
     };
@@ -83,12 +81,6 @@ const TeachersSessionsDashboard = (props) => {
         getSessions(selectedPage, pageSize);
     };
 
-    const handleFilterOpen = (e) => {
-        e.preventDefault();
-
-        setIsFilterCollapseOpen(!isFilterCollapseOpen);
-    };
-
     const handleNameChange = (e) => {
         setSearchParameters({
             ...searchParameters,
@@ -96,7 +88,7 @@ const TeachersSessionsDashboard = (props) => {
         });
     };
 
-    const handleUserSearchSubmit = (e) => {
+    const handleSessionSearchSubmit = (e) => {
         e.preventDefault();
         getSessions(1, pageSize);
         setSelectedPage(1);
@@ -114,13 +106,13 @@ const TeachersSessionsDashboard = (props) => {
                     <button
                         type="button"
                         className="btn me-2 p-1 btn-success rounded"
-                        onClick={openCreateUserModal}
+                        onClick={openCreateSessionModal}
                     >
                         <GrAdd size={32} />
                     </button>
                 </div>
                 <div>
-                    <form onSubmit={handleUserSearchSubmit}>
+                    <form onSubmit={handleSessionSearchSubmit}>
                         <div className="d-flex">
                             <div className="py-2 pr-2 flex-grow-1">
                                 <input
@@ -151,7 +143,7 @@ const TeachersSessionsDashboard = (props) => {
                                         <Card
                                             className="pointer-cursor bg-light h-100"
                                             onClick={(e) =>
-                                                OpenUserDetailsModal(user.id)
+                                                OpenSessionDetailsModal(user.id)
                                             }
                                         >
                                             <div className="p-2 d-flex flex-row">
@@ -183,8 +175,11 @@ const TeachersSessionsDashboard = (props) => {
                                     </Col>
                                 ))
                             ) : (
-                                <div className="w-100 p-5 d-flex flex-row align-items-center justify-content-center">
-                                    <h2>No se encontraron usuarios</h2>
+                                <div className="w-100 p-5 text-center">
+                                    <h2>
+                                        No se encontraron sesiones administradas
+                                        por usted
+                                    </h2>
                                 </div>
                             )}
                         </Row>
@@ -197,22 +192,22 @@ const TeachersSessionsDashboard = (props) => {
                     </>
                 )}
                 {isSessionDetailsModalShowing ? (
-                    <UserDetailsModal
+                    <SessionDetailsModal
                         show={isSessionDetailsModalShowing}
-                        onHide={closeUserDetailsModal}
+                        onHide={closeSessionDetailsModal}
                         userId={selectedSessionId}
                     />
                 ) : null}
                 {isCreateModalShowing ? (
                     <CreateSessionModal
                         show={isCreateModalShowing}
-                        onHide={closeCreateUserModal}
+                        onHide={closeCreateSessionModal}
                         dataupdate={getSessions}
                     />
                 ) : null}
             </section>
         </div>
     );
-}
+};
 
 export default TeachersSessionsDashboard;

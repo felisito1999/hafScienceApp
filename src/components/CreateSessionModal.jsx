@@ -77,7 +77,9 @@ const CreateSessionModal = (props) => {
                             required
                         ></textarea>
                     </div>
-
+                    <div className="mt5">
+                        
+                    </div>
                     <div className="d-flex justify-content-between mt-5">
                         <button
                             type="button"
