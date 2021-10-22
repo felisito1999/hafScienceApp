@@ -11,6 +11,7 @@ import GameSelector from './GameSelector';
 import TestAttempt from './TestAttempt';
 import Login from './Login';
 import TeachersSessionsDashboard from './TeachersSessionsDashboard';
+import AddSessionsUsers from './AddSessionsUsers';
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
     const host = process.env.REACT_APP_HOST_NAME;
@@ -23,7 +24,8 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     ];
 
     const teacherComponents = [
-        TeachersSessionsDashboard.name
+        TeachersSessionsDashboard.name,
+        AddSessionsUsers.name
     ];
 
     const studentsComponents = [
@@ -38,6 +40,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
         <Route
             {...rest}
             render={(props) => {
+                console.log(rest)
                 if (localStorage.getItem('token') !== null) {
                     if (adminComponents.includes(Component.name)) {
                         if (
