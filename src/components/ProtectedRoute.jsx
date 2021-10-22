@@ -8,11 +8,10 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     const getLoginState = async () => {
         const state = await authService.isSignedIn();
 
-        console.log(state);
+        return state.value;
     };
 
     const { isLoggedIn } = getLoginState();
-    console.log(isLoggedIn);
     const host = process.env.REACT_APP_HOST_NAME;
 
     return (

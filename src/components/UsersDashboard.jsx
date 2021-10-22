@@ -9,7 +9,7 @@ import Card from 'react-bootstrap/Card';
 import { FaUser } from 'react-icons/fa';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import SelectAsync from './SelectAsync';
+import SelectAsync from './SchoolsSearchSelectAsync';
 import userService from '../services/usersService';
 import LoadingIcon from './LoadingIcon';
 import MissingData from './MissingData';
