@@ -1,48 +1,26 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import SchoolsDashboard from './SchoolsDashboard';
-import UserDetailsModal from './UserDetailsModal';
-import UsersDashboard from './UsersDashboard';
-import SchoolsDetailsModal from './SchoolDetailsModal';
-import PuzzleGameDifficult from './PuzzleGameDifficult';
-import PuzzleGameEasy from './PuzzleGameEasy';
-import PuzzleSelector from './PuzzleSelector';
-import GameSelector from './GameSelector';
-import TestAttempt from './TestAttempt';
 import Login from './Login';
-import TeachersSessionsDashboard from './TeachersSessionsDashboard';
-import AddSessionsUsers from './AddSessionsUsers';
+import authService from '../services/authService';
+import usersComponents from '../data/usersComponents';
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
+    const getLoginState = async () => {
+        const state = await authService.isSignedIn();
+
+        console.log(state);
+    };
+
+    const { isLoggedIn } = getLoginState();
+    console.log(isLoggedIn);
     const host = process.env.REACT_APP_HOST_NAME;
-
-    const adminComponents = [
-        UsersDashboard.name,
-        UserDetailsModal.name,
-        SchoolsDashboard.name,
-        SchoolsDetailsModal.name,
-    ];
-
-    const teacherComponents = [
-        TeachersSessionsDashboard.name,
-        AddSessionsUsers.name
-    ];
-
-    const studentsComponents = [
-        TestAttempt.name,
-        GameSelector.name,
-        PuzzleGameDifficult.name,
-        PuzzleGameEasy.name,
-        PuzzleSelector.name,
-    ];
 
     return (
         <Route
             {...rest}
             render={(props) => {
-                console.log(rest)
                 if (localStorage.getItem('token') !== null) {
-                    if (adminComponents.includes(Component.name)) {
+                    if (usersComponents.adminComponents.includes(Component.name)) {
                         if (
                             JSON.parse(localStorage.getItem('userData'))
                                 .nombreRol === 'Administrador'
@@ -51,7 +29,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
                         } else {
                             return <Redirect to={`${host}`} />;
                         }
-                    } else if (teacherComponents.includes(Component.name)) {
+                    } else if (usersComponents.teacherComponents.includes(Component.name)) {
                         if (
                             JSON.parse(localStorage.getItem('userData'))
                                 .nombreRol === 'Docente'
@@ -60,7 +38,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
                         } else {
                             return <Redirect to={`${host}`} />;
                         }
-                    } else if (studentsComponents.includes(Component.name)) {
+                    } else if (usersComponents.studentComponents.includes(Component.name)) {
                         if (
                             JSON.parse(localStorage.getItem('userData'))
                                 .nombreRol === 'Estudiante'
@@ -69,17 +47,16 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
                         } else {
                             return <Redirect to={`${host}`} />;
                         }
-                    }else if (Login.name === Component.name){
-                        return <Redirect to={`${host}`}/>
-                    }
-                     else {
+                    } else if (Login.name === Component.name) {
+                        return <Redirect to={`${host}`} />;
+                    } else {
                         return <Component {...props} />;
                     }
                 } else {
                     return <Redirect to={`${host}login`} />;
                 }
             }}
-        ></Route>
+        />
     );
 };
 

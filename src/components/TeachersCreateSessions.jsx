@@ -2,8 +2,8 @@ import React from 'react';
 
 const TeachersCreateSessions = (props) => {
     return (
-        <div>
-            
+        <div className="component-wrapper">
+            klk
         </div>
     );
 }

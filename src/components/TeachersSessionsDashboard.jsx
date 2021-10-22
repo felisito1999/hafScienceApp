@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import CreateSessionModal from './CreateSessionModal';
+import CreateSessionModal from './CreateSession';
 import { GrAdd } from 'react-icons/gr';
 import Pagination from './Pagination';
 import Card from 'react-bootstrap/Card';
@@ -13,6 +13,7 @@ import SessionDetailsModal from './SessionDetailsModal';
 import ProtectedRoute from './ProtectedRoute';
 import { Switch, Route, Link } from 'react-router-dom';
 import AddSessionsUsers from './AddSessionsUsers';
+import TeachersCreateSessions from './TeachersCreateSessions';
 
 const TeachersSessionsDashboard = (props) => {
     //Variables de estado para controlar la información que viene de
@@ -216,7 +217,7 @@ const TeachersSessionsDashboard = (props) => {
             </Route>
             <ProtectedRoute
                 path={`${host}prof-sesiones/agregar`}
-                component={AddSessionsUsers}
+                component={TeachersCreateSessions}
             />
         </Switch>
     );

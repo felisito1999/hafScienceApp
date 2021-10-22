@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import sessionsService from '../services/sessionsService';
 import userService from '../services/usersService';
 
-const CreateSessionModal = (props) => {
+const CreateSession = (props) => {
 
     return (
         <Modal
@@ -105,4 +105,4 @@ const CreateSessionModal = (props) => {
     );
 };
 
-export default CreateSessionModal;
+export default CreateSession;

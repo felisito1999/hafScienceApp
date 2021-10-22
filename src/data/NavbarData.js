@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaUsers, FaSchool } from 'react-icons/fa';
 import { AiFillHome, AiOutlineFieldTime } from 'react-icons/ai';
-import { IoGameController } from 'react-icons/io5';
+import { IoGameController, IoSchool } from 'react-icons/io5';
 import { CgNotes } from 'react-icons/cg';
 import { ReactComponent as ClassroomIcon } from '../images/classroom-teacher-svgrepo-com.svg';
 
@@ -58,7 +58,7 @@ export const NavbarData = [
     {
         title: 'Sesiones',
         path: `${host}admin-sesiones`,
-        icon: <ClassroomIcon height={20}/>,
+        icon: <IoSchool />,
         className: 'nav-link',
         childs: null,
         roles: ['Administrador'],
@@ -66,7 +66,7 @@ export const NavbarData = [
     {
         title: 'Sesiones',
         path: `${host}prof-sesiones`,
-        icon: <ClassroomIcon height={4}/>,
+        icon: <IoSchool height={20}/>,
         className: 'nav-link',
         childs: null,
         roles: ['Docente'],
