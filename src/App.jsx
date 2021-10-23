@@ -20,6 +20,7 @@ import LoginRoute from './components/LoginRoute';
 import NotFound from './components/NotFound';
 import TeachersSessionsDashboard from './components/TeachersSessionsDashboard';
 import UserProfile from './components/UserProfile';
+import LandingPage from './components/LandingPage';
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -68,7 +69,8 @@ const App = () => {
             ) : null}
             <main>
                 <Switch>
-                    <ProtectedRoute exact path={`${host}`} component={Home} />
+                    <Route exact path={`${host}`} component={LandingPage} />
+                    <ProtectedRoute exact path={`${host}/home`} component={Home} />
                     <ProtectedRoute
                         path={`${host}perfil`}
                         component={UserProfile}
