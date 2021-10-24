@@ -8,7 +8,7 @@
 }
 
 body {
-    background-image: url('../images/chemistry-image.jpg');
+    background-image: url('../images/simple-chemistry-image-min.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: bottom;
@@ -100,7 +100,20 @@ main {
     border-width: 0.2rem !important;
     border-color: #4db6ac !important;
     box-shadow: 0 0 0 0.3rem rgba(40, 167, 69, 0.25) !important;
-} 
+}
+
+#landing-page {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url(../images/1048954-min.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: bottom;
+    background-size: auto;
+}
+
+.page-item {
+    z-index: 0;
+}
 
 /* .form-control:focus {
     border-color: #6265e4 !important;

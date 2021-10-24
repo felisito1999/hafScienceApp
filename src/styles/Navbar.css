@@ -1,12 +1,7 @@
 .navbar {
-    background-color: #4DB6AC;
-    /* color: #05668D; */
+    background-color: #4db6ac;
 }
 
-/* .navbar-brand > span{
-    color: #fff;
+#landing-page-navbar {
+    background-color: transparent !important;
 }
-
-.navbar .nav-link {
-    color: #deedf2;
-} */
