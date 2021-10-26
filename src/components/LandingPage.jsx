@@ -8,6 +8,7 @@ import { ReactComponent as HafIcon } from '../images/tabla-periodica.svg';
 import Footer from './Footer';
 
 const LandingPage = (props) => {
+    
     const host = process.env.REACT_APP_HOST_NAME;
     return (
         <div>
@@ -63,7 +64,7 @@ const LandingPage = (props) => {
                                 to={`${host}login`}
                                 className="btn btn-outline-success text-light w-50"
                             >
-                                <h4 className="fw-bold">Inicia sesión</h4>
+                                <h4 className="fw-bold">Iniciar sesión</h4>
                             </Link>
                         </section>
                     </article>

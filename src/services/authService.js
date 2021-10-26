@@ -12,7 +12,7 @@ authService.signIn = async (username, password) => {
     const timeout = setTimeout(() => {
         source.cancel();
         console.log('Ha pasado el tiempo máximo de respuesta');
-    }, 5000);
+    }, 10000);
 
     const config = {
         method: 'post',

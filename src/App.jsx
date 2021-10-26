@@ -69,8 +69,18 @@ const App = () => {
             ) : null}
             <main>
                 <Switch>
-                    <Route exact path={`${host}`} component={LandingPage} />
-                    <ProtectedRoute exact path={`${host}/home`} component={Home} />
+                    <Route exact path={`${host}`}>
+                        {localStorage.getItem('token') != null ? (
+                            <Home />
+                        ) : (
+                            <LandingPage />
+                        )}
+                    </Route>
+                    <ProtectedRoute
+                        exact
+                        path={`${host}/home`}
+                        component={Home}
+                    />
                     <ProtectedRoute
                         path={`${host}perfil`}
                         component={UserProfile}

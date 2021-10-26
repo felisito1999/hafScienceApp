@@ -3,7 +3,7 @@ import CreateSessionModal from './CreateSession';
 import { GrAdd } from 'react-icons/gr';
 import Pagination from './Pagination';
 import Card from 'react-bootstrap/Card';
-import { FaUser } from 'react-icons/fa';
+import {IoSchool } from 'react-icons/io5';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import sessionsService from '../services/sessionsService';
@@ -11,11 +11,12 @@ import LoadingIcon from './LoadingIcon';
 import MissingData from './MissingData';
 import SessionDetailsModal from './SessionDetailsModal';
 import ProtectedRoute from './ProtectedRoute';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route, Link, useHistory } from 'react-router-dom';
 import AddSessionsUsers from './AddSessionsUsers';
 import TeachersCreateSessions from './TeachersCreateSessions';
 
 const TeachersSessionsDashboard = (props) => {
+    const history = useHistory();
     //Variables de estado para controlar la información que viene de
     const [sessions, setSessions] = useState([]);
     const [selectedSessionId, setSelectedSessionId] = useState(null);
@@ -104,6 +105,10 @@ const TeachersSessionsDashboard = (props) => {
         getSessions(selectedPage, pageSize);
     }, []);
 
+    useEffect(() => {
+        getSessions(selectedPage, pageSize);
+    }, [props.location]);
+
     return (
         <Switch>
             <Route exact path={`${host}prof-sesiones`}>
@@ -146,41 +151,31 @@ const TeachersSessionsDashboard = (props) => {
                             <>
                                 <Row xs={1} md={2} className="g-2 pb-2">
                                     {sessions && sessions.length > 0 ? (
-                                        sessions.map((user) => (
-                                            <Col key={user.id}>
+                                        sessions.map((session) => (
+                                            <Col key={session.id}>
                                                 <Card
                                                     className="pointer-cursor bg-light h-100"
                                                     onClick={(e) =>
                                                         OpenSessionDetailsModal(
-                                                            user.id
+                                                            session.id
                                                         )
                                                     }
                                                 >
                                                     <div className="p-2 d-flex flex-row">
                                                         <div className="mr-2 d-flex justify-content-center align-items-center">
-                                                            <FaUser size="50" />
+                                                        <IoSchool size={40}/>
                                                         </div>
                                                         <div className="ms-3 d-flex flex-column justify-content-start align-items-start">
                                                             <p className="fw-bold">
-                                                                {user.nombres}{' '}
-                                                                {user.apellidos}
+                                                                {session.nombre}{' '}
+                                                                {session.apellidos}
                                                             </p>
                                                             <p>
                                                                 <span className="fw-bold">
-                                                                    Nombre de
-                                                                    usuario:{' '}
+                                                                    Descripción:{' '}
                                                                 </span>
                                                                 {
-                                                                    user.nombreUsuario
-                                                                }
-                                                            </p>
-                                                            <p>
-                                                                <span className="fw-bold">
-                                                                    Centro
-                                                                    educativo:{' '}
-                                                                </span>
-                                                                {
-                                                                    user.nombreCentroEducativo
+                                                                    session.descripcion
                                                                 }
                                                             </p>
                                                         </div>
@@ -209,7 +204,7 @@ const TeachersSessionsDashboard = (props) => {
                             <SessionDetailsModal
                                 show={isSessionDetailsModalShowing}
                                 onHide={closeSessionDetailsModal}
-                                userId={selectedSessionId}
+                                sessionId={selectedSessionId}
                             />
                         ) : null}
                     </section>

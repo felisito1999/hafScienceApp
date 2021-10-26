@@ -8,7 +8,8 @@
 }
 
 body {
-    background-image: url('../images/simple-chemistry-image-min.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url(../images/1048954-min.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: bottom;

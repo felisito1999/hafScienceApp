@@ -12,7 +12,9 @@ const Home = (props) => {
                 className="container rounded-3 shadow py-5 my-5"
             >
                 <h1 id="welcome-banner-title" className="text-center m-0">
-                    Bienvenido a HAF Science
+                    Bienvenido{' '}
+                    {JSON.parse(localStorage.getItem('userData')).nombres}{' '}
+                    {JSON.parse(localStorage.getItem('userData')).apellidos}
                 </h1>
                 <div className="d-flex align-items-center justify-content-center pt-5">
                     <PeriodicTableImageV1 height="100" />

@@ -4,16 +4,16 @@ import sessionsService from '../services/sessionsService';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
 
 const SessionDetailsModal = (props) => {
-    const [school, setSchool] = useState(null);
-    const [updateSchool, setUpdateSchool] = useState(null);
+    const [session, setSession] = useState(null);
+    const [updatesession, setUpdatesession] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
 
     const handleNombreChange = (e) => {
         e.preventDefault();
 
-        setUpdateSchool({
-            ...updateSchool,
+        setUpdatesession({
+            ...updatesession,
             nombre: e.target.value,
         });
     };
@@ -21,8 +21,8 @@ const SessionDetailsModal = (props) => {
     const handleDireccionChange = (e) => {
         e.preventDefault();
 
-        setUpdateSchool({
-            ...updateSchool,
+        setUpdatesession({
+            ...updatesession,
             direccion: e.target.value,
         });
     };
@@ -36,9 +36,9 @@ const SessionDetailsModal = (props) => {
         props.onHide();
     };
 
-    const handleDeleteSchool = async () => {
+    const handleDeletesession = async () => {
         if (isDeleting) {
-            const response = await sessionsService.disableSchool(school.id);
+            const response = await sessionsService.disablesession(session.id);
             console.log(response);
             if (typeof(response) !== 'undefined' && response.status === 'Success') {
                 props.onHide();
@@ -52,12 +52,12 @@ const SessionDetailsModal = (props) => {
     const handleEnableUpdate = (e) => {
         e.preventDefault();
         setIsEditing(!isEditing);
-        setUpdateSchool(school);
+        setUpdatesession(session);
     };
 
-    const handleSchoolUpdate = async (school) => {
+    const handlesessionUpdate = async (session) => {
         if (isEditing) {
-            const response = await sessionsService.updateSchool(school);
+            const response = await sessionsService.updatesession(session);
             if (typeof(response) !== 'undefined' && response.status === 'Success') {
                 props.onHide();
                 alert('Se ha modificado el centro educativo con éxito');
@@ -69,8 +69,9 @@ const SessionDetailsModal = (props) => {
 
     useEffect(() => {
         const getInitData = async () => {
-            const schoolData = await sessionsService.getById(props.schoolId);
-            setSchool(schoolData);
+            const sessionData = await sessionsService.getById(props.sessionId);
+            console.log(sessionData.data);
+            setSession(sessionData.data);
         };
 
         getInitData();
@@ -82,7 +83,7 @@ const SessionDetailsModal = (props) => {
                     show={isDeleting}
                     onHide={handleCloseDelete}
                     object={'centro educativo'}
-                    handleConfirmDelete={handleDeleteSchool}
+                    handleConfirmDelete={handleDeletesession}
                 />
             ) : null}
 
@@ -103,7 +104,7 @@ const SessionDetailsModal = (props) => {
                     <form
                         autoComplete="off"
                         className="form"
-                        onSubmit={handleSchoolUpdate}
+                        onSubmit={handlesessionUpdate}
                     >
                         {isEditing ? (
                             <>
@@ -112,7 +113,7 @@ const SessionDetailsModal = (props) => {
                                         type="text"
                                         name="nombre"
                                         id="nombre"
-                                        value={updateSchool.nombre}
+                                        value={updatesession.nombre}
                                         autoComplete="off"
                                         minLength="2"
                                         maxLength="50"
@@ -140,7 +141,7 @@ const SessionDetailsModal = (props) => {
                                         type="text"
                                         name="direccion"
                                         id="direccion"
-                                        value={updateSchool.direccion}
+                                        value={updatesession.direccion}
                                         className="form-control"
                                         autoComplete="off"
                                         minLength="25"
@@ -154,11 +155,11 @@ const SessionDetailsModal = (props) => {
                         ) : (
                             <div className="d-flex flex-column align-items-center justify-content-center">
                                 <p className="fw-bold">Nombre</p>
-                                <p>{school && school.nombre}</p>
-                                <p className="fw-bold">Dirección</p>
-                                <p>{school && school.direccion}</p>
-                                <p className="fw-bold">Estado del centro educativo</p>
-                                <p>{school && school.nombreEstado}</p>
+                                <p>{session && session.nombre}</p>
+                                <p className="fw-bold">Decripción</p>
+                                <p>{session && session.descripcion}</p>
+                                <p className="fw-bold">Centro Educativo</p>
+                                <p>{session && session.nombreCentroEducativo}</p>
                                 {/* Agregar la parte de la fecha de ingreso en el sistema */}
                             </div>
                         )}
@@ -186,7 +187,7 @@ const SessionDetailsModal = (props) => {
                                 onClick={(e) => {
                                     if (isEditing) {
                                         e.preventDefault();
-                                        handleSchoolUpdate(updateSchool);
+                                        handlesessionUpdate(updatesession);
                                     } else {
                                         handleEnableUpdate(e);
                                     }
