@@ -70,7 +70,6 @@ const SessionDetailsModal = (props) => {
     useEffect(() => {
         const getInitData = async () => {
             const sessionData = await sessionsService.getById(props.sessionId);
-            console.log(sessionData.data);
             setSession(sessionData.data);
         };
 
@@ -98,7 +97,7 @@ const SessionDetailsModal = (props) => {
                     className="fw-bold d-flex justify-content-center"
                     closeButton
                 >
-                    <h5 className="text-center">Informacion del centro educativo</h5>
+                    <h5 className="text-center">Información de la sesión</h5>
                 </Modal.Header>
                 <Modal.Body>
                     <form
@@ -171,14 +170,14 @@ const SessionDetailsModal = (props) => {
                                     handleOpenDelete();
                                 }}
                             >
-                                Deshabilitar centro educativo
+                                Deshabilitar Sesión
                             </button>
                             {isEditing ? (
                                 <button
                                     className="btn btn-danger"
                                     onClick={handleEnableUpdate}
                                 >
-                                    Volver a visualizar información del centro educativo
+                                    Volver a visualizar información de la sesión
                                 </button>
                             ) : null}
                             <button
@@ -193,7 +192,7 @@ const SessionDetailsModal = (props) => {
                                     }
                                 }}
                             >
-                                Modificar centro educativo
+                                Modificar sesión
                             </button>
                         </Modal.Footer>
                     </form>

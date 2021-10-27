@@ -3,6 +3,8 @@ import { useHistory, Redirect } from 'react-router-dom';
 import sessionsService from '../services/sessionsService';
 import userService from '../services/usersService';
 import Pagination from './Pagination';
+import { AiFillCheckCircle } from 'react-icons/ai';
+import { BiCircle } from 'react-icons/bi';
 
 const TeachersCreateSessions = (props) => {
     const history = useHistory();
@@ -16,7 +18,6 @@ const TeachersCreateSessions = (props) => {
     });
 
     const [addUsers, setAddUsers] = useState([]);
-    const [previewUsuariosSesiones, setPreviewUsuariosSesiones] = useState([]);
 
     const [searchParameters, setSearchParameters] = useState({
         name: '',
@@ -32,35 +33,29 @@ const TeachersCreateSessions = (props) => {
             pageSize,
             searchParameters
         );
-        if (typeof(response.recordsTotal !== 'undefined')){
+        if (typeof (response.recordsTotal !== 'undefined')) {
             setRecordsTotal(response.recordsTotal);
             setAddUsers(response.records);
         }
     };
 
-    const checkIsUserInArray = (id) => {
-        const result = session.usuariosSesiones.find(x => x.id === id);
-        
-        if (typeof(result) === 'undefined')
-        {
-            return false; 
-        }
-
-        return true;
-    }
-
     const handleStudents = (user) => {
-        console.log(user)
-
-        if (checkIsUserInArray(user.id)){
+        if (checkIfUsuariosSesionesContains(user.id)) {
             handleStudentsRemove(user);
-            console.log(true);
-        }
-        else{
+        } else {
             handleStudentsAdd(user);
         }
-        
-    }
+    };
+
+    const checkIfUsuariosSesionesContains = (studentId) => {
+        console.log(studentId);
+        for (let i = 0; i < session.usuariosSesiones.length; i++) {
+            if (session.usuariosSesiones[i].id === studentId) {
+                return true;
+            }
+        }
+        return false;
+    };
 
     const handleStudentsAdd = (student) => {
         const newEstudiantes = session.usuariosSesiones;
@@ -80,9 +75,11 @@ const TeachersCreateSessions = (props) => {
 
         setSession({
             ...session,
-            usuariosSesiones: session.usuariosSesiones.filter((value, index, array) => {
-                return value.id !== student.id;
-            }),
+            usuariosSesiones: session.usuariosSesiones.filter(
+                (value, index, array) => {
+                    return value.id !== student.id;
+                }
+            ),
         });
     };
 
@@ -121,47 +118,39 @@ const TeachersCreateSessions = (props) => {
     const handleSessionSubmit = async (e) => {
         e.preventDefault();
         let newSessionStudents = [];
-        
-        session.usuariosSesiones.forEach(item => {
+
+        session.usuariosSesiones.forEach((item) => {
             const newStudent = {
                 usuarioId: item.id,
                 sessionId: 0,
                 nombreUsuario: item.nombres + ' ' + item.apellidos,
-                nombreSesion: ''
-            }
+                nombreSesion: '',
+            };
 
             newSessionStudents.push(newStudent);
         });
 
-
-
         const sessionModel = {
             nombre: session.nombre,
             descripcion: session.descripcion,
-            usuariosSesiones: newSessionStudents
+            usuariosSesiones: newSessionStudents,
         };
 
-        console.log(sessionModel)
-
         const result = await sessionsService.saveSession(sessionModel);
-        
-        console.log(result)
-        if (typeof(result) !== 'undefined'){
-            console.log('Ta bueno')
-            if (result.status === 200){
+
+        if (typeof result !== 'undefined') {
+            console.log('Ta bueno');
+            if (result.status === 200) {
                 history.push(`${host}prof-sesiones`);
+            } else {
+                alert('Ha sucedido un error');
             }
-            else{
-                alert('Ha sucedido un error')
-            }
-        }else {
+        } else {
             alert('Ha sucedido un error');
         }
-        
     };
 
     useEffect(() => {
-        console.log(props);
         getUsers(usersSelectedPage, usersPageSize, searchParameters);
     }, []);
 
@@ -169,9 +158,7 @@ const TeachersCreateSessions = (props) => {
         <div className="component-wrapper">
             <div className="container banner-bg rounded-3 shadow py-3 my-5">
                 <h1 className="banner-title text-center">Agregar sesiones</h1>
-                <div
-                    className="row justify-content-center"
-                >
+                <div className="row justify-content-center">
                     <section className="p-4 m-1 rounded bg-light col-12 col-md-5">
                         <h6 className="text-center fw-bold">Detalles</h6>
                         <div autoComplete="off" className="form">
@@ -234,7 +221,10 @@ const TeachersCreateSessions = (props) => {
                                     />
                                 </div>
                                 <div className="p-2">
-                                    <button type="submit" className="btn btn-success">
+                                    <button
+                                        type="submit"
+                                        className="btn btn-success"
+                                    >
                                         Buscar
                                     </button>
                                 </div>
@@ -251,13 +241,30 @@ const TeachersCreateSessions = (props) => {
                             <tbody>
                                 {addUsers &&
                                     addUsers.map((user) => (
-                                        <tr key={user.id} onClick={ (e) => {
-                                            e.preventDefault();
-                                            handleStudents(user)   
-                                        }}>
-                                            <td></td>
+                                        <tr
+                                            key={user.id}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleStudents(user);
+                                            }}
+                                        >
+                                            {checkIfUsuariosSesionesContains(
+                                                user.id
+                                            ) ? (
+                                                <td className="text-success">
+                                                    <AiFillCheckCircle
+                                                        size={25}
+                                                    />
+                                                </td>
+                                            ) : (
+                                                <td>
+                                                    <BiCircle size={25} />
+                                                </td>
+                                            )}
                                             <td>{user.id}</td>
-                                            <td>{user.nombres}{' '}{user.apellidos}</td>
+                                            <td>
+                                                {user.nombres} {user.apellidos}
+                                            </td>
                                         </tr>
                                     ))}
                             </tbody>
@@ -272,8 +279,11 @@ const TeachersCreateSessions = (props) => {
                             className="text-dark opacity-100"
                             style={{ height: '2px' }}
                         />
+                        <h4 className="text-center">
+                            Se agregarán los siguientes estudiantes a la sesión:
+                        </h4>
                         <table className="table">
-                        <thead>
+                            <thead>
                                 <tr>
                                     <th></th>
                                     <th>Código</th>
@@ -283,13 +293,18 @@ const TeachersCreateSessions = (props) => {
                             <tbody>
                                 {session &&
                                     session.usuariosSesiones.map((user) => (
-                                        <tr key={user.id} onClick={ (e) => {
-                                            e.preventDefault();
-                                            handleStudents(user)   
-                                        }}>
+                                        <tr
+                                            key={user.id}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleStudents(user);
+                                            }}
+                                        >
                                             <td></td>
                                             <td>{user.id}</td>
-                                            <td>{user.nombres}{' '}{user.apellidos}</td>
+                                            <td>
+                                                {user.nombres} {user.apellidos}
+                                            </td>
                                         </tr>
                                     ))}
                             </tbody>

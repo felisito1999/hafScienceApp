@@ -4,6 +4,7 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
+    Redirect,
     useHistory,
 } from 'react-router-dom';
 import Home from './components/Home';
@@ -70,7 +71,7 @@ const App = () => {
             <main>
                 <Switch>
                     <Route exact path={`${host}`}>
-                        {localStorage.getItem('token') != null ? (
+                        {loggedIn ? (
                             <Home />
                         ) : (
                             <LandingPage />
@@ -79,10 +80,12 @@ const App = () => {
                     <ProtectedRoute
                         exact
                         path={`${host}/home`}
+                        isLoggedIn={loggedIn}
                         component={Home}
                     />
                     <ProtectedRoute
                         path={`${host}perfil`}
+                        isLoggedIn={loggedIn}
                         component={UserProfile}
                     />
                     <LoginRoute
@@ -95,18 +98,22 @@ const App = () => {
                     />
                     <ProtectedRoute
                         path={`${host}pruebas-diagnosticas`}
+                        isLoggedIn={loggedIn}
                         component={TestAttempt}
                     />
                     <ProtectedRoute
                         path={`${host}juegos`}
+                        isLoggedIn={loggedIn}
                         component={GameSelector}
                     />
                     <ProtectedRoute
                         path={`${host}admin-usuarios`}
+                        isLoggedIn={loggedIn}
                         component={UsersDashboard}
                     />
                     <ProtectedRoute
                         path={`${host}admin-centros`}
+                        isLoggedIn={loggedIn}
                         component={SchoolsDashboard}
                     />
                     {/* <ProtectedRoute 
@@ -115,6 +122,7 @@ const App = () => {
                     /> */}
                     <ProtectedRoute
                         path={`${host}prof-sesiones`}
+                        isLoggedIn={loggedIn}
                         component={TeachersSessionsDashboard}
                     />
                     <Route>

@@ -52,6 +52,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
                         return <Component {...props} />;
                     }
                 } else {
+                    window.location.reload(false);
                     return <Redirect to={`${host}login`} />;
                 }
             }}
