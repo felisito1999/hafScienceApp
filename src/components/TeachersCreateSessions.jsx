@@ -123,7 +123,7 @@ const TeachersCreateSessions = (props) => {
             const newStudent = {
                 usuarioId: item.id,
                 sessionId: 0,
-                nombreUsuario: item.nombres + ' ' + item.apellidos,
+                nombreUsuario: item.nombreUsuario,
                 nombreSesion: '',
             };
 

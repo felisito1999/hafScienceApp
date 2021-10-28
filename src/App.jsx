@@ -1,11 +1,11 @@
 import './styles/App.css';
 import React, { useState, useEffect } from 'react';
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Redirect,
-    useHistory,
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+  useHistory,
 } from 'react-router-dom';
 import Home from './components/Home';
 import Login from './components/Login';
@@ -24,115 +24,109 @@ import UserProfile from './components/UserProfile';
 import LandingPage from './components/LandingPage';
 
 const App = () => {
-    const [loggedIn, setLoggedIn] = useState(false);
-    const [navbarShowing, setNavbarShowing] = useState(false);
-    const [footerShowing, setFooterShowing] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [navbarShowing, setNavbarShowing] = useState(false);
+  const [footerShowing, setFooterShowing] = useState(false);
 
-    const host = process.env.REACT_APP_HOST_NAME;
+  const host = process.env.REACT_APP_HOST_NAME;
 
-    const handleLogout = () => {
-        // authService.logout();
+  const handleLogout = () => {
+    // authService.logout();
+    localStorage.removeItem('userData');
+    localStorage.removeItem('token');
+    setLoggedIn(false);
+    setNavbarShowing(false);
+    setFooterShowing(false);
+  };
+
+  //Checks if the user is logged in when loading the App component.
+  useEffect(() => {
+    const checkIsLoggedIn = async () => {
+      const loginState = await authService.isSignedIn();
+      if (
+        loginState.value === true &&
+        localStorage.getItem('token') != null &&
+        localStorage.getItem('userData') != null
+      ) {
+        setLoggedIn(true);
+        setNavbarShowing(true);
+        setFooterShowing(true);
+      } else {
         localStorage.removeItem('userData');
         localStorage.removeItem('token');
+
         setLoggedIn(false);
         setNavbarShowing(false);
         setFooterShowing(false);
+      }
     };
+    checkIsLoggedIn();
+  }, []);
 
-    //Checks if the user is logged in when loading the App component.
-    useEffect(() => {
-        const checkIsLoggedIn = async () => {
-            const loginState = await authService.isSignedIn();
-            if (
-                loginState.value === true &&
-                localStorage.getItem('token') != null &&
-                localStorage.getItem('userData') != null
-            ) {
-                setLoggedIn(true);
-                setNavbarShowing(true);
-                setFooterShowing(true);
-            } else {
-                localStorage.removeItem('userData');
-                localStorage.removeItem('token');
-
-                setLoggedIn(false);
-                setNavbarShowing(false);
-                setFooterShowing(false);
-            }
-        };
-        checkIsLoggedIn();
-    }, []);
-
-    return (
-        <Router>
-            {navbarShowing ? (
-                <NavigationBar handleLogout={handleLogout} />
-            ) : null}
-            <main>
-                <Switch>
-                    <Route exact path={`${host}`}>
-                        {loggedIn ? (
-                            <Home />
-                        ) : (
-                            <LandingPage />
-                        )}
-                    </Route>
-                    <ProtectedRoute
-                        exact
-                        path={`${host}/home`}
-                        isLoggedIn={loggedIn}
-                        component={Home}
-                    />
-                    <ProtectedRoute
-                        path={`${host}perfil`}
-                        isLoggedIn={loggedIn}
-                        component={UserProfile}
-                    />
-                    <LoginRoute
-                        path={`${host}login`}
-                        component={Login}
-                        isLoggedIn={loggedIn}
-                        setNavbarState={setNavbarShowing}
-                        setLoginState={setLoggedIn}
-                        setFooterState={setFooterShowing}
-                    />
-                    <ProtectedRoute
-                        path={`${host}pruebas-diagnosticas`}
-                        isLoggedIn={loggedIn}
-                        component={TestAttempt}
-                    />
-                    <ProtectedRoute
-                        path={`${host}juegos`}
-                        isLoggedIn={loggedIn}
-                        component={GameSelector}
-                    />
-                    <ProtectedRoute
-                        path={`${host}admin-usuarios`}
-                        isLoggedIn={loggedIn}
-                        component={UsersDashboard}
-                    />
-                    <ProtectedRoute
-                        path={`${host}admin-centros`}
-                        isLoggedIn={loggedIn}
-                        component={SchoolsDashboard}
-                    />
-                    {/* <ProtectedRoute 
+  return (
+    <Router>
+      {navbarShowing ? <NavigationBar handleLogout={handleLogout} /> : null}
+      <main>
+        <Switch>
+          <Route exact path={`${host}`}>
+            {loggedIn ? <Home /> : <LandingPage />}
+          </Route>
+          <ProtectedRoute
+            exact
+            path={`${host}/home`}
+            isLoggedIn={loggedIn}
+            component={Home}
+          />
+          <ProtectedRoute
+            path={`${host}perfil`}
+            isLoggedIn={loggedIn}
+            component={UserProfile}
+          />
+          <LoginRoute
+            path={`${host}login`}
+            component={Login}
+            isLoggedIn={loggedIn}
+            setNavbarState={setNavbarShowing}
+            setLoginState={setLoggedIn}
+            setFooterState={setFooterShowing}
+          />
+          <ProtectedRoute
+            path={`${host}pruebas-diagnosticas`}
+            isLoggedIn={loggedIn}
+            component={TestAttempt}
+          />
+          <ProtectedRoute
+            path={`${host}juegos`}
+            isLoggedIn={loggedIn}
+            component={GameSelector}
+          />
+          <ProtectedRoute
+            path={`${host}admin-usuarios`}
+            isLoggedIn={loggedIn}
+            component={UsersDashboard}
+          />
+          <ProtectedRoute
+            path={`${host}admin-centros`}
+            isLoggedIn={loggedIn}
+            component={SchoolsDashboard}
+          />
+          {/* <ProtectedRoute 
                         path={`${host}admin-sesiones`}
                         component={SessionsDashboard}
                     /> */}
-                    <ProtectedRoute
-                        path={`${host}prof-sesiones`}
-                        isLoggedIn={loggedIn}
-                        component={TeachersSessionsDashboard}
-                    />
-                    <Route>
-                        <NotFound />
-                    </Route>
-                </Switch>
-            </main>
-            {footerShowing ? <Footer /> : null}
-        </Router>
-    );
+          <ProtectedRoute
+            path={`${host}prof-sesiones`}
+            isLoggedIn={loggedIn}
+            component={TeachersSessionsDashboard}
+          />
+          <Route>
+            <NotFound />
+          </Route>
+        </Switch>
+      </main>
+      {footerShowing ? <Footer /> : null}
+    </Router>
+  );
 };
 
 export default App;
