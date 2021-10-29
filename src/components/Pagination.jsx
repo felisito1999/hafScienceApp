@@ -2,125 +2,120 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const Pagination = (props) => {
-    const [pages, setPages] = useState([]);
-    const [actualPage, setActualPage] = useState(1);
+  const [pages, setPages] = useState([]);
+  const [actualPage, setActualPage] = useState(1);
 
-    const setPagesItems = (totalCount, pageSize) => {
-        const newPages = [];
-        const pageCount = Math.ceil(totalCount / pageSize);
+  const setPagesItems = (totalCount, pageSize) => {
+    const newPages = [];
+    const pageCount = Math.ceil(totalCount / pageSize);
 
-        if (pages.length !== pageCount) {
-            for (let i = 0; i < pageCount; i++) {
-                newPages.push(i + 1);
+    if (pages.length !== pageCount) {
+      for (let i = 0; i < pageCount; i++) {
+        newPages.push(i + 1);
+      }
+    }
+    setPages(newPages);
+  };
+
+  useEffect(() => {
+    setActualPage(props.actualPage);
+  }, [props.actualPage]);
+
+  useEffect(() => {
+    setPagesItems(props.recordsTotal, props.pageSize);
+  }, [props.recordsTotal, props.pageSize]);
+
+  return (
+    <div className="d-flex justify-content-center align-items-center">
+      <nav aria-label="users-dashboard-pagination">
+        <ul className="pagination">
+          {actualPage === 1 || pages.length === 0 ? (
+            <li className="page-item disabled">
+              <button className="page-link">Anterior</button>
+            </li>
+          ) : (
+            <li className="page-item">
+              <button
+                className="page-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  props.handlePageChange(actualPage - 1);
+                }}
+              >
+                Anterior
+              </button>
+            </li>
+          )}
+          {pages.map((pageItem) => {
+            if (
+              pageItem >= 1 &&
+              pageItem < actualPage &&
+              actualPage - pageItem <= 2
+            ) {
+              return (
+                <li key={pageItem} className="page-item">
+                  <button
+                    className="page-link"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      props.handlePageChange(pageItem);
+                    }}
+                  >
+                    {pageItem}
+                  </button>
+                </li>
+              );
             }
-        }
-        setPages(newPages);
-    };
-
-    useEffect(() => {
-        setActualPage(props.actualPage);
-    }, [props.actualPage]);
-
-    useEffect(() => {
-        setPagesItems(props.recordsTotal, props.pageSize)
-    },[props.recordsTotal, props.pageSize])
-
-    return (
-        <div className="d-flex justify-content-center align-items-center">
-            <nav aria-label="users-dashboard-pagination">
-                <ul className="pagination">
-                    {actualPage === 1 || pages.length === 0 ? (
-                        <li className="page-item disabled">
-                            <button className="page-link">Anterior</button>
-                        </li>
-                    ) : (
-                        <li className="page-item">
-                            <button
-                                className="page-link"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    props.handlePageChange(actualPage - 1);
-                                }}
-                            >
-                                Anterior
-                            </button>
-                        </li>
-                    )}
-                    {pages.map((pageItem) => {
-                        if (
-                            pageItem >= 1 &&
-                            pageItem < actualPage &&
-                            actualPage - pageItem <= 2
-                        ) {
-                            return (
-                                <li key={pageItem} className="page-item">
-                                    <button
-                                        className="page-link"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            props.handlePageChange(pageItem);
-                                        }}
-                                    >
-                                        {pageItem}
-                                    </button>
-                                </li>
-                            );
-                        }
-                        if (pageItem === actualPage) {
-                            return (
-                                <li key={pageItem} className="page-item active">
-                                    <button className="page-link">
-                                        {pageItem}
-                                    </button>
-                                </li>
-                            );
-                        }
-                        if (
-                            pageItem > actualPage &&
-                            actualPage - pageItem >= -2
-                        ) {
-                            return (
-                                <li key={pageItem} className="page-item">
-                                    <button
-                                        className="page-link"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            props.handlePageChange(pageItem);
-                                        }}
-                                    >
-                                        {pageItem}
-                                    </button>
-                                </li>
-                            );
-                        }
-                        return null;
-                    })}
-                    {actualPage >= pages.length ? (
-                        <li className="page-item disabled">
-                            <button className="page-link">Siguiente</button>
-                        </li>
-                    ) : (
-                        <li className="page-item">
-                            <button
-                                className="page-link"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    props.handlePageChange(actualPage + 1);
-                                }}
-                            >
-                                Siguiente
-                            </button>
-                        </li>
-                    )}
-                </ul>
-            </nav>
-        </div>
-    );
+            if (pageItem === actualPage) {
+              return (
+                <li key={pageItem} className="page-item active">
+                  <button className="page-link">{pageItem}</button>
+                </li>
+              );
+            }
+            if (pageItem > actualPage && actualPage - pageItem >= -2) {
+              return (
+                <li key={pageItem} className="page-item">
+                  <button
+                    className="page-link"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      props.handlePageChange(pageItem);
+                    }}
+                  >
+                    {pageItem}
+                  </button>
+                </li>
+              );
+            }
+            return null;
+          })}
+          {actualPage >= pages.length ? (
+            <li className="page-item disabled">
+              <button className="page-link">Siguiente</button>
+            </li>
+          ) : (
+            <li className="page-item">
+              <button
+                className="page-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  props.handlePageChange(actualPage + 1);
+                }}
+              >
+                Siguiente
+              </button>
+            </li>
+          )}
+        </ul>
+      </nav>
+    </div>
+  );
 };
 Pagination.propTypes = {
-    actualPage: PropTypes.number.isRequired,
-    recordsTotal: PropTypes.number.isRequired,
-    pageSize: PropTypes.number.isRequired,
-    handlePageChange: PropTypes.func.isRequired
-}
+  actualPage: PropTypes.number.isRequired,
+  recordsTotal: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
+  handlePageChange: PropTypes.func.isRequired,
+};
 export default Pagination;

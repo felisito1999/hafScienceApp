@@ -127,7 +127,7 @@ const TeachersSessionsDashboard = (props) => {
                         <Card
                           className="pointer-cursor bg-light h-100"
                           onClick={(e) => {
-                            history.push(`${host}prof-sesiones/${session.id}`)
+                            history.push(`${host}prof-sesiones/${session.id}`);
                           }}
                         >
                           <div className="p-2 d-flex flex-row">

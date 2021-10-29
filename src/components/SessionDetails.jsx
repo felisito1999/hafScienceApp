@@ -9,8 +9,7 @@ import Pagination from './Pagination';
 import userService from '../services/usersService';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card'
-
+import Card from 'react-bootstrap/Card';
 
 const SessionDetails = (props) => {
   const { sessionId } = useParams();
@@ -118,7 +117,12 @@ const SessionDetails = (props) => {
           />
         ) : null}
         <div className="fw-bold d-flex justify-content-center">
-          <h1 className="fw-bold text-center"><span><IoSchool /></span>{' '}{session && session.nombre}</h1>
+          <h1 className="fw-bold text-center">
+            <span>
+              <IoSchool />
+            </span>{' '}
+            {session && session.nombre}
+          </h1>
         </div>
         <form
           autoComplete="off"
@@ -175,40 +179,42 @@ const SessionDetails = (props) => {
               <h5 className="fw-bold">Actividades:</h5>
               <h5 className="fw-bold">Participantes:</h5>
               <Row xs={1} className="g-2 pb-2">
-                  {users && users.length > 0 ? (
-                    users.map((user) => (
-                      <Col key={user.id}>
-                        <Card
-                          className="pointer-cursor bg-light h-100"
-                          onClick={(e) => {
-                            //history.push(`${host}prof-sesiones/${session.id}`)
-                          }}
-                        >
-                          <div className="p-2 d-flex flex-row">
-                            <div className="mr-2 d-flex justify-content-center align-items-center">
-                              <FaUser size={40} />
-                            </div>
-                            <div className="ms-3 d-flex flex-column justify-content-start align-items-start">
-                              <p className="fw-bold">
-                                Matrícula: <span className="fw-lighter">{user.id}</span>
-                              </p>
-                              <p>
-                                {user.nombres}{' '}{user.apellidos} 
-                              </p>
-                            </div>
+                {users && users.length > 0 ? (
+                  users.map((user) => (
+                    <Col key={user.id}>
+                      <Card
+                        className="pointer-cursor bg-light h-100"
+                        onClick={(e) => {
+                          //history.push(`${host}prof-sesiones/${session.id}`)
+                        }}
+                      >
+                        <div className="p-2 d-flex flex-row">
+                          <div className="mr-2 d-flex justify-content-center align-items-center">
+                            <FaUser size={40} />
                           </div>
-                        </Card>
-                      </Col>
-                    ))
-                  ) : (
-                    <div className="w-100 p-5 text-center">
-                      <h2>
-                        No se encontraron sesiones administradas por usted
-                      </h2>
-                    </div>
-                  )}
-                </Row>
-              <p className="fw-bold">Cantidad total de estudiantes: <span className="fw-bolder">{usersRecordsTotal}</span></p>
+                          <div className="ms-3 d-flex flex-column justify-content-start align-items-start">
+                            <p className="fw-bold">
+                              Matrícula:{' '}
+                              <span className="fw-lighter">{user.id}</span>
+                            </p>
+                            <p>
+                              {user.nombres} {user.apellidos}
+                            </p>
+                          </div>
+                        </div>
+                      </Card>
+                    </Col>
+                  ))
+                ) : (
+                  <div className="w-100 p-5 text-center">
+                    <h2>No se encontraron sesiones administradas por usted</h2>
+                  </div>
+                )}
+              </Row>
+              <p className="fw-bold">
+                Cantidad total de estudiantes:{' '}
+                <span className="fw-bolder">{usersRecordsTotal}</span>
+              </p>
               <Pagination
                 actualPage={usersSelectedPage}
                 recordsTotal={usersRecordsTotal}
