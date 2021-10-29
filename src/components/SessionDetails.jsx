@@ -21,13 +21,13 @@ const SessionDetails = (props) => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const [users, setUsers] = useState([]);
-  const [usersSelectedPage, setSelectedPage] = useState(1);
+  const [usersSelectedPage, setUsersSelectedPage] = useState(1);
   const [usersPageSize, setUsersPageSize] = useState(3);
   const [usersRecordsTotal, setUsersRecordsTotal] = useState(0);
 
   const handlePageChange = (selectedPage) => {
-    setSelectedPage(selectedPage);
-    getSessionUsers(selectedPage, usersPageSize, props.sessionId);
+    setUsersSelectedPage(selectedPage);
+    getSessionUsers(selectedPage, usersPageSize, sessionId);
   };
 
   const getSessionUsers = async (selectedPage, pageSize, sessionId) => {
@@ -104,7 +104,6 @@ const SessionDetails = (props) => {
       setSession(sessionData.data);
       getSessionUsers(usersSelectedPage, usersPageSize, sessionId);
     };
-
     getInitData();
   }, []);
   return (
@@ -173,6 +172,7 @@ const SessionDetails = (props) => {
                 <p>{session && session.nombreCentroEducativo}</p>
                 {/* Agregar la parte de la fecha de ingreso en el sistema */}
               </div>
+              <h5 className="fw-bold">Actividades:</h5>
               <h5 className="fw-bold">Participantes:</h5>
               <Row xs={1} className="g-2 pb-2">
                   {users && users.length > 0 ? (

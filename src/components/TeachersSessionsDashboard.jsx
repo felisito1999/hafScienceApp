@@ -15,10 +15,11 @@ import { Switch, Route, Link, useHistory } from 'react-router-dom';
 import TeachersCreateSessions from './TeachersCreateSessions';
 
 const TeachersSessionsDashboard = (props) => {
+  const host = process.env.REACT_APP_HOST_NAME;
   const history = useHistory();
+
   //Variables de estado para controlar la información que viene de
   const [sessions, setSessions] = useState([]);
-  const [selectedSessionId, setSelectedSessionId] = useState(null);
   const [selectedPage, setSelectedPage] = useState(1);
   const [recordsTotal, setRecordsTotal] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -31,14 +32,6 @@ const TeachersSessionsDashboard = (props) => {
   const [searchParameters, setSearchParameters] = useState({
     name: '',
   });
-
-  //Variables de estado para manejar los modales de crud.
-  const [isSessionDetailsModalShowing, setIsUserSessionDetailsModalShowing] =
-    useState(false);
-  const [isCreateModalShowing, setIsCreateModalShowing] = useState(false);
-  const [isFilterCollapseOpen, setIsFilterCollapseOpen] = useState(false);
-
-  const host = process.env.REACT_APP_HOST_NAME;
 
   //Función para obtener los usuarios dependiendo de los parámetros de búscqueda que se proporcionen.
   const getSessions = async (pageNumber, pageSize) => {
@@ -64,23 +57,6 @@ const TeachersSessionsDashboard = (props) => {
   };
 
   //Declaración de las funciones para el menejo de las variables de estado.
-  const OpenSessionDetailsModal = (userId) => {
-    setSelectedSessionId(userId);
-    setIsUserSessionDetailsModalShowing(true);
-  };
-  const closeSessionDetailsModal = () => {
-    setIsUserSessionDetailsModalShowing(false);
-    getSessions(selectedPage, pageSize);
-  };
-
-  const openCreateSessionModal = () => {
-    setIsCreateModalShowing(true);
-  };
-  const closeCreateSessionModal = () => {
-    setIsCreateModalShowing(false);
-    getSessions(selectedPage, pageSize);
-  };
-
   const handlePageChange = (selectedPage) => {
     setSelectedPage(selectedPage);
     getSessions(selectedPage, pageSize);
@@ -117,7 +93,6 @@ const TeachersSessionsDashboard = (props) => {
               <Link
                 to={`${host}prof-sesiones/agregar`}
                 className="btn me-2 p-1 btn-success rounded"
-                onClick={openCreateSessionModal}
               >
                 <GrAdd size={32} />
               </Link>
