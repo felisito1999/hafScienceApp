@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import CreateSessionModal from './CreateSession';
+import { Switch, Route, Link, useHistory } from 'react-router-dom';
 import { GrAdd } from 'react-icons/gr';
-import Pagination from './Pagination';
-import Card from 'react-bootstrap/Card';
+import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import { IoSchool } from 'react-icons/io5';
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import Card from 'react-bootstrap/Card';
+import Dropdown from 'react-bootstrap/Dropdown';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Pagination from './Pagination';
 import sessionsService from '../services/sessionsService';
 import LoadingIcon from './LoadingIcon';
 import MissingData from './MissingData';
 import SessionDetails from './SessionDetails';
 import ProtectedRoute from './ProtectedRoute';
-import { Switch, Route, Link, useHistory } from 'react-router-dom';
 import TeachersCreateSessions from './TeachersCreateSessions';
 
 const TeachersSessionsDashboard = (props) => {
@@ -60,6 +62,10 @@ const TeachersSessionsDashboard = (props) => {
   const handlePageChange = (selectedPage) => {
     setSelectedPage(selectedPage);
     getSessions(selectedPage, pageSize);
+  };
+
+  const goToSessionDetail = (sessionId) => {
+    history.push(`${host}prof-sesiones/${sessionId}`);
   };
 
   const handleNameChange = (e) => {
@@ -124,17 +130,24 @@ const TeachersSessionsDashboard = (props) => {
                   {sessions && sessions.length > 0 ? (
                     sessions.map((session) => (
                       <Col key={session.id}>
-                        <Card
-                          className="pointer-cursor bg-light h-100"
-                          onClick={(e) => {
-                            history.push(`${host}prof-sesiones/${session.id}`);
-                          }}
-                        >
+                        <Card className="bg-light h-100">
                           <div className="p-2 d-flex flex-row">
-                            <div className="mr-2 d-flex justify-content-center align-items-center">
+                            <div
+                              className="pointer-cursor mr-2 d-flex justify-content-center align-items-center"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                goToSessionDetail(session.id);
+                              }}
+                            >
                               <IoSchool size={40} />
                             </div>
-                            <div className="ms-3 d-flex flex-column justify-content-start align-items-start">
+                            <div
+                              className="pointer-cursor ms-3 d-flex flex-column justify-content-start align-items-start"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                goToSessionDetail(session.id);
+                              }}
+                            >
                               <p className="fw-bold">
                                 {session.nombre} {session.apellidos}
                               </p>
@@ -142,6 +155,38 @@ const TeachersSessionsDashboard = (props) => {
                                 <span className="fw-bold">Descripción: </span>
                                 {session.descripcion}
                               </p>
+                            </div>
+                            <div>
+                              <Dropdown className="bg-light">
+                                <Dropdown.Toggle
+                                  className="bg-light border-0 text-dark"
+                                  id="session-options-dropdown"
+                                  variant="light"
+                                >
+                                  <BsThreeDotsVertical size={25} />{' '}
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu className="bg-light">
+                                  <Dropdown.Item className="py-3">
+                                    <Link
+                                      to={`${host}perfil`}
+                                      className="text-dark text-decoration-none"
+                                    >
+                                      <AiFillEdit size={20}/>{' '}
+                                      <span>Actualizar</span>
+                                    </Link>
+                                  </Dropdown.Item>
+                                  <Dropdown.Item className="py-3">
+                                    <Link
+                                      to={`${host}prof-sesiones/actualizar/${session.id}`}
+                                      className="text-dark text-decoration-none"
+                                    >
+                                      <AiFillDelete size={20} />{' '}
+                                      <span>Eliminar</span>
+                                    </Link>
+                                  </Dropdown.Item>
+                                </Dropdown.Menu>
+                              </Dropdown>
                             </div>
                           </div>
                         </Card>
@@ -173,6 +218,10 @@ const TeachersSessionsDashboard = (props) => {
       />
       <ProtectedRoute
         path={`${host}prof-sesiones/:sessionId`}
+        component={SessionDetails}
+      />
+      <ProtectedRoute
+        path={`${host}prof-sesiones/actualizar/:sessionId`}
         component={SessionDetails}
       />
     </Switch>

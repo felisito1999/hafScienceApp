@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
+import Nav from 'react-bootstrap/Nav';
 import { IoSchool } from 'react-icons/io5';
 import { FaUser } from 'react-icons/fa';
 import sessionsService from '../services/sessionsService';
@@ -10,6 +11,7 @@ import userService from '../services/usersService';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+import Tab from 'react-bootstrap/Tab';
 
 const SessionDetails = (props) => {
   const { sessionId } = useParams();
@@ -169,16 +171,49 @@ const SessionDetails = (props) => {
             </>
           ) : (
             <>
-              <div className="py-5 d-flex flex-column align-items-center">
-                <p className="fw-bold">Descripción</p>
-                <p>{session && session.descripcion}</p>
-                <p className="fw-bold">Centro Educativo</p>
-                <p>{session && session.nombreCentroEducativo}</p>
-                {/* Agregar la parte de la fecha de ingreso en el sistema */}
-              </div>
-              <h5 className="fw-bold">Actividades:</h5>
-              <h5 className="fw-bold">Participantes:</h5>
-              <Row xs={1} className="g-2 pb-2">
+              <div className="d-flex justify-content-center">
+                <div className="w-100">
+                  <Tab.Container
+                    id="session-dashboard-tabs"
+                    defaultActiveKey="informacion"
+                  >
+                    <Nav justify className="pt-5 pb-3 justify-content-center" variant="pills">
+                      <Nav.Item className="tab-pills">
+                        <Nav.Link className="tab-pills-children" eventKey="informacion">Información</Nav.Link>
+                      </Nav.Item>
+                      <Nav.Item className="tab-pills">
+                        <Nav.Link className="tab-pills-children" eventKey="pruebas">Pruebas</Nav.Link>
+                      </Nav.Item>
+                      <Nav.Item className="tab-pills">
+                        <Nav.Link className="tab-pills-children"eventKey="participantes">
+                          Participantes
+                        </Nav.Link>
+                      </Nav.Item >
+                      <Nav.Item className="tab-pills">
+                        <Nav.Link className="tab-pills-children" eventKey="actividad">Actividad</Nav.Link>
+                      </Nav.Item>
+                    </Nav>
+                    <Tab.Content>
+                      <Tab.Pane eventKey="informacion">
+                        <div className="py-5 d-flex flex-column align-items-center">
+                          <p className="fw-bold">Descripción</p>
+                          <p>{session && session.descripcion}</p>
+                          <p className="fw-bold">Centro Educativo</p>
+                          <p>{session && session.nombreCentroEducativo}</p>
+                          {/* Agregar la parte de la fecha de ingreso en el sistema */}
+                        </div>
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="pruebas">
+                        <div className="py-5 d-flex flex-column align-items-center">
+                          <p className="fw-bold">Descripción</p>
+                          <p>{session && session.descripcion}</p>
+                          <p className="fw-bold">Centro Educativo</p>
+                          <p>{session && session.nombreCentroEducativo}</p>
+                          {/* Agregar la parte de la fecha de ingreso en el sistema */}
+                        </div>
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="participantes">
+                      <Row xs={1} className="g-2 pb-2">
                 {users && users.length > 0 ? (
                   users.map((user) => (
                     <Col key={user.id}>
@@ -221,6 +256,20 @@ const SessionDetails = (props) => {
                 pageSize={usersPageSize}
                 handlePageChange={handlePageChange}
               />
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="actividad">
+                        <div className="py-5 d-flex flex-column align-items-center">
+                          <p className="fw-bold">Descripción</p>
+                          <p>{session && session.descripcion}</p>
+                          <p className="fw-bold">Centro Educativo</p>
+                          <p>{session && session.nombreCentroEducativo}</p>
+                          {/* Agregar la parte de la fecha de ingreso en el sistema */}
+                        </div>
+                      </Tab.Pane>
+                    </Tab.Content>
+                  </Tab.Container>
+                </div>
+              </div>
             </>
           )}
           <button

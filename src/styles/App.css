@@ -97,6 +97,10 @@ main {
     display: none;
 }
 
+#session-options-dropdown::after {
+    display: none;
+}
+
 .form-control:focus {
     border-width: 0.2rem !important;
     border-color: #4db6ac !important;
@@ -114,6 +118,14 @@ main {
 
 .page-item {
     z-index: 0;
+}
+
+.tab-pills > .tab-pills-children {
+    color: #212529 !important;
+}
+
+.tab-pills > .tab-pills-children.active {
+    background-color: #4DB6AC !important;
 }
 
 /* .form-control:focus {
