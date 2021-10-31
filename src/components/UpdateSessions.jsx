@@ -8,6 +8,15 @@ const UpdateSessions = (props) => {
   const history = useHistory();
   const { id } = useParams();
 
+  const [availableUsers, setAvailableUsers] = useState([]);
+  const [searchParameters, setSearchParameters] = useState({
+    name: ''
+  });
+  const [usersPageSize, setUsersPageSize] = useState(3);
+  const [usersSelectedPage, setUsersSelectedPage] = useState(1);
+  const [recordsTotal, setRecordsTotal] = useState(0);
+
+
 
   const [session, setSession] = useState({
     nombre: '',
@@ -23,7 +32,7 @@ const UpdateSessions = (props) => {
     );
     if (typeof (response.recordsTotal !== 'undefined')) {
       setRecordsTotal(response.recordsTotal);
-      setAddUsers(response.records);
+      setAvailableUsers(response.records);
     }
   };
 
