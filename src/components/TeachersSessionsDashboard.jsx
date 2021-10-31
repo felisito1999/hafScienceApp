@@ -15,6 +15,7 @@ import MissingData from './MissingData';
 import SessionDetails from './SessionDetails';
 import ProtectedRoute from './ProtectedRoute';
 import TeachersCreateSessions from './TeachersCreateSessions';
+import UpdateSessions from './UpdateSessions';
 
 const TeachersSessionsDashboard = (props) => {
   const host = process.env.REACT_APP_HOST_NAME;
@@ -142,7 +143,7 @@ const TeachersSessionsDashboard = (props) => {
                               <IoSchool size={40} />
                             </div>
                             <div
-                              className="pointer-cursor ms-3 d-flex flex-column justify-content-start align-items-start"
+                              className="pointer-cursor ms-3 d-flex flex-column flex-grow-1 justify-content-start align-items-start"
                               onClick={(e) => {
                                 e.preventDefault();
                                 goToSessionDetail(session.id);
@@ -182,7 +183,7 @@ const TeachersSessionsDashboard = (props) => {
                                       className="text-dark text-decoration-none"
                                     >
                                       <AiFillDelete size={20} />{' '}
-                                      <span>Eliminar</span>
+                                      <span>Deshabilitar</span>
                                     </Link>
                                   </Dropdown.Item>
                                 </Dropdown.Menu>
@@ -222,7 +223,7 @@ const TeachersSessionsDashboard = (props) => {
       />
       <ProtectedRoute
         path={`${host}prof-sesiones/actualizar/:sessionId`}
-        component={SessionDetails}
+        component={UpdateSessions}
       />
     </Switch>
   );

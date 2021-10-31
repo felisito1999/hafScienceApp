@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Nav from 'react-bootstrap/Nav';
+import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 import { IoSchool } from 'react-icons/io5';
 import { FaUser } from 'react-icons/fa';
 import sessionsService from '../services/sessionsService';
@@ -12,8 +14,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Tab from 'react-bootstrap/Tab';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 const SessionDetails = (props) => {
+  const host = process.env.REACT_APP_HOST_NAME;
   const { sessionId } = useParams();
 
   const [session, setSession] = useState(null);
@@ -68,7 +72,7 @@ const SessionDetails = (props) => {
     props.onHide();
   };
 
-  const handleDeletesession = async () => {
+  const handleDeleteSession = async () => {
     if (isDeleting) {
       const response = await sessionsService.disablesession(session.id);
       console.log(response);
@@ -87,7 +91,7 @@ const SessionDetails = (props) => {
     setUpdatesession(session);
   };
 
-  const handlesessionUpdate = async (session) => {
+  const handleSessionUpdate = async (session) => {
     if (isEditing) {
       const response = await sessionsService.updatesession(session);
       if (typeof response !== 'undefined' && response.status === 'Success') {
@@ -115,9 +119,38 @@ const SessionDetails = (props) => {
             show={isDeleting}
             onHide={handleCloseDelete}
             object={'centro educativo'}
-            handleConfirmDelete={handleDeletesession}
+            handleConfirmDelete={handleDeleteSession}
           />
         ) : null}
+        <div className="d-flex justify-content-end">
+          <Dropdown>
+            <Dropdown.Toggle
+              className="border-0 text-dark"
+              id="session-details-options-dropdown"
+            >
+              <BsThreeDotsVertical size={25} />{' '}
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu className="bg-light">
+              <Dropdown.Item className="py-3">
+                <Link
+                  to={`${host}perfil`}
+                  className="text-dark text-decoration-none"
+                >
+                  <AiFillEdit size={20} /> <span>Actualizar</span>
+                </Link>
+              </Dropdown.Item>
+              <Dropdown.Item className="py-3">
+                <Link
+                  to={`${host}prof-sesiones/actualizar/${sessionId}`}
+                  className="text-dark text-decoration-none"
+                >
+                  <AiFillDelete size={20} /> <span>Deshabilitar</span>
+                </Link>
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
         <div className="fw-bold d-flex justify-content-center">
           <h1 className="fw-bold text-center">
             <span>
@@ -129,7 +162,7 @@ const SessionDetails = (props) => {
         <form
           autoComplete="off"
           className="form"
-          onSubmit={handlesessionUpdate}
+          onSubmit={handleSessionUpdate}
         >
           {isEditing ? (
             <>
@@ -177,20 +210,42 @@ const SessionDetails = (props) => {
                     id="session-dashboard-tabs"
                     defaultActiveKey="informacion"
                   >
-                    <Nav justify className="pt-5 pb-3 justify-content-center" variant="pills">
+                    <Nav
+                      justify
+                      className="pt-5 pb-3 justify-content-center"
+                      variant="pills"
+                    >
                       <Nav.Item className="tab-pills">
-                        <Nav.Link className="tab-pills-children" eventKey="informacion">Información</Nav.Link>
+                        <Nav.Link
+                          className="tab-pills-children"
+                          eventKey="informacion"
+                        >
+                          Información
+                        </Nav.Link>
                       </Nav.Item>
                       <Nav.Item className="tab-pills">
-                        <Nav.Link className="tab-pills-children" eventKey="pruebas">Pruebas</Nav.Link>
+                        <Nav.Link
+                          className="tab-pills-children"
+                          eventKey="pruebas"
+                        >
+                          Pruebas
+                        </Nav.Link>
                       </Nav.Item>
                       <Nav.Item className="tab-pills">
-                        <Nav.Link className="tab-pills-children"eventKey="participantes">
+                        <Nav.Link
+                          className="tab-pills-children"
+                          eventKey="participantes"
+                        >
                           Participantes
                         </Nav.Link>
-                      </Nav.Item >
+                      </Nav.Item>
                       <Nav.Item className="tab-pills">
-                        <Nav.Link className="tab-pills-children" eventKey="actividad">Actividad</Nav.Link>
+                        <Nav.Link
+                          className="tab-pills-children"
+                          eventKey="actividad"
+                        >
+                          Actividad
+                        </Nav.Link>
                       </Nav.Item>
                     </Nav>
                     <Tab.Content>
@@ -213,49 +268,54 @@ const SessionDetails = (props) => {
                         </div>
                       </Tab.Pane>
                       <Tab.Pane eventKey="participantes">
-                      <Row xs={1} className="g-2 pb-2">
-                {users && users.length > 0 ? (
-                  users.map((user) => (
-                    <Col key={user.id}>
-                      <Card
-                        className="pointer-cursor bg-light h-100"
-                        onClick={(e) => {
-                          //history.push(`${host}prof-sesiones/${session.id}`)
-                        }}
-                      >
-                        <div className="p-2 d-flex flex-row">
-                          <div className="mr-2 d-flex justify-content-center align-items-center">
-                            <FaUser size={40} />
-                          </div>
-                          <div className="ms-3 d-flex flex-column justify-content-start align-items-start">
-                            <p className="fw-bold">
-                              Matrícula:{' '}
-                              <span className="fw-lighter">{user.id}</span>
-                            </p>
-                            <p>
-                              {user.nombres} {user.apellidos}
-                            </p>
-                          </div>
-                        </div>
-                      </Card>
-                    </Col>
-                  ))
-                ) : (
-                  <div className="w-100 p-5 text-center">
-                    <h2>No se encontraron sesiones administradas por usted</h2>
-                  </div>
-                )}
-              </Row>
-              <p className="fw-bold">
-                Cantidad total de estudiantes:{' '}
-                <span className="fw-bolder">{usersRecordsTotal}</span>
-              </p>
-              <Pagination
-                actualPage={usersSelectedPage}
-                recordsTotal={usersRecordsTotal}
-                pageSize={usersPageSize}
-                handlePageChange={handlePageChange}
-              />
+                        <Row xs={1} className="g-2 pb-2">
+                          {users && users.length > 0 ? (
+                            users.map((user) => (
+                              <Col key={user.id}>
+                                <Card
+                                  className="pointer-cursor bg-light h-100"
+                                  onClick={(e) => {
+                                    //history.push(`${host}prof-sesiones/${session.id}`)
+                                  }}
+                                >
+                                  <div className="p-2 d-flex flex-row">
+                                    <div className="mr-2 d-flex justify-content-center align-items-center">
+                                      <FaUser size={40} />
+                                    </div>
+                                    <div className="ms-3 d-flex flex-column justify-content-start align-items-start">
+                                      <p className="fw-bold">
+                                        Matrícula:{' '}
+                                        <span className="fw-lighter">
+                                          {user.id}
+                                        </span>
+                                      </p>
+                                      <p>
+                                        {user.nombres} {user.apellidos}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </Card>
+                              </Col>
+                            ))
+                          ) : (
+                            <div className="w-100 p-5 text-center">
+                              <h2>
+                                No se encontraron sesiones administradas por
+                                usted
+                              </h2>
+                            </div>
+                          )}
+                        </Row>
+                        <p className="fw-bold">
+                          Cantidad total de estudiantes:{' '}
+                          <span className="fw-bolder">{usersRecordsTotal}</span>
+                        </p>
+                        <Pagination
+                          actualPage={usersSelectedPage}
+                          recordsTotal={usersRecordsTotal}
+                          pageSize={usersPageSize}
+                          handlePageChange={handlePageChange}
+                        />
                       </Tab.Pane>
                       <Tab.Pane eventKey="actividad">
                         <div className="py-5 d-flex flex-column align-items-center">
@@ -272,34 +332,6 @@ const SessionDetails = (props) => {
               </div>
             </>
           )}
-          <button
-            className="btn btn-danger"
-            onClick={(e) => {
-              e.preventDefault();
-              handleOpenDelete();
-            }}
-          >
-            Deshabilitar Sesión
-          </button>
-          {isEditing ? (
-            <button className="btn btn-danger" onClick={handleEnableUpdate}>
-              Volver a visualizar información de la sesión
-            </button>
-          ) : null}
-          <button
-            type="submit"
-            className="btn btn-warning"
-            onClick={(e) => {
-              if (isEditing) {
-                e.preventDefault();
-                handlesessionUpdate(updatesession);
-              } else {
-                handleEnableUpdate(e);
-              }
-            }}
-          >
-            Modificar sesión
-          </button>
         </form>
       </section>
     </div>
