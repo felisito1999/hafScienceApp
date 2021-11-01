@@ -168,24 +168,24 @@ const TeachersSessionsDashboard = (props) => {
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu className="bg-light">
-                                  <Dropdown.Item className="py-3">
-                                    <Link
-                                      to={`${host}perfil`}
-                                      className="text-dark text-decoration-none"
-                                    >
-                                      <AiFillEdit size={20}/>{' '}
-                                      <span>Actualizar</span>
-                                    </Link>
+                                  <Link
+                                    to={`${host}prof-sesiones/actualizar/${session.id}`}
+                                    className="py-3 dropdown-item text-dark text-decoration-none"
+                                  >
+                                    <AiFillEdit size={20} />{' '}
+                                    <span>Actualizar</span>
+                                  </Link>
+                                  <Dropdown.Item
+                                    className="py-3 text-dark text-decoration-none"
+                                    //onClick={}
+                                  >
+                                    <AiFillDelete size={20} />{' '}
+                                    <span>Deshabilitar</span>
                                   </Dropdown.Item>
-                                  <Dropdown.Item className="py-3">
-                                    <Link
-                                      to={`${host}prof-sesiones/actualizar/${session.id}`}
-                                      className="text-dark text-decoration-none"
-                                    >
-                                      <AiFillDelete size={20} />{' '}
-                                      <span>Deshabilitar</span>
-                                    </Link>
-                                  </Dropdown.Item>
+                                  {/* <Link
+                                    className="py-3 dropdown-item text-dark text-decoration-none"
+                                    // onClick={}
+                                  ></Link> */}
                                 </Dropdown.Menu>
                               </Dropdown>
                             </div>
@@ -218,6 +218,7 @@ const TeachersSessionsDashboard = (props) => {
         component={TeachersCreateSessions}
       />
       <ProtectedRoute
+        exact
         path={`${host}prof-sesiones/:sessionId`}
         component={SessionDetails}
       />

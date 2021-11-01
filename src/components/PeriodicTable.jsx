@@ -1,6 +1,5 @@
 import React from 'react';
 import '../styles/PeriodicTable.css';
-// import {assignAction} from '../js/dataPeriodTable';
 import Container from 'react-bootstrap/Container';
 import { useState } from "react";
 import elementsData from '../data/PeriodTableData.json';
@@ -10,12 +9,14 @@ import quimica_bg from '../images/quimica.png';
 import properties from '../images/flask.svg';
 import reactive from '../images/reactivo.svg';
 import wikipedia from '../images/Wikipedia_W.svg';
+import prev from '../images/left-arrow.png';
 
 const PeriodicTable = () => {
     
     const loadData = JSON.parse(JSON.stringify(elementsData)).elements;
 
     const [showModal, setShowModal] = useState(false)
+    const [showFilterModal, setshowFilterModal] = useState(false)
     const [name, setName] = useState("");
     const [appearance, setAppearance] = useState("");
     const [atomic_mass, setAtomic_mass] = useState(0);
@@ -37,16 +38,34 @@ const PeriodicTable = () => {
     const [electron_pauling, setElectron_pauling] = useState(0);
     const [shells, setShells] = useState(0);
     const [group, setGroup] = useState(0);
+    const [search, setSearch] = useState("");
     //
     let [prevName, setPrevName] = useState("");
     let [postName, setPostName] = useState("");
     //
     const [showColor, setshowColor] = useState("");
+
+    let filterContainer;
     
     const handleButtonClick = (e) => {
         let atmNumber = parseInt(e.target.querySelector(".at_num").textContent);
         getElementData(atmNumber);
         setShowModal(true);
+    }
+
+    const handleFilterButtonClick = (e) => {
+        setShowModal(false);
+        setshowFilterModal(true);
+    }
+
+    const handleFilterElementClick = (number) => {
+        getElementData(number);
+        setshowFilterModal(false);
+        setShowModal(true);
+    }
+
+    const handleSearchOnChange = ({target}) => {
+        setSearch(target.value);
     }
 
     const handleButtonClickLArrow = (e) => {
@@ -75,6 +94,11 @@ const PeriodicTable = () => {
 
     const handleModalClick = () => {
         setShowModal(false);
+    }
+
+    const handleFilterModalClick = (e) => {
+        filterContainer = e.target.querySelector(".modalBG");
+        setshowFilterModal(false);
     }
 
     const handleChildClick = (e) => {
@@ -143,6 +167,9 @@ const PeriodicTable = () => {
                             <a className="wikipedia" href={source} target="_blank">
                                 <img className="image-wikipedia" src={wikipedia} alt="image-modal"/>
                             </a>
+                            <button className="btnPrev" onClick={handleFilterButtonClick}>
+                              <img className="image-prev" src={prev} alt="image-prev"/>
+                            </button>
                         </div>
 
                         <div className="rowsHeader flex-row">
@@ -244,6 +271,48 @@ const PeriodicTable = () => {
                 null
             }
 
+            {
+                showFilterModal ?
+                <div className="modalBG" onClick={handleFilterModalClick}>
+                    <div className="modalDetail filter-modal" onClick={handleChildClick}>
+                        <h3 className="filterTitle">Lista de elementos</h3>
+                        <hr className="hr"/>
+                        <input autoFocus className="searchInput" type="text" name="searchFilter" value={search} onChange={handleSearchOnChange}/>
+                        <div className="listElementFilter">
+                            {loadData.filter(element => element.name.toLowerCase().includes(search.toLowerCase())).map((element) => {
+                                return ( 
+                                    <div className="elementsForFilter" key={element.number} onClick={()=>handleFilterElementClick(element.number)}>
+                                        <div className="filterSymbol">
+                                            <div className="elementFilterS"> {element.symbol} </div> 
+                                        </div>
+                                        <div className="elementsInfo">
+                                            <div className="divCont">
+                                                <label className="inFilterText"> Número atómico</label> 
+                                                <div className="elementFilterNb"> {element.number} </div> 
+                                            </div>
+                                            <div className="divCont">
+                                                <label className="inFilterText"> Nombre</label> 
+                                                <div className="elementFilterN"> {element.name} </div> 
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                </div>
+                :
+                null
+            }
+
+            <div>
+                <input readOnly type="text"
+                className="searchInput"
+                placeholder="Buscar..."
+                onClick={handleFilterButtonClick} />
+            </div>
+
             <aside className="pt-legend">
                 <div data-category="noble gas" className="pt-legend-item" onClick={()=>toggleElementColor("gas-noble")}>
                     <div className="pt-legend-color noble-gas"></div>
@@ -290,7 +359,7 @@ const PeriodicTable = () => {
             <div className="periodic">
 
                 <div className="periodic-row">
-                    <div className={showColor== "" || showColor== "no-metal-diatomico" ? "cell no-metal-diatomico": "cell gray"} name="Hidrogeno" onClick= {handleButtonClick}>
+                    <div className={showColor === "" || showColor === "no-metal-diatomico" ? "cell no-metal-diatomico": "cell gray"} name="Hidrogeno" onClick= {handleButtonClick}>
                         <div className="element type-4 cat-3">
                             <div className="at_num">1</div>
                             <div className="symbol">H</div>

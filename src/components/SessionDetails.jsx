@@ -69,12 +69,12 @@ const SessionDetails = (props) => {
 
   const handleCloseDelete = () => {
     setIsDeleting(false);
-    props.onHide();
+    
   };
 
   const handleDeleteSession = async () => {
     if (isDeleting) {
-      const response = await sessionsService.disablesession(session.id);
+      const response = await sessionsService.deleteSession(session.id);
       console.log(response);
       if (typeof response !== 'undefined' && response.status === 'Success') {
         props.onHide();
@@ -118,7 +118,7 @@ const SessionDetails = (props) => {
           <ConfirmDeleteModal
             show={isDeleting}
             onHide={handleCloseDelete}
-            object={'centro educativo'}
+            object={'sesión'}
             handleConfirmDelete={handleDeleteSession}
           />
         ) : null}
@@ -132,22 +132,19 @@ const SessionDetails = (props) => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu className="bg-light">
-              <Dropdown.Item className="py-3">
-                <Link
-                  to={`${host}perfil`}
-                  className="text-dark text-decoration-none"
-                >
-                  <AiFillEdit size={20} /> <span>Actualizar</span>
-                </Link>
-              </Dropdown.Item>
-              <Dropdown.Item className="py-3">
-                <Link
-                  to={`${host}prof-sesiones/actualizar/${sessionId}`}
-                  className="text-dark text-decoration-none"
-                >
-                  <AiFillDelete size={20} /> <span>Deshabilitar</span>
-                </Link>
-              </Dropdown.Item>
+              <Link
+                to={`${host}prof-sesiones/actualizar/${sessionId}`}
+                className="py-3 dropdown-item text-dark text-decoration-none"
+              >
+                <AiFillEdit size={20} /> <span>Actualizar</span>
+              </Link>
+
+              <Link
+                className="py-3 dropdown-item text-dark text-decoration-none"
+                onClick={handleOpenDelete}
+              >
+                <AiFillDelete size={20} /> <span>Deshabilitar</span>
+              </Link>
             </Dropdown.Menu>
           </Dropdown>
         </div>

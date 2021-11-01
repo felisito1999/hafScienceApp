@@ -1,28 +1,60 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useHistory, Link } from 'react-router-dom';
 import sessionsService from '../services/sessionsService';
 import userService from '../services/usersService';
+import { AiFillCheckCircle } from 'react-icons/ai';
+import { BiCircle } from 'react-icons/bi';
+import Pagination from './Pagination';
 
 const UpdateSessions = (props) => {
   const host = process.env.REACT_APP_HOST_NAME;
   const history = useHistory();
-  const { id } = useParams();
+  const { sessionId } = useParams();
 
   const [availableUsers, setAvailableUsers] = useState([]);
   const [searchParameters, setSearchParameters] = useState({
-    name: ''
+    name: '',
   });
-  const [usersPageSize, setUsersPageSize] = useState(3);
+
+  const [usersPageSize, setUsersPageSize] = useState(3); 
   const [usersSelectedPage, setUsersSelectedPage] = useState(1);
   const [recordsTotal, setRecordsTotal] = useState(0);
 
-
-
   const [session, setSession] = useState({
+    sessionId: sessionId,
     nombre: '',
     descripcion: '',
-    estudiantes: [],
+    usuariosSesiones: [],
   });
+
+  const getAvailableUsers = async (page, pageSize, searchParameters) => {
+    const availableUsers = await userService.getAllPaginatedUsersBy(
+      page,
+      pageSize,
+      searchParameters
+    );
+
+    if (typeof (availableUsers.recordsTotal !== 'undefined')) {
+      setRecordsTotal(availableUsers.recordsTotal);
+      setAvailableUsers(availableUsers.records);
+    }
+  };
+
+  const getSessionInfo = async (sessionId) => {
+    const sessionDetails = await sessionsService.getById(sessionId);
+    const sessionUsers = await userService.getPaginatedSessionStudents(
+      usersSelectedPage,
+      100, // Hay que poner que el metodo no sea paginado.
+      sessionId
+    );
+
+    setSession({
+      ...session,
+      nombre: sessionDetails.data.nombre,
+      descripcion: sessionDetails.data.descripcion,
+      usuariosSesiones: sessionUsers.data.records,
+    });
+  };
 
   const getUsers = async (page, pageSize, searchParameters) => {
     const response = await userService.getAllPaginatedUsersBy(
@@ -45,13 +77,14 @@ const UpdateSessions = (props) => {
   };
 
   const checkIfUsuariosSesionesContains = (studentId) => {
-    console.log(studentId);
-    for (let i = 0; i < session.usuariosSesiones.length; i++) {
-      if (session.usuariosSesiones[i].id === studentId) {
-        return true;
+    if (Array.isArray(session.usuariosSesiones)) {
+      for (let i = 0; i < session.usuariosSesiones.length; i++) {
+        if (session.usuariosSesiones[i].id === studentId) {
+          return true;
+        }
       }
+      return false;
     }
-    return false;
   };
 
   const handleStudentsAdd = (student) => {
@@ -72,11 +105,9 @@ const UpdateSessions = (props) => {
 
     setSession({
       ...session,
-      usuariosSesiones: session.usuariosSesiones.filter(
-        (value, index, array) => {
-          return value.id !== student.id;
-        }
-      ),
+      usuariosSesiones: session.usuariosSesiones.filter((value, index, array) => {
+        return value.id !== student.id;
+      }),
     });
   };
 
@@ -128,15 +159,15 @@ const UpdateSessions = (props) => {
     });
 
     const sessionModel = {
+      sessionId: session.sessionId,
       nombre: session.nombre,
       descripcion: session.descripcion,
       usuariosSesiones: newSessionStudents,
     };
 
-    const result = await sessionsService.saveSession(sessionModel);
+    const result = await sessionsService.updateSession(sessionModel);
 
     if (typeof result !== 'undefined') {
-      console.log('Ta bueno');
       if (result.status === 200) {
         history.push(`${host}prof-sesiones`);
       } else {
@@ -147,10 +178,15 @@ const UpdateSessions = (props) => {
     }
   };
 
+  useEffect(() => {
+    getSessionInfo(sessionId);
+    getAvailableUsers(usersSelectedPage, usersPageSize, searchParameters);
+  }, []);
+
   return (
     <div className="component-wrapper">
       <div className="container banner-bg rounded-3 shadow py-3 my-5">
-        <h1 className="banner-title text-center">Agregar sesiones</h1>
+        <h1 className="banner-title text-center">Actualizar sesiones</h1>
         <div className="row justify-content-center">
           <section className="p-4 m-1 rounded bg-light col-12 col-md-5">
             <h6 className="text-center fw-bold">Detalles</h6>
@@ -189,6 +225,7 @@ const UpdateSessions = (props) => {
                     resize: 'none',
                     position: 'relative',
                   }}
+                  value={session.descripcion}
                   onChange={handleDescripcionChange}
                   required
                 ></textarea>
@@ -197,7 +234,7 @@ const UpdateSessions = (props) => {
             </div>
           </section>
           <section className="p-4 m-1 rounded bg-light col-12 col-md-6">
-            <h6 className="text-center fw-bold">Usuarios</h6>
+            <h6 className="text-center fw-bold">Usuarios del centro</h6>
             <form onSubmit={handleNewUsersSearch}>
               <div className="d-flex">
                 <div className="py-2 pr-2 flex-grow-1">
@@ -224,8 +261,8 @@ const UpdateSessions = (props) => {
                 </tr>
               </thead>
               <tbody>
-                {addUsers &&
-                  addUsers.map((user) => (
+                {availableUsers &&
+                  availableUsers.map((user) => (
                     <tr
                       key={user.id}
                       onClick={(e) => {
@@ -258,7 +295,7 @@ const UpdateSessions = (props) => {
             />
             <hr className="text-dark opacity-100" style={{ height: '2px' }} />
             <h4 className="text-center">
-              Se agregarán los siguientes estudiantes a la sesión:
+              Los siguientes estudiantes tendrán acceso a la sesión:
             </h4>
             <table className="table">
               <thead>
@@ -270,6 +307,7 @@ const UpdateSessions = (props) => {
               </thead>
               <tbody>
                 {session &&
+                  session.usuariosSesiones &&
                   session.usuariosSesiones.map((user) => (
                     <tr
                       key={user.id}
@@ -301,7 +339,7 @@ const UpdateSessions = (props) => {
               className="btn btn-success"
               onClick={handleSessionSubmit}
             >
-              Agregar sesión
+              Actualizar sesión
             </button>
           </div>
         </div>

@@ -3,6 +3,9 @@ import { ReactComponent as Number1 } from '../images/number-1-svgrepo-com.svg';
 import { ReactComponent as Number2 } from '../images/number-2-svgrepo-com.svg';
 import { Link, Route, Switch } from 'react-router-dom';
 import AssociationEasy from './AssociationEasy';
+import AtraparElementos from './AtraparElementos';
+import { IoLogoGameControllerB, IoLogoGameControllerA } from 'react-icons/io'
+import { SiGamejolt } from 'react-icons/si'
 
 const AssociationSelector = (props) => {
   const host = process.env.REACT_APP_HOST_NAME;
@@ -19,18 +22,18 @@ const AssociationSelector = (props) => {
                 to={`${host}juegos/asociaciones/nivelfacil`}
                 className="p-3 d-flex flex-row flex-md-column align-items-center justify-content-center text-dark text-decoration-none"
               >
-                <Number1 height="100" />
+                <IoLogoGameControllerA size="100" />
                 <span className="flex-sm-grow-1 text-center flex-md-grow-0 w-100 fw-bold">
-                  Nivel fácil
+                  Encuetra elementos
                 </span>
               </Link>
               <Link
                 to={`${host}juegos/asociaciones/niveldificil`}
                 className="p-3 d-flex flex-row flex-md-column align-items-center justify-content-center text-dark text-decoration-none"
               >
-                <Number2 height="100" />
+                <IoLogoGameControllerB size="100" />
                 <span className="flex-sm-grow-1 text-center flex-md-grow-0 w-100 fw-bold">
-                  Nivel difícil
+                  Atrapa elementos
                 </span>
               </Link>
             </div>
@@ -40,7 +43,9 @@ const AssociationSelector = (props) => {
       <Route path={`${host}juegos/asociaciones/nivelfacil`}>
         <AssociationEasy />
       </Route>
-      <Route path={`${host}juegos/asociaciones/niveldificil`}></Route>
+      <Route path={`${host}juegos/asociaciones/niveldificil`}>
+        <AtraparElementos />
+      </Route>
     </Switch>
   );
 };

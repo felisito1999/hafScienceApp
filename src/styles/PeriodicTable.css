@@ -550,8 +550,17 @@
     align-items: left;
     /* CODE TEST */
     overflow-y:scroll;
-    animation-duration: 1s;
+    animation-duration: 0.5s;
     animation-name: slidein;
+  }
+
+  .modalDetail{
+    /* padding-left: 20px; */
+    background: #fff;
+    width: 500px;
+    height: 700px;
+    margin: auto;
+    text-align: left;
   }
 
   @keyframes slidein {
@@ -565,15 +574,6 @@
       width: 100%;
     }
   }
-
-  .modalDetail{
-    /* padding-left: 20px; */
-    background: #fff;
-    width: 500px;
-    height: 700px;
-    margin: auto;
-    text-align: left;
-}
 
 .pt-det-group-label{
   display: flex;
@@ -649,6 +649,22 @@
   border-right: 1px solid hsla(0,0%,44.7%,.35);
 
 }
+
+.btnPrev{
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  position: absolute;
+  display:flex;
+  height: 40px;
+  width: 40px;
+  margin-top: -255px;
+  margin-left: 10px;
+}
+
 
 .rowsHeader{
   height: 50px;
@@ -732,4 +748,88 @@
 }
 .metalloid{
   background-color: #8fff9b;
+}
+
+.elementFilterNb, .elementFilterS, .elementFilterN{
+  display: block;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.inFilterText{
+  opacity: .5;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.divCont{
+  text-transform: uppercase;
+}
+
+.filter-modal{
+  /* overflow: auto; */
+  overflow-y:scroll;
+}
+
+.elementsForFilter{
+  margin: 10px;
+  height: 70px;
+  margin-bottom: 10px;
+  box-shadow: 0 3px 12px rgb(0 0 0 / 30%);
+  background: var(--app-background);
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+}
+
+.filterSymbol{
+  flex-shrink: 0;
+  background: lightgreen;
+  width: 60px;
+  display: grid;
+  place-items: center;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  font-size: 25px;
+}
+
+.elementsInfo{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  grid-gap: 10px;
+  gap: 10px;
+  padding: 7px 10px;
+  background: white;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.modalDetail{
+  background: #1c1f26;
+}
+
+.listElementFilter{
+  margin: 10px;
+}
+
+.filterTitle{
+  text-align: center;
+  margin-top: 10px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: white;
+}
+
+.hr{
+  color: white;
+}
+
+.searchInput{
+  margin: 10px;
+  margin-left: 20px;
+  width: 92%;
+  height: 40px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding-left: 10px;
 }
