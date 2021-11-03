@@ -40,10 +40,11 @@ const CreateSchoolModal = (props) => {
     });
   };
 
-  const handleSchoolSubmit = (e) => {
+  const handleSchoolSubmit = async (e) => {
     e.preventDefault();
 
-    saveSchool(school);
+    const result = await saveSchool(school);
+    console.log(result);
     props.onHide();
   };
   return (

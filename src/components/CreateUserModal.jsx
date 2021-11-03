@@ -13,6 +13,7 @@ const CreateUserModal = (props) => {
     nombreUsuario: '',
     rolId: null,
     centroEducativoId: null,
+    creadoPor: JSON.parse(localStorage.getItem('userData')).id,
   });
 
   const [roles, setRoles] = useState([null]);
@@ -30,6 +31,10 @@ const CreateUserModal = (props) => {
     };
     try {
       const response = await axios(config);
+      setUser({
+        ...user,
+        rolId: response.data[0].id,
+      });
       setRoles(response.data);
     } catch (error) {
       console.log(error);
@@ -47,6 +52,11 @@ const CreateUserModal = (props) => {
     };
     try {
       const response = await axios(config);
+      setUser({
+        ...user,
+        centroEducativoId: response.data[0].id,
+      });
+      console.log(response);
       setCentrosEducativos(response.data);
     } catch (error) {
       console.log(error);
@@ -105,6 +115,8 @@ const CreateUserModal = (props) => {
       ...user,
       rolId: e.target.value,
     });
+
+    console.log(e.target.value);
   };
 
   const handleCentroEducativoChange = (e) => {
@@ -112,6 +124,8 @@ const CreateUserModal = (props) => {
       ...user,
       centroEducativoId: e.target.value,
     });
+
+    console.log(e.target.value);
   };
 
   const handleNewUserSubmit = async (e) => {
@@ -210,6 +224,8 @@ const CreateUserModal = (props) => {
               name="telefono"
               id="telefono"
               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+              minLength="12"
+              maxLength="12"
               value={user.telefono}
               onChange={handleTelefonoChange}
               required

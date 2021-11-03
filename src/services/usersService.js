@@ -147,6 +147,7 @@ userService.getById = async (id) => {
 };
 
 userService.registerUser = async (user) => {
+  const data = JSON.stringify(user);
   const source = axios.CancelToken.source();
 
   const timeout = setTimeout(() => {
@@ -159,9 +160,10 @@ userService.registerUser = async (user) => {
     cancelToken: source.token,
     url: `${apiUrl}auth/register`,
     headers: {
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-    data: user,
+    data: data,
   };
 
   try {

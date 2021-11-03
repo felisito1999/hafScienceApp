@@ -86,11 +86,14 @@ const UserDetailsModal = (props) => {
     if (isEditing) {
       const response = await userService.updateUser(user);
 
-      if (response.status && response.status === 200) {
-        props.onHide();
-        alert('Se ha modificado el usuario con éxito');
-      } else {
-        alert('No se ha podido modificar el usuario');
+      if(typeof(response.status) !== 'undefined'){
+        console.log(response.status);
+        if (response.status === 200) {
+          props.onHide();
+          alert('Se ha modificado el usuario con éxito');
+        } else {
+          alert('No se ha podido modificar el usuario');
+        }
       }
     }
   };
@@ -107,11 +110,16 @@ const UserDetailsModal = (props) => {
   const handleDeleteUser = async () => {
     if (isDeleting) {
       const response = await userService.disableUser(user.id);
-
-      if (response.status && response.status === 'Success') {
-        props.onHide();
-        alert('Se ha deshabilitado el usuario con éxito');
-      } else {
+      console.log(response.status)
+      if(typeof(response.status) !== 'undefined'){
+        if (response.status === 200) {
+          props.onHide();
+          alert('Se ha deshabilitado el usuario con éxito');
+        } else {
+          alert('No se ha podido deshabilitar el usuario');
+        }
+      }
+      else {
         alert('No se ha podido deshabilitar el usuario');
       }
     }

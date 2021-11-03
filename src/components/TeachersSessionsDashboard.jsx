@@ -16,6 +16,7 @@ import SessionDetails from './SessionDetails';
 import ProtectedRoute from './ProtectedRoute';
 import TeachersCreateSessions from './TeachersCreateSessions';
 import UpdateSessions from './UpdateSessions';
+import ConfirmDeleteModal from './ConfirmDeleteModal';
 
 const TeachersSessionsDashboard = (props) => {
   const host = process.env.REACT_APP_HOST_NAME;
@@ -31,6 +32,9 @@ const TeachersSessionsDashboard = (props) => {
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [isDataMissing, setIsDataMissing] = useState(false);
 
+  //Variable para controlar el modal de confirmar la deshabilitacion de las sesiones.
+  const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
+  const [deleteSessionId, setDeleteSessionId] = useState(null);
   //Variable de estado con un objeto que maneja los parametros de búsqueda de las sesiones.
   const [searchParameters, setSearchParameters] = useState({
     name: '',
@@ -75,7 +79,23 @@ const TeachersSessionsDashboard = (props) => {
       name: e.target.value,
     });
   };
+  
+  const handleDeleteSession = async (sessionId) => {
+    const result = await sessionsService.deleteSession(sessionId);
+    console.log(result);
 
+    handleCloseDeleteModal();
+  };
+
+  const handleOpenDeleteConfirmModal = (sessionId) => {
+    setIsConfirmDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsConfirmDeleteModalOpen(false);
+    setDeleteSessionId(null);
+  };
+    
   const handleSessionSearchSubmit = (e) => {
     e.preventDefault();
     getSessions(1, pageSize);
@@ -93,6 +113,15 @@ const TeachersSessionsDashboard = (props) => {
   return (
     <Switch>
       <Route exact path={`${host}prof-sesiones`}>
+        <>
+        {isConfirmDeleteModalOpen ? (
+        <ConfirmDeleteModal
+          show={isConfirmDeleteModalOpen}
+          onHide={handleCloseDeleteModal}
+          object={'sesión'}
+          handleConfirmDelete={handleDeleteSession}
+        />
+      ) : null}
         <div className="component-wrapper">
           <section className="banner-bg container rounded-3 shadow py-3 my-5">
             <h1 className="banner-title text-center">Sesiones</h1>
@@ -177,7 +206,10 @@ const TeachersSessionsDashboard = (props) => {
                                   </Link>
                                   <Dropdown.Item
                                     className="py-3 text-dark text-decoration-none"
-                                    //onClick={}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      handleOpenDeleteConfirmModal()
+                                    }}
                                   >
                                     <AiFillDelete size={20} />{' '}
                                     <span>Deshabilitar</span>
@@ -211,6 +243,7 @@ const TeachersSessionsDashboard = (props) => {
             )}
           </section>
         </div>
+        </>
       </Route>
       <ProtectedRoute
         exact

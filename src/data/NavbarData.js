@@ -61,7 +61,7 @@ export const NavbarData = [
         icon: <IoSchool />,
         className: 'nav-link',
         childs: null,
-        roles: ['Administrador'],
+        roles: [''],
     },
     {
         title: 'Sesiones',

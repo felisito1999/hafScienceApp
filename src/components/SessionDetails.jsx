@@ -69,7 +69,7 @@ const SessionDetails = (props) => {
 
   const handleCloseDelete = () => {
     setIsDeleting(false);
-    
+
   };
 
   const handleDeleteSession = async () => {
@@ -257,10 +257,8 @@ const SessionDetails = (props) => {
                       </Tab.Pane>
                       <Tab.Pane eventKey="pruebas">
                         <div className="py-5 d-flex flex-column align-items-center">
-                          <p className="fw-bold">Descripción</p>
-                          <p>{session && session.descripcion}</p>
-                          <p className="fw-bold">Centro Educativo</p>
-                          <p>{session && session.nombreCentroEducativo}</p>
+                          <h1 className="fw-bold">Pruebas</h1>
+                          
                           {/* Agregar la parte de la fecha de ingreso en el sistema */}
                         </div>
                       </Tab.Pane>
@@ -316,10 +314,7 @@ const SessionDetails = (props) => {
                       </Tab.Pane>
                       <Tab.Pane eventKey="actividad">
                         <div className="py-5 d-flex flex-column align-items-center">
-                          <p className="fw-bold">Descripción</p>
-                          <p>{session && session.descripcion}</p>
-                          <p className="fw-bold">Centro Educativo</p>
-                          <p>{session && session.nombreCentroEducativo}</p>
+                          <h1 className="fw-bold">Actividades de los estudiantes</h1>
                           {/* Agregar la parte de la fecha de ingreso en el sistema */}
                         </div>
                       </Tab.Pane>
