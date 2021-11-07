@@ -9,6 +9,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^5.1.0",
     "date-fns": "^2.24.0",
+    "postcss-custom-properties": "^10.0.0",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-beta.4",
     "react-dom": "^17.0.2",
@@ -16,7 +17,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-select": "^5.0.0",
-    "sass": "^1.42.1",
+    "sass": "^1.39.2",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

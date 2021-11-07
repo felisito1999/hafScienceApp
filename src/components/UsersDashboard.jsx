@@ -51,6 +51,7 @@ const UsersDashboard = (props) => {
         pageSize,
         searchParameters
       );
+      console.log(response);
       setUsers(response.records);
       setRecordsTotal(response.recordsTotal);
       setIsDataLoading(false);
@@ -175,64 +176,66 @@ const UsersDashboard = (props) => {
               id="user-filters-options-collapse"
             >
               <div className="d-flex flex-column flex-lg-row">
-                <div className="p-1 d-flex flex-column align-items-start flex-sm-row align-items-sm-center ">
-                  <div>Roles:</div>
-                  <div className="p-1">
-                    <input
-                      type="radio"
-                      className="btn-check"
-                      name="role-options"
-                      id="btn-radio-role-todos"
-                      defaultChecked
-                      autoComplete="off"
-                      value={''}
-                      onChange={handleRolesChange}
-                    />
-                    <label
-                      className="p-1 btn btn-outline-success"
-                      htmlFor="btn-radio-role-todos"
-                    >
-                      Todos
-                    </label>
-                  </div>
-                  <div className="p-1">
-                    <input
-                      type="radio"
-                      className="btn-check"
-                      name="role-options"
-                      id="btn-radio-role-docente"
-                      autoComplete="off"
-                      value={2}
-                      onChange={handleRolesChange}
-                    />
-                    <label
-                      className="p-1 btn btn-outline-success"
-                      htmlFor="btn-radio-role-docente"
-                    >
-                      Docente
-                    </label>
-                  </div>
-                  <div className="p-1">
-                    <input
-                      type="radio"
-                      className="btn-check"
-                      name="role-options"
-                      id="btn-radio-role-estudiante"
-                      autoComplete="off"
-                      value={3}
-                      onChange={handleRolesChange}
-                    />
-                    <label
-                      className="p-1 btn btn-outline-success"
-                      htmlFor="btn-radio-role-estudiante"
-                    >
-                      Estudiante
-                    </label>
+                <div className="p-1 d-flex flex-column text-center flex-sm-row align-items-sm-center">
+                  <div className="">Roles:</div>
+                  <div className="w-100 d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-evenly">
+                    <div className="p-1 w-100">
+                      <input
+                        type="radio"
+                        className="btn-check"
+                        name="role-options"
+                        id="btn-radio-role-todos"
+                        defaultChecked
+                        autoComplete="off"
+                        value={''}
+                        onChange={handleRolesChange}
+                      />
+                      <label
+                        className="p-1 w-100 btn btn-outline-success"
+                        htmlFor="btn-radio-role-todos"
+                      >
+                        Todos
+                      </label>
+                    </div>
+                    <div className="p-1 w-100">
+                      <input
+                        type="radio"
+                        className="btn-check"
+                        name="role-options"
+                        id="btn-radio-role-docente"
+                        autoComplete="off"
+                        value={2}
+                        onChange={handleRolesChange}
+                      />
+                      <label
+                        className="p-1 w-100 btn btn-outline-success"
+                        htmlFor="btn-radio-role-docente"
+                      >
+                        Docente
+                      </label>
+                    </div>
+                    <div className="p-1 w-100">
+                      <input
+                        type="radio"
+                        className="btn-check"
+                        name="role-options"
+                        id="btn-radio-role-estudiante"
+                        autoComplete="off"
+                        value={3}
+                        onChange={handleRolesChange}
+                      />
+                      <label
+                        className="p-1 w-100 btn btn-outline-success"
+                        htmlFor="btn-radio-role-estudiante"
+                      >
+                        Estudiante
+                      </label>
+                    </div>
                   </div>
                 </div>
-                <div className="p-1 d-flex flex-fill flex-column align-items-start flex-sm-row align-items-sm-center ">
-                  <div>Centros Educativos:</div>
-                  <div className="ms-2 w-90 flex-fill flex-grow-1">
+                <div className="p-1 w-100 d-flex flex-column align-items-stretch flex-sm-row align-items-sm-center ">
+                  <div className="text-center">Centros Educativos:</div>
+                  <div className="flex-sm-grow-1 ms-2">
                     <SelectAsync handleSchoolChange={handleSchoolsChange} />
                   </div>
                 </div>

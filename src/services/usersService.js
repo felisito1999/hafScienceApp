@@ -148,6 +148,7 @@ userService.getById = async (id) => {
 
 userService.registerUser = async (user) => {
   const data = JSON.stringify(user);
+  console.log(user);
   const source = axios.CancelToken.source();
 
   const timeout = setTimeout(() => {
@@ -173,6 +174,7 @@ userService.registerUser = async (user) => {
   } catch (error) {
     clearTimeout(timeout);
     console.log(error);
+    alert(error && error.response && error.response.data && error.response.data.message);
   }
 };
 

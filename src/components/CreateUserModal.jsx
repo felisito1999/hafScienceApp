@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import userService from '../services/usersService';
+import schoolsService from '../services/schoolsService';
 
 const CreateUserModal = (props) => {
   const [user, setUser] = useState({
-    nombres: '',
-    apellidos: '',
-    fechaNacimiento: '2000-01-01',
-    telefono: '',
-    correoElectronico: '',
-    nombreUsuario: '',
-    rolId: null,
-    centroEducativoId: null,
+    nombres: 'Felix Junior',
+    apellidos: 'Perez Peguero',
+    fechaNacimiento: '1999-09-01',
+    telefono: '829-926-8179',
+    correoElectronico: 'felejunier9@gmail.com',
+    rolId: 1,
+    centroEducativoId: 1,
+    esSuperAdministrador: false,
     creadoPor: JSON.parse(localStorage.getItem('userData')).id,
   });
 
@@ -31,6 +32,7 @@ const CreateUserModal = (props) => {
     };
     try {
       const response = await axios(config);
+      console.log(response.data[0].id);
       setUser({
         ...user,
         rolId: response.data[0].id,
@@ -56,12 +58,13 @@ const CreateUserModal = (props) => {
         ...user,
         centroEducativoId: response.data[0].id,
       });
-      console.log(response);
       setCentrosEducativos(response.data);
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
     }
   };
+
+
 
   const handleNombresChange = (e) => {
     setUser({
@@ -131,6 +134,7 @@ const CreateUserModal = (props) => {
   const handleNewUserSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log(JSON.stringify(user));
       const response = await userService.registerUser(user);
 
       if (response.status === 200) {
@@ -140,9 +144,7 @@ const CreateUserModal = (props) => {
 
       props.onHide();
     } catch (error) {
-      console.log(error);
-
-      alert('No se pudo completar la solicitud');
+      console.log(error)
     }
   };
 
@@ -196,6 +198,7 @@ const CreateUserModal = (props) => {
               autoComplete="off"
               minLength="2"
               maxLength="25"
+              value={user.apellidos}
               onChange={handleApellidosChange}
               required
             />
@@ -252,24 +255,11 @@ const CreateUserModal = (props) => {
             <div className="underline"></div>
           </div>
           <div className="form-group">
-            <input
-              type="text"
-              name="username"
-              id="username"
-              value={user.nombreUsuario}
-              onChange={handleNombreUsuarioChange}
-              required
-            />
-            <label htmlFor="username" className="">
-              <span className="label-content">Nombre de usuario</span>
-            </label>
-            <div className="underline"></div>
-          </div>
-          <div className="form-group">
             <select
               className="form-control"
               name="rol"
               id="rol"
+              value={user.rolId}
               onChange={handleRolChange}
             >
               {roles.map((rol) => (
@@ -284,6 +274,7 @@ const CreateUserModal = (props) => {
               name="centroEducativo"
               id="centroEducativo"
               className="form-control"
+              value={user.centroEducativoId}
               onChange={handleCentroEducativoChange}
             >
               {centrosEducativos.map((centroEducativo) => (
