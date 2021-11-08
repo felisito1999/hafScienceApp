@@ -5,16 +5,19 @@ import userService from '../services/usersService';
 import schoolsService from '../services/schoolsService';
 
 const CreateUserModal = (props) => {
-  const [user, setUser] = useState({
-    nombres: 'Felix Junior',
-    apellidos: 'Perez Peguero',
-    fechaNacimiento: '1999-09-01',
-    telefono: '829-926-8179',
-    correoElectronico: 'felejunier9@gmail.com',
+  const defaultUserValues = {
+    nombres: '',
+    apellidos: '',
+    fechaNacimiento: '',
+    telefono: '',
+    correoElectronico: '',
     rolId: 1,
     centroEducativoId: 1,
     esSuperAdministrador: false,
     creadoPor: JSON.parse(localStorage.getItem('userData')).id,
+  };
+  const [user, setUser] = useState({
+    ...defaultUserValues,
   });
 
   const [roles, setRoles] = useState([null]);
@@ -63,8 +66,6 @@ const CreateUserModal = (props) => {
       console.log(error.response);
     }
   };
-
-
 
   const handleNombresChange = (e) => {
     setUser({
@@ -137,15 +138,27 @@ const CreateUserModal = (props) => {
       console.log(JSON.stringify(user));
       const response = await userService.registerUser(user);
 
-      if (response.status === 200) {
-        setIsSuccess(true);
-        console.log(isSuccess);
+      // if (response.status === 200) {
+      //   setIsSuccess(true);
+      //   console.log(isSuccess);
+      // }
+      if (typeof response !== 'undefined') {
+        alert('El usuario se ha registrado exitosamente');
+        clearFields();
       }
-
-      props.onHide();
     } catch (error) {
-      console.log(error)
+      if (typeof error !== 'undefined') {
+        if (error.response.data.message) {
+          alert(error.response.data.message);
+        }
+      }
     }
+  };
+
+  const clearFields = () => {
+    setUser({
+      ...defaultUserValues,
+    });
   };
 
   useEffect(() => {

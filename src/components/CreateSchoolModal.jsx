@@ -3,9 +3,13 @@ import Modal from 'react-bootstrap/Modal';
 import schoolsService from '../services/schoolsService';
 
 const CreateSchoolModal = (props) => {
-  const [school, setSchool] = useState({
+  const defaultSchool = {
     nombre: '',
     direccion: '',
+  };
+
+  const [school, setSchool] = useState({
+    ...defaultSchool
   });
 
   const saveSchool = async () => {
@@ -47,6 +51,12 @@ const CreateSchoolModal = (props) => {
     console.log(result);
     props.onHide();
   };
+
+  const clearFields = () => {
+    setSchool({
+
+    })
+  }
   return (
     <Modal
       show={props.show}

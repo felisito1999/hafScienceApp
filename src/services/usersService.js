@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { es } from 'date-fns/locale';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -173,8 +174,24 @@ userService.registerUser = async (user) => {
     return response;
   } catch (error) {
     clearTimeout(timeout);
-    console.log(error);
-    alert(error && error.response && error.response.data && error.response.data.message);
+    if (error.response) {
+      //La petición ha sido realizada y el servidor respondió con un status code de error. 
+      if (error.response.data.message){
+        alert(error.response.data.message);
+      }
+
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    }
+    else if (error.request) {
+      //La petición fue realizada pero no se recibió ninguna respuesta.
+      console.log(error.request);
+    }
+    else {
+      //Ocurrió un error al momento de enviar la petición.
+      console.log('Error', error.message);
+    }
   }
 };
 
