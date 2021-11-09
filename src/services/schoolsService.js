@@ -136,6 +136,18 @@ schoolsService.loadByName = async (name) => {
     }
 };
 
+schoolsService.getAllTiposCentrosEducativos = async () => {
+    const config = {
+        method: 'post',
+        url: `${process.env.REACT_APP_API_URL}gettiposcentros`,
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        data: null,
+    };
+}
+
 schoolsService.saveSchool = async (school) => {
     const config = {
         method: 'post',
