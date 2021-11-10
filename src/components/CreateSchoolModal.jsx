@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import schoolsService from '../services/schoolsService';
 
 const CreateSchoolModal = (props) => {
   const defaultSchool = {
+    codigo: '',
     nombre: '',
     direccion: '',
+    regionalId: null,
+    distritoId: null,
+    directorId: null,
+    tipoCentroEducativoId: null,
+    provinciaId: null,
+    municipioId: null,
   };
-
   const [school, setSchool] = useState({
-    ...defaultSchool
+    ...defaultSchool,
   });
+  const [provincias, setProvincias] = useState([]);
+  const [municipios, setMunicipios] = useState([]);
+  const [distritos, setDistritos] = useState([]);
+  const [regionales, setRegionales] = useState([]);
 
   const saveSchool = async () => {
     try {
@@ -49,14 +59,44 @@ const CreateSchoolModal = (props) => {
 
     const result = await saveSchool(school);
     console.log(result);
-    props.onHide();
+    clearFields();
   };
 
   const clearFields = () => {
     setSchool({
+      ...defaultSchool,
+    });
+  };
 
-    })
-  }
+  const getRegionales = async () => {
+    const regionalesResponse = await schoolsService.getRegionales();
+    if (regionalesResponse.data){
+      return regionalesResponse.data;
+    }
+  };
+  const getDistritos = async () => {
+    const distritosResponse = await schoolsService.getDistritos();
+    if (distritosResponse.data){
+      return distritosResponse.data;
+    }
+  };
+
+  useEffect(() => {
+    const setInitData = async () => {
+      const regionales = await getRegionales();
+      const distritos = await getDistritos();
+      
+      if (Array.isArray(regionales)){
+        setRegionales(regionales);
+      }
+      if (Array.isArray(distritos)){
+        setDistritos(distritos);
+      }
+    };
+
+    setInitData();
+  }, []);
+
   return (
     <Modal
       show={props.show}

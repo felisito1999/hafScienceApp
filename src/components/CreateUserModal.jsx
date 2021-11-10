@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import userService from '../services/usersService';
-import schoolsService from '../services/schoolsService';
 
 const CreateUserModal = (props) => {
   const defaultUserValues = {
@@ -16,13 +15,13 @@ const CreateUserModal = (props) => {
     esSuperAdministrador: false,
     creadoPor: JSON.parse(localStorage.getItem('userData')).id,
   };
+
   const [user, setUser] = useState({
     ...defaultUserValues,
   });
 
   const [roles, setRoles] = useState([null]);
   const [centrosEducativos, setCentrosEducativos] = useState([null]);
-  const [isSuccess, setIsSuccess] = useState(false);
 
   const getInitRoles = async () => {
     const config = {
@@ -33,6 +32,7 @@ const CreateUserModal = (props) => {
       },
       data: null,
     };
+
     try {
       const response = await axios(config);
       console.log(response.data[0].id);
@@ -142,13 +142,14 @@ const CreateUserModal = (props) => {
       //   setIsSuccess(true);
       //   console.log(isSuccess);
       // }
-      if (typeof response !== 'undefined') {
-        alert('El usuario se ha registrado exitosamente');
-        clearFields();
+      if (response) {
+        if(response.status){
+          
+        }
       }
     } catch (error) {
-      if (typeof error !== 'undefined') {
-        if (error.response.data.message) {
+      if (error) {
+        if (error.response) {
           alert(error.response.data.message);
         }
       }
