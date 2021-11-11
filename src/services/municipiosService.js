@@ -57,7 +57,7 @@ municipiosService.getByProvinciaId = async (provinciaId) => {
 
   const config = {
     method: 'get',
-    url: `${apiUrl}`,
+    url: `${apiUrl}/GetByProvinciaId`,
     params: {
       provinciaId: provinciaId,
     },
@@ -90,3 +90,5 @@ municipiosService.getByProvinciaId = async (provinciaId) => {
     }
   }
 };
+
+export default municipiosService;

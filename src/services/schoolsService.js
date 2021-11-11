@@ -380,5 +380,52 @@ schoolsService.getDistritos = async () => {
         console.log('Error', error.message);
       }
     }
+};
+
+schoolsService.getDistritosByRegionalId = async (regionalId) => { 
+  const cancelToken = axios.CancelToken;
+    const source = cancelToken.source();
+  
+    const timeout = setTimeout(() => {
+      source.cancel();
+      alert('Ha pasado el tiempo máximo de respuesto.');
+    }, 20000);
+  
+    const config = {
+      method: 'get',
+      url: `${apiUrl}/getDistritosByRegionalId`,
+      params: {
+        regionalId: regionalId
+      },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      data: null,
+    };
+  
+    try {
+      const response = await axios(config);
+      clearTimeout(timeout);
+  
+      return response;
+    } catch (error) {
+      clearTimeout(timeout);
+  
+      if (error.response) {
+        //La petición ha sido realizada y el servidor respondió con un status code de error.
+        if (error.response.data.message) {
+          alert(error.response.data.message);
+        }
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        //La petición fue realizada pero no se recibió ninguna respuesta.
+        console.log(error.request);
+      } else {
+        //Ocurrió un error al momento de enviar la petición.
+        console.log('Error', error.message);
+      }
+    }
 }
 export default schoolsService;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useHistory, Link } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import sessionsService from '../services/sessionsService';
 import userService from '../services/usersService';
 import { AiFillCheckCircle } from 'react-icons/ai';

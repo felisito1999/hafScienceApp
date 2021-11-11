@@ -261,20 +261,6 @@ const UserDetailsModal = (props) => {
                   <div className="underline"></div>
                 </div>
                 <div className="form-group">
-                  <input
-                    type="text"
-                    name="username"
-                    id="username"
-                    value={user.nombreUsuario}
-                    onChange={handleNombreUsuarioChange}
-                    required
-                  />
-                  <label htmlFor="username" className="">
-                    <span className="label-content">Nombre de usuario</span>
-                  </label>
-                  <div className="underline"></div>
-                </div>
-                <div className="form-group">
                   <select
                     className="form-control"
                     name="rol"
