@@ -10,12 +10,12 @@ const CreateSchoolModal = (props) => {
     codigo: '',
     nombre: '',
     direccion: '',
-    regionalId: null,
-    distritoId: null,
-    directorId: null,
-    tipoCentroEducativoId: null,
+    regionalId: 0,
+    distritoId: 0,
+    directorId: 0,
+    tipoCentroEducativoId: 0,
     provinciaId: 0,
-    municipioId: null,
+    municipioId: 0,
   };
   const [school, setSchool] = useState({
     ...defaultSchool,
@@ -24,6 +24,7 @@ const CreateSchoolModal = (props) => {
   const [municipios, setMunicipios] = useState([]);
   const [distritos, setDistritos] = useState([]);
   const [regionales, setRegionales] = useState([]);
+  const [schoolTypes, setSchoolTypes] = useState([]);
 
   const saveSchool = async () => {
     try {
@@ -54,15 +55,11 @@ const CreateSchoolModal = (props) => {
 
     setSchool({
       ...school,
-      provinciaId: provinciaId
+      provinciaId: provinciaId,
     });
 
-    if(provinciaId !== 0){
-      const municipios = await getMunicipiosByProvinciaId(provinciaId)
-      console.log(municipios);
-      if(Array.isArray(municipios)){
-        setMunicipios(municipios);
-      }
+    if (provinciaId !== 0) {
+      getMunicipiosByProvinciaId(provinciaId);
     }
   };
 
@@ -76,8 +73,44 @@ const CreateSchoolModal = (props) => {
   const resetMuncipios = () => {
     setSchool({
       ...school,
-      municipioId: null
-    })
+      municipioId: 0,
+    });
+    setMunicipios([]);
+  };
+
+  const handleRegionalesChange = async (e) => {
+    const regionalId = e.target.value;
+    resetDistritos();
+    setSchool({
+      ...school,
+      regionalId: regionalId,
+    });
+
+    if (regionalId !== 0) {
+      getDistritosByRegionalId(regionalId);
+    }
+  };
+
+  const handleDistritosChange = (e) => {
+    setSchool({
+      ...school,
+      distritoId: e.target.value,
+    });
+  };
+
+  const resetDistritos = () => {
+    setSchool({
+      ...school,
+      distritoId: 0,
+    });
+    setDistritos([]);
+  };
+
+  const handleSchoolTypeChange = (e) => {
+    setSchool({
+      ...school,
+      tipoCentroEducativoId: e.target.value,
+    });
   };
 
   const handleDireccionChange = (e) => {
@@ -101,53 +134,53 @@ const CreateSchoolModal = (props) => {
     setSchool({
       ...defaultSchool,
     });
+    resetMuncipios();
+    resetDistritos();
   };
   const getProvincias = async () => {
     const provinciasResponse = await provinciasService.getAllProvincias();
     if (provinciasResponse) {
-      return provinciasResponse.data;
+      setProvincias(provinciasResponse.data);
     }
   };
   const getMunicipiosByProvinciaId = async (provinciaId) => {
-    const municipiosResponse = await municipiosService.getByProvinciaId(provinciaId);
-    console.log(municipiosResponse);
-    if(municipiosResponse) {
-      return municipiosResponse.data
+    const municipiosResponse = await municipiosService.getByProvinciaId(
+      provinciaId
+    );
+    if (municipiosResponse) {
+      setMunicipios(municipiosResponse.data);
     }
   };
   const getRegionales = async () => {
     const regionalesResponse = await schoolsService.getRegionales();
     if (regionalesResponse) {
-      return regionalesResponse.data;
+      setRegionales(regionalesResponse.data);
     }
   };
-  const getDistritos = async () => {
-    const distritosResponse = await schoolsService.getDistritos();
+
+  const getDistritosByRegionalId = async (regionalId) => {
+    const distritosResponse = await schoolsService.getDistritosByRegionalId(
+      regionalId
+    );
     if (distritosResponse) {
-      return distritosResponse.data;
+      setDistritos(distritosResponse.data);
+    }
+  };
+
+  const getSchoolTypes = async () => {
+    const schoolTypesResponse = await schoolsService.getAllSchoolTypes();
+
+    if (schoolTypesResponse) {
+      setSchoolTypes(schoolTypesResponse.data);
     }
   };
 
   useEffect(() => {
     const setInitData = async () => {
-      const provincias = await getProvincias();
-      const regionales = await getRegionales();
-      const distritos = await getDistritos();
-
-      if (Array.isArray(provincias)) {
-        setProvincias(provincias);
-      }
-      if (Array.isArray(municipios)) {
-        setMunicipios(municipios);
-      }
-      if (Array.isArray(regionales)) {
-        setRegionales(regionales);
-      }
-      if (Array.isArray(distritos)) {
-        setDistritos(distritos);
-      }
+      getProvincias();
+      getRegionales();
+      getSchoolTypes();
     };
-
     setInitData();
   }, []);
 
@@ -164,7 +197,7 @@ const CreateSchoolModal = (props) => {
       </Modal.Header>
       <Modal.Body>
         <form autoComplete="off" className="form" onSubmit={handleSchoolSubmit}>
-          <div className="form-group">
+          <div className="form-group mb-3 ">
             <input
               type="text"
               name="nombre"
@@ -182,43 +215,6 @@ const CreateSchoolModal = (props) => {
             <div className="underline"></div>
           </div>
           <div className="form-group">
-            <select
-              name="school-provincias"
-              id="school-provincias"
-              className="form-control"
-              onChange={handleProvinciasChange}
-            >
-              <option value={0}>
-                Seleccione la provincia
-              </option>
-              {provincias &&
-                provincias.map((provincia) => (
-                  <option key={provincia.id} value={provincia.id}>
-                    {provincia.nombre}
-                  </option>
-                ))}
-            </select>
-          </div>
-          <div className="form-group">
-            <select
-              name="school-municipios"
-              id="school-municipios"
-              className="form-control"
-              onChange={handleMunicipiosChange}
-              disabled={school.provinciaId == 0 ? true : false}
-            >
-              <option value={0}>
-                Seleccione el municipio
-              </option>
-              {municipios &&
-                municipios.map((municipio) => (
-                  <option key={municipio.id} value={municipio.id}>
-                    {municipio.nombre}
-                  </option>
-                ))}
-            </select>
-          </div>
-          <div className="form-group mt-5">
             <label htmlFor="direccion" className="form-label mb-4">
               <span>Dirección</span>
             </label>
@@ -235,7 +231,94 @@ const CreateSchoolModal = (props) => {
               required
             ></textarea>
           </div>
-
+          <div className="pt-5 d-flex flex-column flex-sm-row">
+            <div className="form-group me-sm-1 me-md-2">
+              <select
+                name="school-provincias"
+                id="school-provincias"
+                className="form-select"
+                value={school.provinciaId}
+                onChange={handleProvinciasChange}
+              >
+                <option value={0}>Seleccione provincia</option>
+                {provincias &&
+                  provincias.map((provincia) => (
+                    <option key={provincia.id} value={provincia.id}>
+                      {provincia.nombre}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className="form-group">
+              <select
+                name="school-municipios"
+                id="school-municipios"
+                className="form-select"
+                onChange={handleMunicipiosChange}
+                disabled={school.provinciaId == 0 ? true : false}
+              >
+                <option value={0}>Seleccione municipio</option>
+                {municipios &&
+                  municipios.map((municipio) => (
+                    <option key={municipio.id} value={municipio.id}>
+                      {municipio.nombre}
+                    </option>
+                  ))}
+              </select>
+            </div>
+          </div>
+          <div className="d-flex flex-column flex-sm-row">
+            <div className="form-group me-sm-1 me-md-2">
+              <select
+                name="school-regionales"
+                id="school-regionales"
+                className="form-select"
+                value={school.regionalId}
+                onChange={handleRegionalesChange}
+              >
+                <option value={0}>Seleccione la regional</option>
+                {regionales &&
+                  regionales.map((regional) => (
+                    <option key={regional.id} value={regional.id}>
+                      {regional.nombre}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className="form-group">
+              <select
+                name="school-distritos"
+                id="school-distritos"
+                className="form-select"
+                value={school}
+                onChange={handleDistritosChange}
+                disabled={school.regionalId == 0 ? true : false}
+              >
+                <option value={0}>Seleccione la distrito</option>
+                {distritos &&
+                  distritos.map((distrito) => (
+                    <option key={distrito.id} value={distrito.id}>
+                      {distrito.nombre}
+                    </option>
+                  ))}
+              </select>
+            </div>
+          </div>
+          <div className="form-group">
+              <select
+                name="school-types"
+                id="school-types"
+                className="form-select"
+                value={school.tipoCentroEducativoId}
+                onChange={handleSchoolTypeChange}
+              >
+                <option value={0}>Tipo de centro</option>
+                {schoolTypes &&
+                  schoolTypes.map((schoolType) => (
+                    <option value={schoolType.id}>{schoolType.nombre}</option>
+                  ))}
+              </select>
+            </div>
           <div className="d-flex justify-content-between mt-5">
             <button
               type="button"
