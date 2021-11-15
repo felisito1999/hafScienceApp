@@ -1,153 +1,204 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head >
-    <title>HAF-Adivina</title>
-
-<script src="scripts/jquery.min.js" type="text/javascript"></script>
-    
-    <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="styles/bootstrap.min.css">
-    <style>.thumbnail{ height: 185px;}
-    </style>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        body{
+            width: 500px;
+            padding: 0px 10px;
+            margin: 10px auto;
+            text-align: center;
+            background-color: #1f7a0396;
+        }
+        .flip-cartaTemporal-inner {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          text-align: center;
+          transition: transform 0.6s;
+          transform-style: preserve-3d;
+          box-shadow: 0 4px 8px 0 #0c0d0dbd;
+        }
+        .flip-cartaTemporal-front, .flip-cartaTemporal-back {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+        }
+        .flip-cartaTemporal-front {
+          background-color: #ffffff;
+        }
+        .flip-cartaTemporal-back {
+          background-color: #ffffff;
+          transform: rotateY(180deg);
+        }
+        </style>
+    <title>Intenta encontrar los elementos iguales</title>
 </head>
-<body background="imgs/chemistry-image.jpg" >
-    <div class="container text-center">
-        <br/>
-        <div class="row">
-            
-            <marquee direction='lefth'>
-               
-               <p>
-                
-                <img src="imgs/ositos.gif" height="70px" alt="">
-                <img src="imgs/NINO.gif" height="70px" alt="">
-                
-               </p> 
+<body>
     
-            </marquee>
-            <div class="col-md-6"><h2><div id="Puntaje">Puntos:0</div></h2></div> 
-         <!--<div class="col-md-3"><img src="Poke.png"/></div>   --> 
-            
-            
-        </div>
-        
-        <div class="row">
-            <div class="col-md-4"><script async src="//pagead2.googlesyndication.com/pagead/js/hafbybaf.js"></script>
-<!-- lateral -->
-<ins class="hafbybaf"
-     style="display:inline-block;width:300px;height:250px"
-     data-ad-client="ca-pub-4331617637495482"
-     data-ad-slot="7438564459"></ins>
-<script>
-(hafbybaf = window.hafbybaf || []).push({});
-</script></div>
-            <div class="col-md-4" id="dragelements" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-            <div class="col-md-4"></div>
-        </div>
-        
-        <div class="row text-center" id="tbelements"></div>
-        
-    </div>
-    <script>
-        
-	var tbelements = ["Litio","tablacompleta",
-    "sodio","Radon","cesio","radio","francio","estroncio",
-    "rubidio","calcio","potasio","magnesio","berilio",
-    "hidrogeno","itrio","escandio","rutherfordio","hafnio",
-    "zirconio","tantalio","niobio","vanadio","seaborgio",
-    "tungsteno","molibdeno","cromo","bohrio","renio","tecnecio",
-    "manganeso","hassio","osmio","rutenio","hierro","meitnerio",
-    "azufre","oxigeno","paladio","niquel","roentgenio","oro",
-    "xenon","argon","neon","helio","bismuto","ununpentio","carbono",
-    "antimonio","arsenico","nitrogeno","livermenio","polonio","telurio","selenio",
-    "unuseption","astato","krypton","ununoctio","yodo","bromo",
-    "cloro","fluor","silicio","germanio","plata","cobre","copernicio","estano",
-    "plomo","flerovio","boro","mercurio","cadmio","zinc","aluminio","galio","indio",
-    "ununtrio","talio"];
-        
-        
-        
-    var tbelementsJuego = [],indice,item,tiempo,Puntos=0;
-    $(document).ready(function(){ IniciarJuego();});
-        
-        function IniciarJuego(){
-            tbelements = ["Litio","tablacompleta",
-    "sodio","Radon","cesio","radio","francio","estroncio",
-    "rubidio","calcio","potasio","magnesio","berilio",
-    "hidrogeno","itrio","escandio","rutherfordio","hafnio",
-    "zirconio","tantalio","niobio","vanadio","seaborgio",
-    "tungsteno","molibdeno","cromo","bohrio","renio","tecnecio",
-    "manganeso","hassio","osmio","rutenio","hierro","meitnerio",
-    "azufre","oxigeno","paladio","niquel","roentgenio","oro",
-    "xenon","argon","neon","helio","bismuto","ununpentio","carbono",
-    "antimonio","arsenico","nitrogeno","livermenio","polonio","telurio","selenio",
-    "unuseption","astato","krypton","ununoctio","yodo","bromo",
-    "cloro","fluor","silicio","germanio","plata","cobre","copernicio","estano",
-    "plomo","flerovio","boro","mercurio","cadmio","zinc","aluminio","galio","indio",
-    "ununtrio","talio"];
-            tbelementsJuego = [];
-            indice=0;
-            item=0;
+    <h1 style="color: blue;box-shadow: 0 4px 8px 0 #0c0d0dbd;background-color: aquamarine;">
+     Intenta encontrar los elementos iguales
+    </h1>
+    
+        <marquee direction='lefth'>
+           <p>
            
-        for(i=0;i<3;i++){
-            indice=Math.floor(Math.random()*tbelements.length);
-            item = tbelements[indice];
-            tbelementsJuego.push(item);
-            tbelements.splice(indice,1);
+           
+            <img src="imgs/NINO.gif" height="70px" alt="">
+            Los elementos son:
+            <img src="imgs/ABEJA.gif" height="70px" alt="">
+            
+            <b>Radon,Osmio,Hassio,Neon,Oganesson,Xenon,Rutenio</b>
+            <img src="imgs/ositos.gif" height="70px" alt="">
+           </p> 
+
+        </marquee>
+
+                 
+  
+    <div id="pantalla" 
+         style="width: 500px; height: 420px;background-color: aquamarine;position: relative;box-shadow: 0 4px 8px 0 #0c0d0dbd;">
+        <div id="ganaste" 
+             style="position: relative;left: 45px;top: 150px;font-size: 70px;font-weight: bold;color: #1900ca;display: none;">
+              ¡GANASTE!
+
+        </div>
+        <div style="position: absolute;left: 10px;top: 380px;">
+            <p style="font-size: 16px;font-weight: bold;position: relative;float: left;">Encontrados: 
+                <span id="encontrados" style="color: red;font-weight: bold;">0</span>
+            </p>
+            <p style="font-size: 16px;font-weight: bold;position: relative;float: left;margin-left: 25px;">Faltantes: 
+                <span id="faltantes" style="color: red;font-weight: bold;">6</span>
+            </p>
+            <p style="font-size: 16px;font-weight: bold;position: relative;float: left;margin-left: 25px;">Tiempo: 
+                <span id="temporizador" style="color: red;font-weight: bold;">0</span>
+            </p>
+            <p style="font-size: 16px;font-weight: bold;position: relative;float: left;margin-left: 25px;">Intentos: 
+                <span id="intentos" style="color: red;font-weight: bold;">0</span>
+            </p>
+        </div>
+    </div>
+   
+
+    <script>
+        var cartasArray = [1,2,3,4,5,6,1,2,3,4,5,6];
+        var contadorVolteadas = 0;
+        var carta1 = '';
+        var clic = false;
+        var carta2 = '';
+        var encontradas = 0;
+        var faltantes = 6;
+        var tiempo = 0;
+        var temporizador ;
+        var intentos = 0;
+        function carta(x,y,w,h,imagenFrente,imagenAtras){
+            this.x = x;
+            this.y = y;
+            this.w = w;
+            this.h = h;
+            this.imagenAtras = imagenAtras;
+            this.imagenFrente = imagenFrente;
+            this.template = `
+            <div onclick="voltear(this)" class="flip-cartaTemporal ctrlCartas" carta="`+this.imagenAtras+`" 
+                style="position: absolute;left: `+this.x+`px;top: `+this.y+`px; margin: 10px; width:`+this.w+`px; height:`+this.h+`px;">
+                <div class="flip-cartaTemporal-inner">
+                    <div class="flip-cartaTemporal-front">
+                        <img src="`+this.imagenFrente+`" alt="AvatarF" style="width:`+this.w+`px;height:`+this.h+`px;">
+                    </div>
+                    <div class="flip-cartaTemporal-back">
+                        <img src="`+this.imagenAtras+`" alt="AvatarB" style="width:`+this.w+`px;height:`+this.h+`px;">
+                    </div>
+                </div>
+            </div> 
+            `;
         }
-        indice=Math.floor(Math.random()*tbelementsJuego.length);
-        item = tbelementsJuego[indice];
-            
-           $("#tbelements").empty();
-           $("#dragelements").empty();
-            
-           clearInterval(tiempo);
-            
-           $.each(tbelementsJuego, function( i, val ) {
-               
-            $("#tbelements").append('<div class="col-xs-4 col-md-4" ><a href="#" class="thumbnail"><img src="imgs/'+val+'.png" id='+val+' draggable="true" ondragstart="drag(event)" style="cursor:move" /></a></div>');
-               
-        });
-        $("#dragelements").append('<a href="#" class="thumbnail"   ></a><p>¿Cúal de las imagenes pertenece al elemento?</p><h3><span class="label label-danger">'+item+"</span></h3><br/>");
-         
+        
+        window.onload = function() {
+            cargaCartas();
+            temporizador();
+        };
+
+        function desordenarArrays(arrayX){
+            let arrayReacomodado = arrayX.sort(function(){return Math.random() -0.5});
+            return arrayReacomodado;
         }
-function allowDrop(ev) { ev.preventDefault();}
-function drag(ev) {ev.dataTransfer.setData("text", ev.target.id);}
-function drop(ev) {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    if(data==item){
-    ev.target.appendChild(document.getElementById(data));      
-            Puntos++;
-            $("#Puntaje").html('<span class="label label-default">Puntos: '+Puntos+'</span>');
-           tiempo=setInterval(function(){ IniciarJuego(); }, 800);
-    }else{
-        alert("Fallaste"); Puntos=0;
-        $("#Puntaje").html('Puntos:'+Puntos+'');
-        tiempo=setInterval(function(){ IniciarJuego(); }, 800);
-    }
-}
-</script>
-<button id="btnsalir">Salir</button>
+
+        function temporizador(){
+            temporizador = setInterval(() => {
+                tiempo++
+                document.getElementById('temporizador').innerHTML = tiempo;
+            }, 1000);
+        }
+
+        function cargaCartas(){
+            let cartasTemporal = desordenarArrays(cartasArray);
+            let modificador = 10;
+            for(let i=0;i<12;i++){
+                let lugar = document.getElementById("pantalla"); 
+                if(i == 4 || i == 8){ modificador = 10; }
+                if(i < 4){ y = 10; }
+                if(i < 8 && i >3){ y = 130; }
+                if(i < 12 && i >7){ y = 250; }
+                let cartaTemporal = new carta(modificador ,y ,100 ,100 ,'imgs/back.png','imgs/'+cartasTemporal[i]+'.png');
+                lugar.insertAdjacentHTML("beforeend", cartaTemporal.template);
+                modificador = modificador + 120;
+            }
+        } 
+
+        function voltear(e){
+            e.setAttribute('onclick',"");
+            e.classList.add('volteada');
+            if(contadorVolteadas < 2){
+                let imagenX = e.getAttribute('carta');
+                if(contadorVolteadas == 0){
+                    carta1 = imagenX;
+                }
+                if(contadorVolteadas == 1){
+                    carta2 = imagenX;
+                }
+                e.firstElementChild.style.transform = ' rotateY(180deg) ';
+                contadorVolteadas++;
+                if(contadorVolteadas == 2){
+                    intentos++;
+                    document.getElementById('intentos').innerHTML = intentos ;
+                    let cartasArray = document.getElementsByClassName('flip-cartaTemporal-inner');
+                    setTimeout(() => {
+                        if(carta1 == carta2){
+                            let chequeo = document.getElementsByClassName('ctrlCartas');
+                            for (let cartaX of chequeo) {
+                                let imagenCarta = cartaX.getAttribute('carta');
+                                if(imagenCarta == carta1){
+                                    cartaX.setAttribute("style", "display: none;");
+                                    encontradas = encontradas + .5;
+                                    faltantes = faltantes - .5;
+                                    document.getElementById('encontrados').innerHTML = encontradas ;
+                                    document.getElementById('faltantes').innerHTML = faltantes ;
+                                    if(encontradas == 6){
+                                        clearInterval(temporizador);
+                                        document.getElementById('ganaste').style.display = 'block';
+                                    }
+                                }
+                            }
+                        }else{
+                            let volteadas = document.getElementsByClassName('volteada');
+                            let cantidadVolteadas = volteadas.length - 1;
+                            for (let index = cantidadVolteadas; index >= 0; index--) {
+                                volteadas[index].setAttribute("onclick","voltear(this);")
+                                volteadas[index].classList.remove("volteada");
+                            }
+                        }
+                        for(let cartaX of cartasArray){
+                            cartaX.style.transform = '' ;
+                            contadorVolteadas = 0;
+                        }
+                    }, 1000);
+                }
+            }
+        }
+    </script>
 </body>
-
 </html>
-
-
-<style>
-
-    #btnsalir:hover
-    {
-      background-color: rgb(240, 14, 14);
-      
-    }
-
-    #btnsalir
-    {
-       font-size: 20px;
-        text-align: left;
-       border: solid;
-       border-radius: 300px;
-      background-color: rgb(13, 218, 64)
-    }
-</style>

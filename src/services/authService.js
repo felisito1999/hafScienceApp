@@ -89,7 +89,6 @@ authService.isSignedIn = async () => {
     };
 
     try {
-        console.log()
         const response = await axios(config);
         clearTimeout(timeout);
         return {

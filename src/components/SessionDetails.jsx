@@ -281,7 +281,7 @@ const SessionDetails = (props) => {
                                       <p className="fw-bold">
                                         Matrícula:{' '}
                                         <span className="fw-lighter">
-                                          {user.id}
+                                          {user.codigo}
                                         </span>
                                       </p>
                                       <p>
@@ -295,8 +295,7 @@ const SessionDetails = (props) => {
                           ) : (
                             <div className="w-100 p-5 text-center">
                               <h2>
-                                No se encontraron sesiones administradas por
-                                usted
+                                Esta sesión no tiene estudiantes asignados.
                               </h2>
                             </div>
                           )}

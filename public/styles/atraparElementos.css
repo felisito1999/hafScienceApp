@@ -16,7 +16,7 @@ margin-left: 50px;
 
 .div
 {
-background-color: rgba(12, 180, 12, 0.301);
+background-color: #28b9ab;
     border: solid;
     border-radius: 20px;
     width: 500px;
@@ -49,7 +49,7 @@ margin-left: 190px;
 }
 
 #colum1{
-  background-color: rgba(12, 180, 12, 0.301);
+  background-color: #02ac9b;
     border: solid;
     border-radius: 20px;
    
@@ -65,7 +65,7 @@ margin-left: 190px;
 
   #colum2{
 
-    background-color: rgba(12, 180, 12, 0.301);
+    background-color: #02ac9b;
     border: solid;
     border-radius: 20px;
     
@@ -109,6 +109,31 @@ font-style: italic;
 margin-left: 50px;
     }
 
+    .button {
+      display: inline-block;
+      padding: 15px 25px;
+      font-size: 24px;
+      cursor: pointer;
+      text-align: center;	
+      text-decoration: none;
+      outline: none;
+      color: #fff;
+      background-color:#4db6ac;
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 9px #999;
+     
+    }
+    
+    .button:hover {background-color: #026157}
+    
+    .button:active {
+      background-color: #02ac9b;
+      box-shadow: 0 5px #666;
+      transform: translateY(4px);
+    }
+
+    
   
 
 

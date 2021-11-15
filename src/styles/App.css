@@ -147,6 +147,14 @@ main {
   background-color: #4db6ac !important;
 }
 
+/* input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+} */
+
 /* .form-control:focus {
     border-color: #6265e4 !important;
     box-shadow: 0 0 5px rgba(98, 101, 228, 1) !important;

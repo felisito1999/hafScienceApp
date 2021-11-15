@@ -125,6 +125,10 @@ const UserDetailsModal = (props) => {
     }
   };
 
+  const validateFields = () => {
+
+  }
+
   useEffect(() => {
     const getInitData = async () => {
       const userData = await userService.getById(props.userId);
@@ -140,11 +144,7 @@ const UserDetailsModal = (props) => {
 
       const initCentrosEducativos = await schoolsService.getAll();
       console.log(initCentrosEducativos);
-      setCentrosEducativos(initCentrosEducativos);
-      if (
-        typeof initCentrosEducativos !== 'undefined' &&
-        initCentrosEducativos.status === 200
-      ) {
+      if (centrosEducativos){
         setCentrosEducativos(initCentrosEducativos.data);
       }
     };
@@ -259,26 +259,6 @@ const UserDetailsModal = (props) => {
                     <span className="label-content">Correo electronico</span>
                   </label>
                   <div className="underline"></div>
-                </div>
-                <div className="form-group">
-                  <select
-                    className="form-control"
-                    name="rol"
-                    id="rol"
-                    value={user && user.rolId}
-                    onChange={handleRolChange}
-                  >
-                    {roles &&
-                      roles.map((rol) => (
-                        <option value={rol && rol.id}>
-                          {rol && rol.nombre}
-                        </option>
-                      ))}
-                  </select>
-                  {/* <label htmlFor="rol" className="label">
-                            <span className="">Nombre de usuario</span>
-                        </label> */}
-                  {/* <div className="underline"></div> */}
                 </div>
                 <div className="form-group">
                   <select

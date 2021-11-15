@@ -8,7 +8,7 @@ const AssociationEasy = (props) => {
         key={1}
         title="puzzle-easy"
         className="h-100 w-100"
-        src={`${host}association-facil.html`}
+        src={`${host}association-easy.html`}
         frameBorder="0"
       ></iframe>
     </div>

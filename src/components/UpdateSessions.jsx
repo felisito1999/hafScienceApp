@@ -170,6 +170,7 @@ const UpdateSessions = (props) => {
     if (typeof result !== 'undefined') {
       if (result.status === 200) {
         history.push(`${host}prof-sesiones`);
+        alert('¡La sesión ha sido actualizada satisfactoriamente!')
       } else {
         alert('Ha sucedido un error');
       }
@@ -279,7 +280,7 @@ const UpdateSessions = (props) => {
                           <BiCircle size={25} />
                         </td>
                       )}
-                      <td>{user.id}</td>
+                      <td>{user.codigo}</td>
                       <td>
                         {user.nombres} {user.apellidos}
                       </td>
@@ -317,7 +318,7 @@ const UpdateSessions = (props) => {
                       }}
                     >
                       <td></td>
-                      <td>{user.id}</td>
+                      <td>{user.codigo}</td>
                       <td>
                         {user.nombres} {user.apellidos}
                       </td>

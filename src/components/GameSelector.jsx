@@ -18,7 +18,7 @@ const GameSelector = (props) => {
             <h1 className="banner-title text-center">
               Seleccione el juego al que desea acceder
             </h1>
-            <div className="d-flex flex-lg-row justify-content-lg-between flex-sm-column flex-column justify-content-center pt-5 container">
+            <div className=" align-items-center d-flex flex-lg-row justify-content-lg-between flex-sm-column flex-column justify-content-center pt-5 container">
               <Link
                 to={`${host}juegos/rompecabezas`}
                 className="pb-3 d-flex flex-row flex-md-column align-items-center justify-content-center text-dark text-decoration-none"

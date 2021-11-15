@@ -1,7 +1,7 @@
 let validationService = {};
 
 validationService.isNullOrWhiteSpace = (string) => {
-    return string === null || string.match(/^\s*$/) !== null
+    return !string || !string.trim()
 };
 
 export default validationService;

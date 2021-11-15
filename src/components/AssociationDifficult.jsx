@@ -1,18 +1,18 @@
 import React from 'react';
 
-const MemoryEasy = (props) => {
+function AssociationDifficult(props) {
   const host = process.env.REACT_APP_HOST_NAME;
   return (
     <div className="h-100 component-wrapper pt-5">
-    <iframe
+      <iframe
         key={1}
-        title="memory-easy"
+        title="association-difficult"
         className="h-100 w-100"
-        src={`${host}memory-easy.html`}
+        src={`${host}atraparElementos.html`}
         frameBorder="0"
-    ></iframe>
-</div>
+      ></iframe>
+    </div>
   );
 }
 
-export default MemoryEasy;
+export default AssociationDifficult;

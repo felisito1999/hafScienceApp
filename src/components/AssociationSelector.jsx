@@ -6,6 +6,7 @@ import AssociationEasy from './AssociationEasy';
 import AtraparElementos from './AtraparElementos';
 import { IoLogoGameControllerB, IoLogoGameControllerA } from 'react-icons/io'
 import { SiGamejolt } from 'react-icons/si'
+import AssociationDifficult from './AssociationDifficult';
 
 const AssociationSelector = (props) => {
   const host = process.env.REACT_APP_HOST_NAME;
@@ -24,7 +25,7 @@ const AssociationSelector = (props) => {
               >
                 <IoLogoGameControllerA size="100" />
                 <span className="flex-sm-grow-1 text-center flex-md-grow-0 w-100 fw-bold">
-                  Encuetra elementos
+                  Nivel fácil
                 </span>
               </Link>
               <Link
@@ -33,7 +34,7 @@ const AssociationSelector = (props) => {
               >
                 <IoLogoGameControllerB size="100" />
                 <span className="flex-sm-grow-1 text-center flex-md-grow-0 w-100 fw-bold">
-                  Atrapa elementos
+                  Nivel difícil
                 </span>
               </Link>
             </div>
@@ -44,7 +45,7 @@ const AssociationSelector = (props) => {
         <AssociationEasy />
       </Route>
       <Route path={`${host}juegos/asociaciones/niveldificil`}>
-        <AtraparElementos />
+        <AssociationDifficult />
       </Route>
     </Switch>
   );

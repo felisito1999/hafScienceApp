@@ -38,7 +38,7 @@ const MemorySelector = (props) => {
         </div>
       </Route>
       <Route path={`${host}juegos/memoria/nivelfacil`}>
-        <MemoryEasy />
+        <MemoryEasy /> 
       </Route>
       <Route path={`${host}juegos/memoria/niveldificil`}>
         {/* <PuzzleGameDifficult /> */}

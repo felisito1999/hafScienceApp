@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import userService from '../services/usersService';
+import DateTimePicker from 'react-datetime-picker/dist/DateTimePicker';
 
 const CreateUserModal = (props) => {
   const defaultUserValues = {
     nombres: '',
     apellidos: '',
-    fechaNacimiento: '',
+    fechaNacimiento: new Date(2000, 0, 1),
     telefono: '',
     correoElectronico: '',
     rolId: 1,
@@ -81,11 +82,16 @@ const CreateUserModal = (props) => {
     });
   };
 
-  const handleFechaNacimientoChange = (e) => {
+  const handleFechaNacimientoChange = (value) => {
+    // setUser({
+    //   ...user,
+    //   fechaNacimiento: e.target.value,
+    // });'
     setUser({
       ...user,
-      fechaNacimiento: e.target.value,
+      fechaNacimiento: value,
     });
+    console.log(value);
   };
 
   // const telefonoInputMask = (telephone) => {
@@ -115,12 +121,20 @@ const CreateUserModal = (props) => {
   };
 
   const handleRolChange = (e) => {
-    setUser({
-      ...user,
-      rolId: e.target.value,
-    });
+    const rolId = e.target.value; 
 
-    console.log(e.target.value);
+    if (rolId != 1) {
+      setUser({
+        ...user,
+        rolId: rolId,
+        esSuperAdministrador: false,
+      });
+    } else {
+      setUser({
+        ...user,
+        rolId: rolId,
+      });
+    }
   };
 
   const handleCentroEducativoChange = (e) => {
@@ -142,17 +156,33 @@ const CreateUserModal = (props) => {
       //   setIsSuccess(true);
       //   console.log(isSuccess);
       // }
-      if (response) {
-        if(response.status){
-          
-        }
-      }
+      clearFields();
+      alert('El usuario ha sigo agregado exitosamente');
     } catch (error) {
       if (error) {
         if (error.response) {
           alert(error.response.data.message);
         }
       }
+    }
+  };
+
+  const handleIsSuperadministradorChange = (e) => {
+    const isChecked = e.target.checked; 
+
+    if (isChecked){
+      setUser({
+        ...user,
+        esSuperAdministrador: isChecked,
+        centroEducativoId: 0
+      });
+    } else {
+      setUser({
+        ...user,
+        esSuperAdministrador: isChecked,
+        centroEducativoId: 1
+      });
+      console.log(e.target.checked)
     }
   };
 
@@ -167,6 +197,25 @@ const CreateUserModal = (props) => {
       getInitRoles();
       getInitCentrosEducativos();
     };
+    // const date = Date.now();
+
+    // const currentDate = new Date();
+    // let minStudentBirthDate = currentDate;
+    // minStudentBirthDate = minStudentBirthDate.setFullYear(
+    //   minStudentBirthDate.getFullYear() - 5
+    // );
+
+    // let minAdminBirthDate = currentDate;
+    // minAdminBirthDate = minAdminBirthDate.setFullYear(
+    //   minAdminBirthDate.getFullYear() - 5
+    // );
+
+    // let minTeacherBirthDate = new Date();
+    // minTeacherBirthDate = minTeacherBirthDate.setFullYear(
+    //   minTeacherBirthDate.getFullYear() - 18
+    // );
+    // console.log(minTeacherBirthDate);
+
     initData();
   }, []);
 
@@ -222,18 +271,27 @@ const CreateUserModal = (props) => {
             <div className="underline"></div>
           </div>
           <div className="form-group">
-            <input
+            {/* <input
               type="date"
               name="fecha-nacimiento"
               id="fecha-nacimiento"
               value={user.fechaNacimiento}
               onChange={handleFechaNacimientoChange}
               required
-            />
+            /> */}
             <label htmlFor="fecha-nacimiento" className="">
               <span className="label-content">Fecha de nacimiento</span>
             </label>
             <div className="underline"></div>
+          </div>
+          <div>
+            <DateTimePicker
+              value={user.fechaNacimiento}
+              onChange={handleFechaNacimientoChange}
+              format="dd-MM-y"
+              className="form-control"
+              required
+            />
           </div>
           <div className="form-group">
             <input
@@ -283,24 +341,40 @@ const CreateUserModal = (props) => {
               ))}
             </select>
           </div>
-          <div className="form-group">
-            <select
-              name="centroEducativo"
-              id="centroEducativo"
-              className="form-control"
-              value={user.centroEducativoId}
-              onChange={handleCentroEducativoChange}
-            >
-              {centrosEducativos.map((centroEducativo) => (
-                <option
-                  key={centroEducativo && centroEducativo.id}
-                  value={centroEducativo && centroEducativo.id}
-                >
-                  {centroEducativo && centroEducativo.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
+          {user.rolId == 1 ? (
+            <div className="form-check mt-3">
+              <input
+                type="checkbox"
+                name="is-superadmin"
+                id="is-superadmin"
+                className="form-check-input"
+                onChange={handleIsSuperadministradorChange}
+              />
+              <label htmlFor="is-superadmin" className="form-check-label">
+                Es superadministrador
+              </label>
+            </div>
+          ) : null}
+          {user.esSuperAdministrador ? null : (
+            <div className="form-group">
+              <select
+                name="centroEducativo"
+                id="centroEducativo"
+                className="form-control"
+                value={user.centroEducativoId}
+                onChange={handleCentroEducativoChange}
+              >
+                {centrosEducativos.map((centroEducativo) => (
+                  <option
+                    key={centroEducativo && centroEducativo.id}
+                    value={centroEducativo && centroEducativo.id}
+                  >
+                    {centroEducativo && centroEducativo.nombre}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
           <div className="d-flex justify-content-between mt-5">
             <button
               type="button"
