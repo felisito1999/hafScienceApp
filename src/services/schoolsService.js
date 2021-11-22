@@ -37,8 +37,17 @@ schoolsService.getAll = async () => {
 };
 
 schoolsService.getAllPaginatedSchools = async (page, pageSize) => {
+  const CancelToken = axios.CancelToken;
+  const source = CancelToken.source();
+
+  const timeout = setTimeout(() => {
+    source.cancel();
+    alert('Ha pasado el tiempo máximo de respuesta');
+  }, 20000);
+
   const config = {
     url: `${process.env.REACT_APP_API_URL}centroseducativos`,
+    cancelToken: source.token,
     method: 'get',
     params: {
       page: page,
@@ -52,9 +61,11 @@ schoolsService.getAllPaginatedSchools = async (page, pageSize) => {
 
   try {
     const response = await axios(config);
+    clearTimeout(timeout);
     return response.data;
   } catch (error) {
     console.log(error);
+    clearTimeout(timeout);
   }
 };
 
@@ -109,6 +120,7 @@ schoolsService.getById = async (id) => {
 
   const config = {
     method: 'get',
+    cancelToken: source.token,
     url: `${process.env.REACT_APP_API_URL}centroseducativos`,
     params: {
       id: id,
@@ -328,7 +340,6 @@ schoolsService.getRegionales = async () => {
 
   const timeout = setTimeout(() => {
     source.cancel();
-    alert('Ha pasado el tiempo máximo de respuesto.');
   }, 20000);
 
   const config = {
@@ -372,7 +383,6 @@ schoolsService.getDistritos = async () => {
 
   const timeout = setTimeout(() => {
     source.cancel();
-    alert('Ha pasado el tiempo máximo de respuesto.');
   }, 20000);
 
   const config = {
@@ -416,7 +426,6 @@ schoolsService.getDistritosByRegionalId = async (regionalId) => {
 
   const timeout = setTimeout(() => {
     source.cancel();
-    alert('Ha pasado el tiempo máximo de respuesto.');
   }, 20000);
 
   const config = {
@@ -463,7 +472,6 @@ schoolsService.getAllSchoolTypes = async () => {
 
   const timeout = setTimeout(() => {
     source.cancel();
-    alert('Ha pasado el tiempo máximo de respuesto.');
   }, 20000);
 
   const config = {

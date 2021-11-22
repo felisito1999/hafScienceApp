@@ -266,6 +266,10 @@ const UsersDashboard = (props) => {
                             {user.nombres} {user.apellidos}
                           </p>
                           <p>
+                            <span className="fw-bold">Código: </span>
+                            {user.codigo}
+                          </p>
+                          <p>
                             <span className="fw-bold">Nombre de usuario: </span>
                             {user.nombreUsuario}
                           </p>

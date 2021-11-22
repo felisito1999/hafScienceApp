@@ -4,8 +4,10 @@ import PuzzleSelector from './PuzzleSelector';
 import { ReactComponent as PuzzleIcon } from '../images/rompecabezas.svg';
 import { ReactComponent as Agrupamiento } from '../images/agrupamiento.svg';
 import { ReactComponent as Memoria } from '../images/brain-svgrepo-com.svg';
+import { ReactComponent as Atrapar } from '../images/catch-game.svg';
 import AssociationSelector from './AssociationSelector';
 import MemorySelector from './MemorySelector';
+import AtraparElementos from './AtraparElementos';
 
 const GameSelector = (props) => {
   const host = process.env.REACT_APP_HOST_NAME;
@@ -18,34 +20,42 @@ const GameSelector = (props) => {
             <h1 className="banner-title text-center">
               Seleccione el juego al que desea acceder
             </h1>
-            <div className=" align-items-center d-flex flex-lg-row justify-content-lg-between flex-sm-column flex-column justify-content-center pt-5 container">
+            <div className="py-5 d-flex flex-column align-items-center">
               <Link
                 to={`${host}juegos/rompecabezas`}
-                className="pb-3 d-flex flex-row flex-md-column align-items-center justify-content-center text-dark text-decoration-none"
+                className="d-flex flex-column pb-3 text-dark text-decoration-none"
               >
-                <PuzzleIcon height="100" />
-                <span className="flex-sm-grow-1 text-center flex-md-grow-0 w-100 fw-bold">
+                <PuzzleIcon height="100"/>
+                <span className="text-center w-100 fw-bold">
                   Rompecabezas
                 </span>
               </Link>
               <Link
                 to={`${host}juegos/asociaciones`}
-                className="pt-3 d-flex flex-row flex-sm-row flex-md-column align-items-center justify-content-center text-dark text-decoration-none"
+                className="pt-3 d-flex flex-column text-dark text-decoration-none"
               >
-                <Agrupamiento height="100" />
-                <span className="flex-sm-grow-1 text-center flex-md-grow-0 w-100 fw-bold">
+                <Agrupamiento height="100"/>
+                <span className="text-center w-100 fw-bold">
                   Asociación
                 </span>
               </Link>
               <Link
                 to={`${host}juegos/memoria`}
-                className="pt-3 d-flex flex-row flex-sm-row flex-md-column align-items-center justify-content-center text-dark text-decoration-none"
+                className="pt-3 d-flex flex-column text-dark text-decoration-none"
               >
-                <Memoria height="100" />
-                <span className="flex-sm-grow-1 text-center flex-md-grow-0 w-100 fw-bold">
+                <Memoria height="100"/>
+                <span className="text-center w-100 fw-bold">
                   Memoria
                 </span>
               </Link>
+              <Link 
+                to={`${host}juegos/atraparelementos`}
+                className="pt-3 d-flex flex-column text-dark text-decoration-none">
+                  <Atrapar height="100"/>
+                  <span className="text-center w-100 fw-bold">
+                    Atrapa elementos
+                  </span>
+                </Link>
             </div>
           </section>
         </div>
@@ -58,6 +68,9 @@ const GameSelector = (props) => {
       </Route>
       <Route path={`${host}juegos/memoria`}>
         <MemorySelector />
+      </Route>
+      <Route path={`${host}juegos/atraparelementos`}>
+        <AtraparElementos />
       </Route>
     </Switch>
   );

@@ -8,7 +8,7 @@ import authService from '../services/authService.js';
 const Login = (props) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const host = process.env.REACT_APP_HOST_NAME;
   const history = useHistory();
   const handleUsernameChange = (event) => {
     event.preventDefault();
@@ -77,6 +77,13 @@ const Login = (props) => {
             <div className="underline"></div>
           </div>
           <div className="form-group">
+            <Link 
+            className="text-decoration-none text-center text-success"
+            to={`${host}reset-password`} 
+            >
+             
+              <p className="text-center">¿Olvidaste tu contraseña?</p>
+            </Link>
             <button className="btn sign-in-button" onClick={submitLogin}>
               Iniciar sesión
             </button>

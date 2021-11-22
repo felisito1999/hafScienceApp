@@ -22,6 +22,7 @@ import NotFound from './components/NotFound';
 import TeachersSessionsDashboard from './components/TeachersSessionsDashboard';
 import UserProfile from './components/UserProfile';
 import LandingPage from './components/LandingPage';
+import ResetPassword from './components/ResetPassword';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -119,6 +120,7 @@ const App = () => {
             isLoggedIn={loggedIn}
             component={TeachersSessionsDashboard}
           />
+          <Route path={`${host}reset-password`} component={ResetPassword}/>
           <Route>
             <NotFound />
           </Route>

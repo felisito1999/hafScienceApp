@@ -10,7 +10,7 @@
     <style>.thumbnail{ height: 185px;}
     </style>
 </head>
-<body>
+<body background="chemistry-image.jpg" >
     <div class="container text-center">
         <br/>
         <div class="row">
@@ -19,8 +19,8 @@
                
                <p>
                 
-                <img src="imgs/ositos.gif" height="70px" alt="">
-                <img src="imgs/NINO.gif" height="70px" alt="">
+                <img src="imgs/association_easy_imgs/ositos.gif" height="70px" alt="">
+                <img src="imgs/association_easy_imgs/NINO.gif" height="70px" alt="">
                 <h3> 
                     Tiene tres intentos para asociar el nombre del elemento con la descripción que se muestra en la imagen y entiendas que sea la correcta
                 </h3>
@@ -71,15 +71,15 @@
     "rubidio","calcio","potasio","magnesio","berilio",
     "hidrogeno","itrio","escandio","rutherfordio","hafnio",
     "zirconio","tantalio","niobio","vanadio","seaborgio",
-    "tungsteno","molibdeno","cromo","bohrio","renio","tecnecio",
-    "manganeso","hassio","osmio","rutenio","hierro","meitnerio",
+    "wolfamio","molibdeno","cromo","bohrio","renio","tecnecio"
+    ,"hassio","osmio","rutenio","hierro","meitnerio",
     "azufre","oxigeno","paladio","niquel","roentgenio","oro",
     "xenon","argon","neon","helio","bismuto","ununpentio","carbono",
     "antimonio","arsenico","nitrogeno","livermenio","polonio","telurio","selenio",
     "unuseption","astato","krypton","ununoctio","yodo","bromo",
     "cloro","fluor","silicio","germanio","plata","cobre","copernicio","estano",
     "plomo","flerovio","boro","mercurio","cadmio","zinc","aluminio","galio","indio",
-    "ununtrio","talio"];
+    "talio"];
         
         
         
@@ -94,15 +94,15 @@
     "rubidio","calcio","potasio","magnesio","berilio",
     "hidrogeno","itrio","escandio","rutherfordio","hafnio",
     "zirconio","tantalio","niobio","vanadio","seaborgio",
-    "tungsteno","molibdeno","cromo","bohrio","renio","tecnecio",
-    "manganeso","hassio","osmio","rutenio","hierro","meitnerio",
+    "wolfamio","molibdeno","cromo","bohrio","renio","tecnecio"
+    ,"hassio","osmio","rutenio","hierro","meitnerio",
     "azufre","oxigeno","paladio","niquel","roentgenio","oro",
     "xenon","argon","neon","helio","bismuto","ununpentio","carbono",
     "antimonio","arsenico","nitrogeno","livermenio","polonio","telurio","selenio",
     "unuseption","astato","krypton","ununoctio","yodo","bromo",
     "cloro","fluor","silicio","germanio","plata","cobre","copernicio","estano",
     "plomo","flerovio","boro","mercurio","cadmio","zinc","aluminio","galio","indio",
-    "ununtrio","talio"];
+    "talio"];
             tbelementsJuego = [];
             indice=0;
             item=0;
@@ -122,19 +122,23 @@
            clearInterval(tiempo);
             
            $.each(tbelementsJuego, function( i, val ) {
-               
-            $("#tbelements").append('<div class="col-xs-4 col-md-4" ><a href="#" class="thumbnail"><img src="imgs/'+val+'.png" id='+val+' draggable="true" ondragstart="drag(event)" style="cursor:move" /></a></div>');
+            $("#tbelements").append('<div class="col-xs-4 col-md-4" ><a href="#" class="thumbnail"><img src="imgs/association_easy_imgs/'+val+'.png" id='+val+' draggable="true" ondragstart="drag(event)" style="cursor:move" /></a></div>');
                
         });
         $("#dragelements").append('<a href="#" class="thumbnail"   ></a><p>¿Cúal de las imagenes pertenece al elemento?</p><h3><span class="label label-danger">'+item+"</span></h3><br/>");
          
         }
 function allowDrop(ev) { ev.preventDefault();}
-function drag(ev) {ev.dataTransfer.setData("text", ev.target.id);}
+
+function drag(ev) {ev.dataTransfer.setData("text/plain", ev.target.id);}
 function drop(ev) {
     ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    if(data==item){
+    var data = ev.dataTransfer.getData("text/plain");
+    const img = document.getElementById(item);
+    console.log(img);
+    // console.log(data);
+    // console.log(item);
+    if(data == item){
     ev.target.appendChild(document.getElementById(data));      
             Puntos++;
             $("#Puntaje").html('<span class="label label-default">Puntos: '+Puntos+'</span>');
@@ -147,14 +151,10 @@ function drop(ev) {
          resultado=valorTotal-oportunidad
          texto.textContent="Elemento incorrecto. Le quedan: "+resultado + " Intentos"
 
-         
-      
          document.getElementById('colum1').style.display = 'block';
          
          if(oportunidad==3)
          {
-
-        
         alert("Perdiste! Vamos, intentalo de nuevo"); Puntos=0;
         $("#Puntaje").html('Puntos:'+Puntos+'');
         tiempo=setInterval(function(){ IniciarJuego(); }, 800);
@@ -178,7 +178,7 @@ function drop(ev) {
     
     })();
 </script>
-<button id="btnsalir">Salir</button>
+
 </body>
 
 </html>

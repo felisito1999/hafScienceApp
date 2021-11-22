@@ -8,7 +8,7 @@ function AssociationDifficult(props) {
         key={1}
         title="association-difficult"
         className="h-100 w-100"
-        src={`${host}atraparElementos.html`}
+        src={`${host}association-difficult.html`}
         frameBorder="0"
       ></iframe>
     </div>
