@@ -93,7 +93,7 @@ const UpdateSessions = (props) => {
     setSession({
       ...session,
       usuariosSesiones: newEstudiantes,
-    });
+    }); 
   };
 
   const handleStudentsRemove = (student) => {

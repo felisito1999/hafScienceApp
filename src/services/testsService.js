@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const apiUrl = `${process.env.REACT_APP_API_URL}provincias`;
-let provinciasService = {};
+const host = process.env.REACT_APP_API_URL;   
+let testService = {};
 
-provinciasService.getAllProvincias = async () => {
+testService.savePruebaDiagnostica = async (pruebaDiagnostica) => {
   const cancelToken = axios.CancelToken;
   const source = cancelToken.source();
 
@@ -12,21 +12,26 @@ provinciasService.getAllProvincias = async () => {
     alert('Ha pasado el tiempo máximo de respuesta');
   }, 20000);
 
-  const config = {
+  const pruebaDiagnosticaConfig = {
     cancelToken: source.token,
-    method: 'get',
-    url: `${apiUrl}`,
+    method: 'post',
+    url: `${host}save-prueba-diagnostica`,
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`
     },
-    data: null,
+    data: {
+      ...pruebaDiagnostica
+    }
   };
 
   try {
-    const response = await axios(config);
+    const pruebasDiagnosticasResponse = await axios(pruebaDiagnosticaConfig);
     clearTimeout(timeout);
-    return response;
+
+    return pruebasDiagnosticasResponse; 
   } catch (error) {
+    
     clearTimeout(timeout);
     if (error.response) {
       //La petición ha sido realizada y el servidor respondió con un status code de error.
@@ -44,6 +49,4 @@ provinciasService.getAllProvincias = async () => {
       console.log('Error', error.message);
     }
   }
-};
-
-export default provinciasService;
+}
