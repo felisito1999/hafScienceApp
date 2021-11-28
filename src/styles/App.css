@@ -147,6 +147,10 @@ main {
   background-color: #4db6ac !important;
 }
 
+.form-label {
+  color: #05668d;
+}
+
 /* input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
     -webkit-appearance: none;
