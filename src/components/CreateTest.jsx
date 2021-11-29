@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Accordion from 'react-bootstrap/Accordion';
 import DateTimePicker from 'react-datetime-picker/dist/DateTimePicker';
 import { GrAdd } from 'react-icons/gr';
+import { AiFillCheckCircle, AiFillCloseCircle } from 'react-icons/ai';
 import AddTestQuestionsModal from './AddTestQuestionsModal';
+import testsService from '../services/testsService';
 
 function CreateTest(props) {
   // const today = new Date();
+  const host = process.env.REACT_APP_HOST_NAME;
+  const history = useHistory();
 
   const defaultPruebaDiagnostica = {
-    titulo: '',
-    calificacionMaxima: 0.0,
+    pruebaDiagnostica: {
+      titulo: '',
+      calificacionMaxima: 0.0
+    },
     // fechaInicio: today,
     // fechaLimite: today.setDate(today.getDate() + 1),
     preguntas: [],
@@ -23,10 +31,12 @@ function CreateTest(props) {
 
   const handleTituloChange = (e) => {
     const titulo = e.target.value;
+    const pruebaDiagnosticaValue = pruebaDiagnostica.pruebaDiagnostica;
+    pruebaDiagnosticaValue.titulo = titulo; 
 
     setPruebaDiagnostica({
-      pruebaDiagnostica,
-      titulo: titulo,
+      ...pruebaDiagnostica,
+      pruebaDiagnostica: pruebaDiagnosticaValue,
     });
   };
 
@@ -40,9 +50,13 @@ function CreateTest(props) {
     if (calificacionMaxima <= 0) {
       calificacionMaxima = 0.0;
     }
+
+    const pruebaDiagnositcaValue = pruebaDiagnostica.pruebaDiagnostica;
+    pruebaDiagnositcaValue.calificacionMaxima = calificacionMaxima;
+
     setPruebaDiagnostica({
       ...pruebaDiagnostica,
-      calificacionMaxima: calificacionMaxima,
+      pruebaDiagnostica: pruebaDiagnositcaValue,
     });
   };
 
@@ -73,12 +87,49 @@ function CreateTest(props) {
     });
   };
 
+  const addSelectedQuestion = (question) => {
+    if (question) {
+      if (
+        pruebaDiagnostica.preguntas.filter(
+          (pregunta) => pregunta.titulo === question.titulo
+        ).length > 0
+      ) {
+        alert('Esta pregunta ya se encuentra agregada a la prueba');
+        return;
+      }
+
+      var existingQuestions = pruebaDiagnostica.preguntas;
+      existingQuestions.push(question);
+
+      setPruebaDiagnostica({
+        ...pruebaDiagnostica,
+        preguntas: existingQuestions,
+      });
+
+      console.log(question);
+
+      handleQuestionsModalOpen();
+    }
+  };
+
   const handleQuestionsModalOpen = (e) => {
     if (e) {
       e.preventDefault();
     }
-    
+
     setIsQuestionsModalOpen(!isQuestionsModalOpen);
+  };
+
+  const submitTest = async (pruebaDiagnostica) => {
+    try {
+      const result = await testsService.savePruebaDiagnostica(
+        pruebaDiagnostica
+      );
+      alert('La prueba diagnóstica ha sido guardada exitosamente.');
+      history.push(`${host}pruebas-diagnosticas`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -87,7 +138,14 @@ function CreateTest(props) {
         <h1 className="fw-bold text-center">
           Creación de pruebas diagnósticas
         </h1>
-        <form autoComplete="false" className="form bg-light">
+        <form
+          autoComplete="false"
+          onSubmit={(e) => {
+            e.preventDefault();
+            submitTest(pruebaDiagnostica);
+          }}
+          className="form bg-light"
+        >
           <section id="general-test-info">
             <Row className="mb-3">
               <Col sm={10}>
@@ -96,7 +154,7 @@ function CreateTest(props) {
                     type="text"
                     name="titulo"
                     id="titulo"
-                    value={pruebaDiagnostica.titulo}
+                    value={pruebaDiagnostica.pruebaDiagnostica.titulo}
                     autoComplete="off"
                     minLength="2"
                     maxLength="50"
@@ -115,7 +173,7 @@ function CreateTest(props) {
                     type="number"
                     name="calificacion-maxima"
                     id="calificacion-maxima"
-                    value={pruebaDiagnostica.calificacionMaxima}
+                    value={pruebaDiagnostica.pruebaDiagnostica.calificacionMaxima}
                     autoComplete="off"
                     min="0.00"
                     max="100.00"
@@ -130,6 +188,9 @@ function CreateTest(props) {
                 </div>
               </Col>
             </Row>
+            <button className="w-100 btn btn-success" type="submit">
+              Crear prueba diagnóstica
+            </button>
             {/* <Row className="mb-3">
               <Col sm={6}>
                 <div>
@@ -171,6 +232,7 @@ function CreateTest(props) {
               {isQuestionsModalOpen ? (
                 <AddTestQuestionsModal
                   show={isQuestionsModalOpen}
+                  onQuestionSelected={addSelectedQuestion}
                   onHide={handleQuestionsModalOpen}
                 />
               ) : null}
@@ -178,14 +240,52 @@ function CreateTest(props) {
                 className="btn btn-success"
                 onClick={handleQuestionsModalOpen}
               >
-                <GrAdd className="fw-bold" size={18} />
+                Añadir pregunta
               </button>
             </div>
-
-            {pruebaDiagnostica &&
-              pruebaDiagnostica.preguntas.map((pregunta) => (
-                <h1>Hello soy una pregunta</h1>
-              ))}
+            <Accordion
+              className="mb-5"
+              defaultActiveKey="questions" /*{registeredQuestions[0].id}*/
+            >
+              {pruebaDiagnostica &&
+                pruebaDiagnostica.preguntas &&
+                pruebaDiagnostica.preguntas.map((question, index) => (
+                  <Accordion.Item key={index} eventKey={'questions'}>
+                    <Accordion.Header>{question.titulo}</Accordion.Header>
+                    <Accordion.Body>
+                      {question.respuesta &&
+                        question.respuesta.map((respuesta, index) => (
+                          <div key={index} className="input-group mb-3">
+                            <span
+                              className="input-group-text pointer-cursor"
+                              id={`Respuesta${index}`}
+                            >
+                              {respuesta.esCorrecta ? (
+                                <AiFillCheckCircle
+                                  className="cursor-pointer text-success"
+                                  size={25}
+                                />
+                              ) : (
+                                <AiFillCloseCircle
+                                  className="text-danger"
+                                  size={25}
+                                />
+                              )}
+                            </span>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={respuesta.contenido}
+                              aria-label="Username"
+                              aria-describedby={`Respuesta${index}`}
+                              disabled
+                            />
+                          </div>
+                        ))}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                ))}
+            </Accordion>
           </section>
           <button className="w-100 btn btn-success" type="submit">
             Crear prueba diagnóstica

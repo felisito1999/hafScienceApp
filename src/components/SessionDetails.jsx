@@ -15,6 +15,9 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Tab from 'react-bootstrap/Tab';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { GrAdd } from 'react-icons/gr';
+import testsService from '../services/testsService';
+import AssignTestToSessionModal from './AssignTestToSessionModal';
 
 const SessionDetails = (props) => {
   const host = process.env.REACT_APP_HOST_NAME;
@@ -29,6 +32,8 @@ const SessionDetails = (props) => {
   const [usersSelectedPage, setUsersSelectedPage] = useState(1);
   const [usersPageSize, setUsersPageSize] = useState(3);
   const [usersRecordsTotal, setUsersRecordsTotal] = useState(0);
+
+  const [isAddTestsModalOpen, setIsAddTestsModalOpen] = useState(false);
 
   const handlePageChange = (selectedPage) => {
     setUsersSelectedPage(selectedPage);
@@ -69,7 +74,6 @@ const SessionDetails = (props) => {
 
   const handleCloseDelete = () => {
     setIsDeleting(false);
-
   };
 
   const handleDeleteSession = async () => {
@@ -89,6 +93,22 @@ const SessionDetails = (props) => {
     e.preventDefault();
     setIsEditing(!isEditing);
     setUpdatesession(session);
+  };
+
+  const handleOpenAddTestModal = () => {
+    setIsAddTestsModalOpen(!isAddTestsModalOpen);
+  };
+
+  const handleAddTestToSession = async (assignmentInfo) => {
+    try {
+      const result = await testsService.assignTestToSession(assignmentInfo);
+
+      handleOpenAddTestModal();
+
+      const sessionData = await sessionsService.getById(sessionId);
+      setSession(sessionData.data);
+      getSessionUsers(usersSelectedPage, usersPageSize, sessionId);
+    } catch (error) {}
   };
 
   const handleSessionUpdate = async (session) => {
@@ -120,6 +140,14 @@ const SessionDetails = (props) => {
             onHide={handleCloseDelete}
             object={'sesión'}
             handleConfirmDelete={handleDeleteSession}
+          />
+        ) : null}
+        {isAddTestsModalOpen ? (
+          <AssignTestToSessionModal
+            show={isAddTestsModalOpen}
+            onHide={handleOpenAddTestModal}
+            onSelecting={handleAddTestToSession}
+            sessionId={sessionId}
           />
         ) : null}
         <div className="d-flex justify-content-end">
@@ -256,9 +284,17 @@ const SessionDetails = (props) => {
                         </div>
                       </Tab.Pane>
                       <Tab.Pane eventKey="pruebas">
-                        <div className="py-5 d-flex flex-column align-items-center">
-                          <h1 className="fw-bold">Pruebas</h1>
-                          
+                        <div className="py-5 d-flex flex-row  align-items-center">
+                          <h3 className="fw-bold flex-grow-1">Pruebas</h3>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleOpenAddTestModal();
+                            }}
+                            className="btn btn-success"
+                          >
+                            <GrAdd size={20} />
+                          </button>
                           {/* Agregar la parte de la fecha de ingreso en el sistema */}
                         </div>
                       </Tab.Pane>
@@ -313,7 +349,9 @@ const SessionDetails = (props) => {
                       </Tab.Pane>
                       <Tab.Pane eventKey="actividad">
                         <div className="py-5 d-flex flex-column align-items-center">
-                          <h1 className="fw-bold">Actividades de los estudiantes</h1>
+                          <h1 className="fw-bold">
+                            Actividades de los estudiantes
+                          </h1>
                           {/* Agregar la parte de la fecha de ingreso en el sistema */}
                         </div>
                       </Tab.Pane>

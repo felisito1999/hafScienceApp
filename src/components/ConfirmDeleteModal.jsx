@@ -22,7 +22,7 @@ const ConfirmDeleteModal = (props) => {
             className="btn btn-danger"
             onClick={(e) => {
               e.preventDefault();
-              props.handleConfirmDelete();
+              props.handleConfirmDelete(props.sessionId);
               props.onHide();
             }}
           >

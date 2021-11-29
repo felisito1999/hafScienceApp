@@ -95,8 +95,13 @@ const App = () => {
           <ProtectedRoute
             path={`${host}pruebas-diagnosticas`}
             isLoggedIn={loggedIn}
-            component={TestAttempt}
+            component={CreateTest}
           />
+          {/* <ProtectedRoute
+            path={`${host}crear-prueba-diagnostica`}
+            isLoggedIn={loggedIn}
+            component={CreateTest}
+          /> */}
           <ProtectedRoute
             path={`${host}juegos`}
             isLoggedIn={loggedIn}
@@ -121,8 +126,11 @@ const App = () => {
             isLoggedIn={loggedIn}
             component={TeachersSessionsDashboard}
           />
-          <Route path={`${host}prueba-diagnostica-development`} component={CreateTest}/>
-          <Route path={`${host}reset-password`} component={ResetPassword}/>
+          <Route
+            path={`${host}prueba-diagnostica-development`}
+            component={CreateTest}
+          />
+          <Route path={`${host}reset-password`} component={ResetPassword} />
           <Route>
             <NotFound />
           </Route>

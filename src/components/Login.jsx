@@ -76,7 +76,7 @@ const Login = (props) => {
             </label>
             <div className="underline"></div>
           </div>
-          <div className="form-group">
+          <div className="mt-2">
             <Link 
             className="text-decoration-none text-center text-success"
             to={`${host}reset-password`} 
@@ -84,7 +84,7 @@ const Login = (props) => {
              
               <p className="text-center">¿Olvidaste tu contraseña?</p>
             </Link>
-            <button className="btn sign-in-button" onClick={submitLogin}>
+            <button className="w-100 btn btn-success" onClick={submitLogin}>
               Iniciar sesión
             </button>
           </div>

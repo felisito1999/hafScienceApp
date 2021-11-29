@@ -6,6 +6,7 @@ import rolesService from '../services/rolesService';
 import schoolsService from '../services/schoolsService';
 import userService from '../services/usersService';
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
+import DateTimePicker from 'react-datetime-picker/dist/DateTimePicker';
 
 const UserDetailsModal = (props) => {
   const [user, setUser] = useState(null);
@@ -13,6 +14,10 @@ const UserDetailsModal = (props) => {
   const [centrosEducativos, setCentrosEducativos] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const today = new Date();
+
+  const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDay());
 
   const handleNombresChange = (e) => {
     setUser({
@@ -28,13 +33,13 @@ const UserDetailsModal = (props) => {
     });
   };
 
-  const handleFechaNacimientoChange = (e) => {
+  const handleFechaNacimientoChange = (value) => {
+
     setUser({
       ...user,
-      fechaNacimiento: format(Date.parse(e.target.value), 'yyyy/MM/dd'),
+      fechaNacimiento: value,
     });
-
-    console.log(e.target.value);
+    console.log(value);
   };
 
   const telefonoInputMask = (telephone) => {
@@ -212,23 +217,17 @@ const UserDetailsModal = (props) => {
                   </label>
                   <div className="underline"></div>
                 </div>
-                <div className="form-group">
-                  <input
-                    type="date"
-                    name="fecha-nacimiento"
-                    id="fecha-nacimiento"
-                    value={format(
-                      Date.parse(user.fechaNacimiento),
-                      'yyyy-MM-dd'
-                    )}
-                    onChange={handleFechaNacimientoChange}
-                    required
-                  />
-                  <label htmlFor="fecha-nacimiento" className="">
-                    <span className="label-content">Fecha de nacimiento</span>
-                  </label>
-                  <div className="underline"></div>
-                </div>
+                <div>
+            <DateTimePicker
+              value={new Date(user.fechaNacimiento)}
+              // onClick={handleChangeMaxDate}
+              maxDate={maxDate}
+              onChange={handleFechaNacimientoChange}
+              format="dd-MM-y"
+              className="form-control"
+              required
+            />
+          </div>
                 <div className="form-group">
                   <input
                     type="tel"

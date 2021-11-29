@@ -81,13 +81,20 @@ const TeachersSessionsDashboard = (props) => {
   };
   
   const handleDeleteSession = async (sessionId) => {
-    const result = await sessionsService.deleteSession(sessionId);
-    console.log(result);
-
-    handleCloseDeleteModal();
+    try {
+      const result = await sessionsService.deleteSession(sessionId);
+      
+      getSessions(selectedPage, pageSize);
+  
+      handleCloseDeleteModal(); 
+    } catch (error) {
+      
+    }
   };
 
   const handleOpenDeleteConfirmModal = (sessionId) => {
+    console.log(sessionId);
+    setDeleteSessionId(sessionId);
     setIsConfirmDeleteModalOpen(true);
   };
 
@@ -119,6 +126,7 @@ const TeachersSessionsDashboard = (props) => {
           show={isConfirmDeleteModalOpen}
           onHide={handleCloseDeleteModal}
           object={'sesión'}
+          sessionId={deleteSessionId}
           handleConfirmDelete={handleDeleteSession}
         />
       ) : null}
@@ -208,7 +216,7 @@ const TeachersSessionsDashboard = (props) => {
                                     className="py-3 text-dark text-decoration-none"
                                     onClick={(e) => {
                                       e.preventDefault();
-                                      handleOpenDeleteConfirmModal()
+                                      handleOpenDeleteConfirmModal(session.id)
                                     }}
                                   >
                                     <AiFillDelete size={20} />{' '}
