@@ -3,6 +3,7 @@ import { ReactComponent as Number1 } from '../images/number-1-svgrepo-com.svg';
 import { ReactComponent as Number2 } from '../images/number-2-svgrepo-com.svg';
 import { Switch, Route, Link } from 'react-router-dom';
 import MemoryEasy from './MemoryEasy';
+import MemoryGame from './MemoryGame';
 
 const MemorySelector = (props) => {
   const host = process.env.REACT_APP_HOST_NAME;
@@ -21,7 +22,7 @@ const MemorySelector = (props) => {
               >
                 <Number1 height="100" />
                 <span className="flex-sm-grow-1 text-center flex-md-grow-0 w-100 fw-bold">
-                  Nivel fácil
+                  Demo
                 </span>
               </Link>
               <Link
@@ -30,7 +31,7 @@ const MemorySelector = (props) => {
               >
                 <Number2 height="100" />
                 <span className="flex-sm-grow-1 text-center flex-md-grow-0 w-100 fw-bold">
-                  Nivel difícil
+                  Juego de memoria
                 </span>
               </Link>
             </div>
@@ -42,6 +43,7 @@ const MemorySelector = (props) => {
       </Route>
       <Route path={`${host}juegos/memoria/niveldificil`}>
         {/* <PuzzleGameDifficult /> */}
+        <MemoryGame />
       </Route>
     </Switch>
   );

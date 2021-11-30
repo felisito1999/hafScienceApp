@@ -32,6 +32,10 @@ const SessionDetails = (props) => {
   const [usersSelectedPage, setUsersSelectedPage] = useState(1);
   const [usersPageSize, setUsersPageSize] = useState(3);
   const [usersRecordsTotal, setUsersRecordsTotal] = useState(0);
+  const [pruebasDiagnosticas, setPruebasDiagnosticas] = useState([]);
+  const [selectedPruebasPage, setSelectedPruebasPage] = useState(1);
+  const [pruebasPageSize, setPruebasPageSize] = useState(10);
+  const [pruebasRecordsTotal, setPruebasRecordsTotal] = useState(0); 
 
   const [isAddTestsModalOpen, setIsAddTestsModalOpen] = useState(false);
 
@@ -111,6 +115,17 @@ const SessionDetails = (props) => {
     } catch (error) {}
   };
 
+  const getSessionsPruebasDiagnosticas = async (sessionId, page, pageSize) => {
+    try {
+      const result = await testsService.getBySessionId(page, pageSize, sessionId);
+      console.log(result);
+      setPruebasDiagnosticas(result.data.records);
+      setPruebasRecordsTotal(result.data.recordsData);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const handleSessionUpdate = async (session) => {
     if (isEditing) {
       const response = await sessionsService.updatesession(session);
@@ -128,7 +143,9 @@ const SessionDetails = (props) => {
       const sessionData = await sessionsService.getById(sessionId);
       setSession(sessionData.data);
       getSessionUsers(usersSelectedPage, usersPageSize, sessionId);
+      await getSessionsPruebasDiagnosticas(sessionId, selectedPruebasPage, pruebasPageSize);
     };
+
     getInitData();
   }, []);
   return (
@@ -297,6 +314,11 @@ const SessionDetails = (props) => {
                           </button>
                           {/* Agregar la parte de la fecha de ingreso en el sistema */}
                         </div>
+                        <div className="container">
+                            {pruebasDiagnosticas && pruebasDiagnosticas.map((prueba, index) => (
+                              <h1>{prueba.titulo}</h1>
+                            ))}
+                          </div>
                       </Tab.Pane>
                       <Tab.Pane eventKey="participantes">
                         <Row xs={1} className="g-2 pb-2">
