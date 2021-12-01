@@ -17,7 +17,7 @@ function CreateTest(props) {
   const defaultPruebaDiagnostica = {
     pruebaDiagnostica: {
       titulo: '',
-      calificacionMaxima: 0.0
+      calificacionMaxima: 0.0,
     },
     // fechaInicio: today,
     // fechaLimite: today.setDate(today.getDate() + 1),
@@ -32,7 +32,7 @@ function CreateTest(props) {
   const handleTituloChange = (e) => {
     const titulo = e.target.value;
     const pruebaDiagnosticaValue = pruebaDiagnostica.pruebaDiagnostica;
-    pruebaDiagnosticaValue.titulo = titulo; 
+    pruebaDiagnosticaValue.titulo = titulo;
 
     setPruebaDiagnostica({
       ...pruebaDiagnostica,
@@ -134,6 +134,13 @@ function CreateTest(props) {
 
   return (
     <div className="component-wrapper">
+      {isQuestionsModalOpen ? (
+        <AddTestQuestionsModal
+          show={isQuestionsModalOpen}
+          onQuestionSelected={addSelectedQuestion}
+          onHide={handleQuestionsModalOpen}
+        />
+      ) : null}
       <div className="container bg-light rounded-3 shadow py-3 my-5">
         <h1 className="fw-bold text-center">
           Creación de pruebas diagnósticas
@@ -173,7 +180,9 @@ function CreateTest(props) {
                     type="number"
                     name="calificacion-maxima"
                     id="calificacion-maxima"
-                    value={pruebaDiagnostica.pruebaDiagnostica.calificacionMaxima}
+                    value={
+                      pruebaDiagnostica.pruebaDiagnostica.calificacionMaxima
+                    }
                     autoComplete="off"
                     min="0.00"
                     max="100.00"
@@ -229,13 +238,6 @@ function CreateTest(props) {
           <section id="test-questions">
             <div className="my-5 d-flex flex-row">
               <h3 className="flex-grow-1 fw-bold">Preguntas</h3>
-              {isQuestionsModalOpen ? (
-                <AddTestQuestionsModal
-                  show={isQuestionsModalOpen}
-                  onQuestionSelected={addSelectedQuestion}
-                  onHide={handleQuestionsModalOpen}
-                />
-              ) : null}
               <button
                 className="btn btn-success"
                 onClick={handleQuestionsModalOpen}
