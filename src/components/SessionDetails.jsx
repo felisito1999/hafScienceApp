@@ -18,10 +18,12 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { GrAdd } from 'react-icons/gr';
 import testsService from '../services/testsService';
 import AssignTestToSessionModal from './AssignTestToSessionModal';
+import LoadingIcon from './LoadingIcon';
 
 const SessionDetails = (props) => {
   const host = process.env.REACT_APP_HOST_NAME;
   const { sessionId } = useParams();
+  const [isSessionInfoLoading, setIsSessionInfoLoading] = useState(true);
 
   const [session, setSession] = useState(null);
   const [updatesession, setUpdatesession] = useState(null);
@@ -112,6 +114,9 @@ const SessionDetails = (props) => {
       const sessionData = await sessionsService.getById(sessionId);
       setSession(sessionData.data);
       getSessionUsers(usersSelectedPage, usersPageSize, sessionId);
+      setIsSessionInfoLoading(true);
+      await getSessionsPruebasDiagnosticas(sessionId, selectedPruebasPage, pruebasPageSize);
+      setIsSessionInfoLoading(false)
     } catch (error) {}
   };
 
@@ -144,6 +149,7 @@ const SessionDetails = (props) => {
       setSession(sessionData.data);
       getSessionUsers(usersSelectedPage, usersPageSize, sessionId);
       await getSessionsPruebasDiagnosticas(sessionId, selectedPruebasPage, pruebasPageSize);
+      setIsSessionInfoLoading(false);
     };
 
     getInitData();
@@ -193,7 +199,9 @@ const SessionDetails = (props) => {
             </Dropdown.Menu>
           </Dropdown>
         </div>
-        <div className="fw-bold d-flex justify-content-center">
+        {isSessionInfoLoading ? 
+          <LoadingIcon /> : ( <>
+          <div className="fw-bold d-flex justify-content-center">
           <h1 className="fw-bold text-center">
             <span>
               <IoSchool />
@@ -201,7 +209,7 @@ const SessionDetails = (props) => {
             {session && session.nombre}
           </h1>
         </div>
-        <form
+          <form
           autoComplete="off"
           className="form"
           onSubmit={handleSessionUpdate}
@@ -316,7 +324,7 @@ const SessionDetails = (props) => {
                         </div>
                         <div className="container">
                             {pruebasDiagnosticas && pruebasDiagnosticas.map((prueba, index) => (
-                              <h1>{prueba.titulo}</h1>
+                              <h1 key={index}>{prueba.titulo}</h1>
                             ))}
                           </div>
                       </Tab.Pane>
@@ -384,6 +392,9 @@ const SessionDetails = (props) => {
             </>
           )}
         </form>
+        </>)
+        }
+        
       </section>
     </div>
   );

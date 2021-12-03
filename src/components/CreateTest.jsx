@@ -126,7 +126,7 @@ function CreateTest(props) {
         pruebaDiagnostica
       );
       alert('La prueba diagnóstica ha sido guardada exitosamente.');
-      history.push(`${host}pruebas-diagnosticas`);
+      history.push(`${host}prof-sesiones`);
     } catch (error) {
       console.log(error);
     }

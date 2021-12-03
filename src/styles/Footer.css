@@ -1,3 +1,14 @@
 .footer {
     background-color: #4DB6AC;
+    font-size: small !important;
+}
+
+article + .footer {
+    background-color: transparent !important;
+    color: #F8F9FA !important;
+}
+
+article + .footer > div > a {
+    background-color: transparent !important;
+    color: #F8F9FA !important;
 }

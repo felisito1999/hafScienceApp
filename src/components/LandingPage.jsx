@@ -22,24 +22,18 @@ const LandingPage = (props) => {
           >
             <Link to={`${host}`} className="navbar-brand">
               <HafIcon
-                className="d-inline-block align-top"
+                className="d-inline-block align-baseline me-2"
                 width="40"
-                height="40"
+                height="35"
               />
-              <span className="fw-bold text-light">HAF Science</span>
+              <span className="fw-bold align-bottom text-light">HAF Science</span>
             </Link>
-            <Navbar.Toggle
-              className="text-center"
-              aria-controls="responsive-navbar-nav"
-            />
-            <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto"></Nav>
               <Nav>
-                <Link to={`${host}login`} className="text-light nav-link">
+                <Link to={`${host}login`} className="p-1 btn btn-success text-light nav-link">
                   <FaUser /> <span>Iniciar sesión</span>
                 </Link>
               </Nav>
-            </Navbar.Collapse>
           </Navbar>
           <article className="pb-5 container w-100">
             <section className="py-5">
@@ -52,14 +46,6 @@ const LandingPage = (props) => {
                 forma posible. Para disfrutar de toda la experiencia inicia
                 sesión.
               </p>
-            </section>
-            <section className="d-flex justify-content-center align-items-center">
-              <Link
-                to={`${host}login`}
-                className="btn btn-outline-success text-light w-50"
-              >
-                <h4 className="fw-bold">Iniciar sesión</h4>
-              </Link>
             </section>
           </article>
           <article className="py-5 bg-light w-100">

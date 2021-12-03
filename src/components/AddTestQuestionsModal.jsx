@@ -5,6 +5,7 @@ import Tab from 'react-bootstrap/Tab';
 import Nav from 'react-bootstrap/Nav';
 import Accordion from 'react-bootstrap/Accordion';
 import { AiFillCheckCircle, AiFillCloseCircle } from 'react-icons/ai';
+import LoadingIcon from './LoadingIcon';
 
 const AddTestQuestionsModal = (props) => {
   const defaultNewQuestion = {
@@ -31,7 +32,7 @@ const AddTestQuestionsModal = (props) => {
 
   const [registeredQuestions, setRegisteredQuestions] = useState([]);
   const [newQuestion, setNewQuestion] = useState({ ...defaultNewQuestion });
-  const [isAddingNewQuestion, setIsAddingNewQuestion] = useState(false);
+  const [areQuestionsLoading, setAreQuestionsLoading] = useState(true);
 
   const handleNewQuestionTitle = (e) => {
     const title = e.target.value;
@@ -88,6 +89,7 @@ const AddTestQuestionsModal = (props) => {
     try {
       const result = await testsService.getMyQuestionPool();
       setRegisteredQuestions(result.data);
+      setAreQuestionsLoading(false);
       console.log(result.data);
     } catch (error) {
       console.log(error);
@@ -148,7 +150,9 @@ const AddTestQuestionsModal = (props) => {
           <Tab.Content>
             <Tab.Pane eventKey="preguntas-disponibles">
               <section id="registered-questions" className="my-5">
-                {registeredQuestions && registeredQuestions.length > 0 ? (
+                { areQuestionsLoading ? <LoadingIcon /> :
+                <>
+                  {registeredQuestions && registeredQuestions.length > 0 ? (
                   <Accordion
                     defaultActiveKey="" /*{registeredQuestions[0].id}*/
                   >
@@ -156,7 +160,7 @@ const AddTestQuestionsModal = (props) => {
                       <Accordion.Item eventKey={index}>
                         <Accordion.Header>{question.titulo}</Accordion.Header>
                         <Accordion.Body>
-                          {question.respuesta &&
+                        {question.respuesta &&
                             question.respuesta.map((respuesta, index) => (
                               <div key={index} className="input-group mb-3">
                                 <span
@@ -211,6 +215,8 @@ const AddTestQuestionsModal = (props) => {
                     No tiene preguntas registradas en su banco de preguntas
                   </h6>
                 )}
+                </>
+                }
               </section>
             </Tab.Pane>
             <Tab.Pane eventKey="nueva-pregunta">
@@ -228,7 +234,7 @@ const AddTestQuestionsModal = (props) => {
                       value={newQuestion.titulo}
                       autoComplete="off"
                       minLength="2"
-                      maxLength="50"
+                      maxLength="80"
                       onChange={handleNewQuestionTitle}
                       required
                     />
