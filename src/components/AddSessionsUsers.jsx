@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import sessionsService from '../services/sessionsService';
 import userService from '../services/usersService';
 
 const AddSessionsUsers = (props) => {
+  const host = process.env.REACT_APP_HOST_NAME; 
+  const history = useHistory();
+
   const [schoolUsers, setSchoolUsers] = useState([]);
   const [userNameParameter, setUserNameParameter] = useState('');
   const [session, setSession] = useState({
@@ -15,6 +19,13 @@ const AddSessionsUsers = (props) => {
 
   const handleSessionSubmit = async (session) => {
     const response = await sessionsService.saveSession(session);
+
+    if (response) {
+      if(response.status === 200)
+      {
+        alert("La sesión ha sido agregada exitosamente");
+      }
+    }
     console.log(response);
   };
 
@@ -31,6 +42,13 @@ const AddSessionsUsers = (props) => {
       descripcion: e.target.value,
     });
   };
+
+  const handleGoToSessions = (e) => {
+    e.preventDefault();
+
+    console.log("La para musical")
+    history.push(`${host}prof-sesiones`)
+  }
 
   const handleUserNameSearch = (e) => {
     setUserNameParameter(e.target.value);
@@ -90,7 +108,7 @@ const AddSessionsUsers = (props) => {
             <button
               type="button"
               className="btn btn-danger"
-              onClick={props.onHide}
+              onClick={handleGoToSessions}
             >
               cancelar
             </button>

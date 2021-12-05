@@ -10,26 +10,30 @@ import TestAttempt from '../components/TestAttempt';
 import TeachersSessionsDashboard from '../components/TeachersSessionsDashboard';
 import AddSessionsUsers from '../components/AddSessionsUsers';
 import CreateTest from '../components/CreateTest';
+import StudentsSessionsDashboard from '../components/StudentsSessionsDashboard';
+import StudentSessionDetails from '../components/StudentSessionDetails';
 
 const usersComponents = {
-    adminComponents: [
-        UsersDashboard.name,
-        UserDetailsModal.name,
-        SchoolsDashboard.name,
-        SchoolsDetailsModal.name,
-    ],
-    teacherComponents: [
-        TeachersSessionsDashboard.name,
-        AddSessionsUsers.name,
-        CreateTest.name
-    ],
-    studentComponents: [
-        TestAttempt.name,
-        GameSelector.name,
-        PuzzleGameDifficult.name,
-        PuzzleGameEasy.name,
-        PuzzleSelector.name,
-    ]
+  adminComponents: [
+    UsersDashboard.name,
+    UserDetailsModal.name,
+    SchoolsDashboard.name,
+    SchoolsDetailsModal.name,
+  ],
+  teacherComponents: [
+    TeachersSessionsDashboard.name,
+    AddSessionsUsers.name,
+    CreateTest.name,
+  ],
+  studentComponents: [
+    TestAttempt.name,
+    GameSelector.name,
+    PuzzleGameDifficult.name,
+    PuzzleGameEasy.name,
+    PuzzleSelector.name,
+    StudentsSessionsDashboard.name,
+    StudentSessionDetails.name,
+  ],
 };
 
-export default usersComponents; 
+export default usersComponents;

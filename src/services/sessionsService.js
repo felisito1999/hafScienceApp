@@ -65,7 +65,7 @@ sessionsService.getPaginatedTeacherSessionsBy = async (
     method: 'get',
     cancelToken: source.token,
     params: {
-      pageNumber,
+      page: pageNumber,
       pageSize,
       ...searchParameters,
     },

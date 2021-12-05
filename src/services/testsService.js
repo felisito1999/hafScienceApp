@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-const host = process.env.REACT_APP_API_URL;
+const apiHost = process.env.REACT_APP_API_URL;
 let testsService = {};
 
 testsService.getMyQuestionPool = async () => {
   const config = {
     method: 'get',
-    url: `${host}preguntas/banco-preguntas`,
+    url: `${apiHost}preguntas/banco-preguntas`,
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
@@ -38,7 +38,7 @@ testsService.getMyQuestionPool = async () => {
 testsService.getMyQuestionPoolByTitle = async (title) => {
   const config = {
     method: 'get',
-    url: `${host}preguntas/banco-preguntas-by-title`,
+    url: `${apiHost}preguntas/banco-preguntas-by-title`,
     params: {
       title: title,
     },
@@ -80,7 +80,7 @@ testsService.savePruebaDiagnostica = async (pruebaDiagnostica) => {
   // };
   const pruebaDiagnosticaConfig = {
     method: 'post',
-    url: `${host}pruebasdiagnosticas/save-prueba-diagnostica`,
+    url: `${apiHost}pruebasdiagnosticas/save-prueba-diagnostica`,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -113,7 +113,7 @@ testsService.savePruebaDiagnostica = async (pruebaDiagnostica) => {
 testsService.addToQuestionPool = async (question) => {
   const pruebaDiagnosticaConfig = {
     method: 'post',
-    url: `${host}preguntas/agregar-pregunta`,
+    url: `${apiHost}preguntas/agregar-pregunta`,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -152,7 +152,7 @@ testsService.getMyTests = async (page, pageSize) => {
       page: page,
       pageSize: pageSize,
     },
-    url: `${host}pruebasdiagnosticas/teacher-pruebas-diagnosticas`,
+    url: `${apiHost}pruebasdiagnosticas/teacher-pruebas-diagnosticas`,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -185,7 +185,7 @@ testsService.getMyTests = async (page, pageSize) => {
 testsService.assignTestToSession = async (assignment) => {
   const config = {
     method: 'post',
-    url: `${host}pruebasdiagnosticas/assign-to-session`,
+    url: `${apiHost}pruebasdiagnosticas/assign-to-session`,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -219,7 +219,7 @@ testsService.assignTestToSession = async (assignment) => {
 testsService.getBySessionId = async (page, pageSize, sessionId) => {
   const config = {
     method: 'get',
-    url: `${host}pruebasdiagnosticas/session-pruebas-diagnosticas`,
+    url: `${apiHost}pruebasdiagnosticas/session-pruebas-diagnosticas`,
     params: {
       sessionId: sessionId,
       page: page,
@@ -235,6 +235,76 @@ testsService.getBySessionId = async (page, pageSize, sessionId) => {
   try {
     const result = await axios(config);
     return result;
+  } catch (error) {
+    if (error.response) {
+      //La petición ha sido realizada y el servidor respondió con un status code de error.
+      if (error.response.data.message) {
+        alert(error.response.data.message);
+      }
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      //La petición fue realizada pero no se recibió ninguna respuesta.
+      console.log(error.request);
+    } else {
+      //Ocurrió un error al momento de enviar la petición.
+      console.log('Error', error.message);
+    }
+  }
+};
+
+testsService.getTestAttempt = async (id) => {
+  const config = {
+    method: 'get',
+    url: `${apiHost}pruebasdiagnosticas/get-attempt-info`,
+    params: {
+      id: id,
+    },
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    data: null,
+  };
+
+  try {
+    const response = await axios(config);
+
+    return response;
+  } catch (error) {
+    if (error.response) {
+      //La petición ha sido realizada y el servidor respondió con un status code de error.
+      if (error.response.data.message) {
+        alert(error.response.data.message);
+      }
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      //La petición fue realizada pero no se recibió ninguna respuesta.
+      console.log(error.request);
+    } else {
+      //Ocurrió un error al momento de enviar la petición.
+      console.log('Error', error.message);
+    }
+  }
+};
+
+testsService.submitTestAttempt = async (testId, testAnswers) => {
+  const config = {
+    method: 'post',
+    url: `${apiHost}pruebasdiagnosticas/get-attempt-info`,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    data: { testId, testAnswers },
+  };
+
+  try {
+    const response = await axios(config);
+
+    return response;
   } catch (error) {
     if (error.response) {
       //La petición ha sido realizada y el servidor respondió con un status code de error.

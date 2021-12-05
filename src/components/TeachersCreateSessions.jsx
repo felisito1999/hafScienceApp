@@ -7,9 +7,8 @@ import { AiFillCheckCircle } from 'react-icons/ai';
 import { BiCircle } from 'react-icons/bi';
 
 const TeachersCreateSessions = (props) => {
-  const history = useHistory();
-
   const host = process.env.REACT_APP_HOST_NAME;
+  const history = useHistory();
 
   const [session, setSession] = useState({
     nombre: '',
@@ -149,6 +148,11 @@ const TeachersCreateSessions = (props) => {
       alert('Ha sucedido un error');
     }
   };
+
+  const handleGoToSessions = (e) => {
+    e.preventDefault();
+    history.push(`${host}prof-sesiones`);
+  }
 
   useEffect(() => {
     getUsers(usersSelectedPage, usersPageSize, searchParameters);
@@ -299,7 +303,7 @@ const TeachersCreateSessions = (props) => {
             <button
               type="button"
               className="btn btn-danger"
-              onClick={props.onHide}
+              onClick={handleGoToSessions}
             >
               cancelar
             </button>

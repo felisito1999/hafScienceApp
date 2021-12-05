@@ -112,52 +112,12 @@ const CreateUserModal = (props) => {
       correoElectronico: e.target.value,
     });
   };
-
-  const handleNombreUsuarioChange = (e) => {
-    setUser({
-      ...user,
-      nombreUsuario: e.target.value,
-    });
-  };
-
-  const handleChangeMaxDate = () => {
-
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
-    var yyyy = today.getFullYear();
-
-    if (dd < 10) {
-      dd = '0' + dd;
-    }
-
-    if (mm < 10) {
-      mm = '0' + mm;
-    }
-
-    today = yyyy + '-' + mm + '-' + dd;
-    document.getElementById("fecha-nacimiento").setAttribute("max", today);
-    //
-    var userRolID = document.getElementById("rol").value;
-    var fecha = document.getElementById("fecha-nacimiento").value;
-    if(userRolID == 2 || userRolID == 1)
-    {
-      var newYear = yyyy - 18;
-      var min = newYear + '-' + mm + '-' + dd;
-      document.getElementById("fecha-nacimiento").setAttribute("max", min);
-      // fecha = min;
-    }
-    else
-    {
-      document.getElementById("fecha-nacimiento").setAttribute("max", today);
-      // fecha = today;
-    }
-  }
   
   const today = new Date();
 
-  const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDay());
-
+  const minBirthDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDay());
+  const minStudentBirthDate = new Date(today.getFullYear() - 5, today.getMonth(), today.getDay())
+  
   const handleRolChange = (e) => {
     const rolId = e.target.value; 
 
@@ -320,8 +280,8 @@ const CreateUserModal = (props) => {
           <div>
             <DateTimePicker
               value={user.fechaNacimiento}
-              // onClick={handleChangeMaxDate}
-              maxDate={maxDate}
+              // onClick={handleChangeMinBirthDate}
+              maxDate={user.rolId === 1 || user.rolId === 2 ? minBirthDate : minStudentBirthDate}
               onChange={handleFechaNacimientoChange}
               format="dd-MM-y"
               className="form-control"

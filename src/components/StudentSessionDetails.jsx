@@ -22,7 +22,7 @@ import LoadingIcon from './LoadingIcon';
 import { format } from 'date-fns';
 import es from 'date-fns/locale/es';
 
-const SessionDetails = (props) => {
+const StudentSessionDetails = (props) => {
   const host = process.env.REACT_APP_HOST_NAME;
   const { sessionId } = useParams();
   const [isSessionInfoLoading, setIsSessionInfoLoading] = useState(true);
@@ -178,48 +178,6 @@ const SessionDetails = (props) => {
   return (
     <div className="component-wrapper">
       <section className="banner-bg container rounded-3 shadow py-3 my-5">
-        {isDeleting ? (
-          <ConfirmDeleteModal
-            show={isDeleting}
-            onHide={handleCloseDelete}
-            object={'sesión'}
-            handleConfirmDelete={handleDeleteSession}
-          />
-        ) : null}
-        {isAddTestsModalOpen ? (
-          <AssignTestToSessionModal
-            show={isAddTestsModalOpen}
-            onHide={handleOpenAddTestModal}
-            onSelecting={handleAddTestToSession}
-            sessionId={sessionId}
-          />
-        ) : null}
-        <div className="d-flex justify-content-end">
-          <Dropdown>
-            <Dropdown.Toggle
-              className="border-0 text-dark"
-              id="session-details-options-dropdown"
-            >
-              <BsThreeDotsVertical size={25} />{' '}
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu className="bg-light">
-              <Link
-                to={`${host}prof-sesiones/actualizar/${sessionId}`}
-                className="py-3 dropdown-item text-dark text-decoration-none"
-              >
-                <AiFillEdit size={20} /> <span>Actualizar</span>
-              </Link>
-
-              <Link
-                className="py-3 dropdown-item text-dark text-decoration-none"
-                onClick={handleOpenDelete}
-              >
-                <AiFillDelete size={20} /> <span>Deshabilitar</span>
-              </Link>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
         {isSessionInfoLoading ? (
           <LoadingIcon />
         ) : (
@@ -312,14 +270,6 @@ const SessionDetails = (props) => {
                               Participantes
                             </Nav.Link>
                           </Nav.Item>
-                          <Nav.Item className="tab-pills">
-                            <Nav.Link
-                              className="tab-pills-children"
-                              eventKey="actividad"
-                            >
-                              Actividad
-                            </Nav.Link>
-                          </Nav.Item>
                         </Nav>
                         <Tab.Content>
                           <Tab.Pane eventKey="informacion">
@@ -332,21 +282,6 @@ const SessionDetails = (props) => {
                             </div>
                           </Tab.Pane>
                           <Tab.Pane eventKey="pruebas">
-                            <div className="mb-3 container">
-                              <button
-                                className="w-100 fw-bold btn btn-success d-flex"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  handleOpenAddTestModal();
-                                }}
-                              >
-                                <GrAdd className="fw-bolder" size={20} />
-                                <span className="flex-grow-1">
-                                  Añadir prueba
-                                </span>
-                              </button>
-                              {/* Agregar la parte de la fecha de ingreso en el sistema */}
-                            </div>
                             <div className="container">
                               {pruebasDiagnosticas &&
                                 pruebasDiagnosticas.map((prueba, index) => (
@@ -402,7 +337,7 @@ const SessionDetails = (props) => {
                             <Row xs={1} className="g-2 pb-2">
                               {users && users.length > 0 ? (
                                 users.map((user) => (
-                                  <Col key={user.id}>
+                                  <Col key={user.codigo}>
                                     <Card
                                       className="pointer-cursor bg-light h-100"
                                       onClick={(e) => {
@@ -449,14 +384,6 @@ const SessionDetails = (props) => {
                               handlePageChange={handlePageChange}
                             />
                           </Tab.Pane>
-                          <Tab.Pane eventKey="actividad">
-                            <div className="py-5 d-flex flex-column align-items-center">
-                              <h1 className="fw-bold">
-                                Actividades de los estudiantes
-                              </h1>
-                              {/* Agregar la parte de la fecha de ingreso en el sistema */}
-                            </div>
-                          </Tab.Pane>
                         </Tab.Content>
                       </Tab.Container>
                     </div>
@@ -469,6 +396,6 @@ const SessionDetails = (props) => {
       </section>
     </div>
   );
-};
+}
 
-export default SessionDetails;
+export default StudentSessionDetails;

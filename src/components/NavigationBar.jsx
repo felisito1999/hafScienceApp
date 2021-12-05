@@ -18,15 +18,15 @@ const NavigationBar = (props) => {
   return (
     <>
       <Navbar
-        className="px-2"
+        className="px-2 py-1"
         collapseOnSelect
         expand="lg"
         fixed="top"
         variant="light"
       >
         <Link to={`${host}`} className="navbar-brand">
-          <HafIcon className="d-inline-block align-to" width="40" height="40" />
-          <span className="fw-bold">HAF Science</span>
+          <HafIcon className="d-inline-block align-baseline me-1" width="35" height="35" />
+          <span className="fw-bold align-baseline">HAF Science</span>
         </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">

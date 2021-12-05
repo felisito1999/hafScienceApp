@@ -687,19 +687,21 @@
 }
 
 .pt-legend{
-  position: absolute;
+  position:relative;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(3,1fr);
-  grid-gap: 12px;
-  margin-left: 180px;
+  grid-gap: 5px;
   z-index: 1;
+  overflow: auto;
+  margin-bottom: 2%;
 }
 
 .pt-legend-item{
   display: flex;
   cursor: pointer;
-  border-radius: 5px;
-  padding: 4px;
+  border-radius: 10%;
+  padding: 2px;
 }
 
 .pt-legend-color{
@@ -710,7 +712,7 @@
 }
 
 .pt-legend-name{
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1px;
   padding-left: 10px;
   text-transform: uppercase;

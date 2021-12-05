@@ -161,7 +161,6 @@ const PeriodicTable = () => {
                 showModal ?
                 <div className="modalBG" onClick={handleModalClick}>
                     <div className="modalDetail" onClick={handleChildClick}>
-
                         <div className="image-modal-bg">
                             <img className="image-modal" src={quimica_bg} alt="image-modal"/>
                             <a className="wikipedia" href={source} target="_blank">
@@ -313,7 +312,7 @@ const PeriodicTable = () => {
                 onClick={handleFilterButtonClick} />
             </div>
 
-            <aside className="pt-legend">
+            <div className="pt-legend">
                 <div data-category="noble gas" className="pt-legend-item" onClick={()=>toggleElementColor("gas-noble")}>
                     <div className="pt-legend-color noble-gas"></div>
                     <div className="pt-legend-name">gas noble</div>
@@ -354,7 +353,7 @@ const PeriodicTable = () => {
                     <div className="pt-legend-color metalloid"></div>
                     <div className="pt-legend-name">metaloide</div>
                 </div>
-            </aside>
+            </div>
 
             <div className="periodic">
 
@@ -1255,3 +1254,4 @@ const PeriodicTable = () => {
 };
 
 export default PeriodicTable;
+
