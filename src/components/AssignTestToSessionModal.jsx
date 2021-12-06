@@ -229,7 +229,7 @@ const AssignTestToSessionModal = (props) => {
                 </select>
                 <label htmlFor="duracion">Tiempo de realización</label>
               </div>
-              <div className="form-floating mb-3">
+              {/* <div className="form-floating mb-3">
                 <select
                   className="form-select"
                   value={assignmentInfo.cantidadIntentos}
@@ -242,7 +242,7 @@ const AssignTestToSessionModal = (props) => {
                   <option value={3}>3 intentos</option>
                 </select>
                 <label htmlFor="intentos">Cantidad de intentos</label>
-              </div>
+              </div> */}
               <div className="mb-3">
                 <button className="w-100 btn btn-success">
                   Añadir prueba a sesión

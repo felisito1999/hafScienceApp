@@ -55,11 +55,15 @@ const TestAttempt = (props) => {
     
     const attemptModel = {
       pruebaId: parseInt(prueba),
+      sessionId: session,
       preguntas: test.preguntas
     };
-
-    await testsService.submitTestAttempt(attemptModel)
-    console.log(attemptModel);
+    try {
+      await testsService.submitTestAttempt(attemptModel)  
+      history.push(`${host}est-sesiones/${session}`)
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {

@@ -41,6 +41,8 @@ const SessionDetails = (props) => {
   const [pruebasPageSize, setPruebasPageSize] = useState(10);
   const [pruebasRecordsTotal, setPruebasRecordsTotal] = useState(0);
 
+  const [sessionActivity, setSessionActivity] = useState([]);
+
   const [isAddTestsModalOpen, setIsAddTestsModalOpen] = useState(false);
 
   const handlePageChange = (selectedPage) => {
@@ -160,6 +162,16 @@ const SessionDetails = (props) => {
     }
   };
 
+  const getSessionActivity = async (sessionId) => {
+    try {
+      const result = await sessionsService.getSessionActivity(sessionId);
+      console.log(result.data);
+      if (result) {
+        setSessionActivity(result.data);
+      }
+    } catch (error) {}
+  };
+
   useEffect(() => {
     const getInitData = async () => {
       const sessionData = await sessionsService.getById(sessionId);
@@ -170,6 +182,7 @@ const SessionDetails = (props) => {
         selectedPruebasPage,
         pruebasPageSize
       );
+      await getSessionActivity(sessionId);
       setIsSessionInfoLoading(false);
     };
 
@@ -363,27 +376,35 @@ const SessionDetails = (props) => {
                                           <span className="fw-bold">
                                             Fecha inicio:{' '}
                                           </span>
-                                          {prueba &&
-                                            prueba.pruebaSesion ? format(
-                                              Date.parse(prueba.pruebaSesion.fechaInicio),
-                                              'PPp',
-                                              {
-                                                locale: es,
-                                              }
-                                            )
-                                          : '01-01-2000'}
+                                          {prueba && prueba.pruebaSesion
+                                            ? format(
+                                                Date.parse(
+                                                  prueba.pruebaSesion
+                                                    .fechaInicio
+                                                ),
+                                                'PPp',
+                                                {
+                                                  locale: es,
+                                                }
+                                              )
+                                            : '01-01-2000'}
                                         </p>
                                         <p>
                                           <span className="fw-bold">
                                             Fecha cierre:{' '}
                                           </span>
-                                          {prueba && prueba.pruebaSesion ? format(
-                                            Date.parse(prueba.pruebaSesion.fechaLimite), 
-                                            'PPp',
-                                            {
-                                              locale: es,
-                                            }
-                                          ) : '01-01-2000'}
+                                          {prueba && prueba.pruebaSesion
+                                            ? format(
+                                                Date.parse(
+                                                  prueba.pruebaSesion
+                                                    .fechaLimite
+                                                ),
+                                                'PPp',
+                                                {
+                                                  locale: es,
+                                                }
+                                              )
+                                            : '01-01-2000'}
                                         </p>
                                         <p>
                                           <span className="fw-bold">
@@ -450,12 +471,88 @@ const SessionDetails = (props) => {
                             />
                           </Tab.Pane>
                           <Tab.Pane eventKey="actividad">
-                            <div className="py-5 d-flex flex-column align-items-center">
-                              <h1 className="fw-bold">
-                                Actividades de los estudiantes
+                            <Row xs={1}></Row>
+                            {sessionActivity && sessionActivity.length == 0 ? (
+                              <h1 className="text-center my-5">
+                                No hay actividad registrada en esta sesión
                               </h1>
-                              {/* Agregar la parte de la fecha de ingreso en el sistema */}
-                            </div>
+                            ) : (
+                              <>
+                                {' '}
+                                {sessionActivity &&
+                                  sessionActivity.map(
+                                    (sessionActivity, index) => (
+                                      <Col key={index} className="mb-3">
+                                        <Card>
+                                          <Card.Header>
+                                            <p>
+                                              {sessionActivity.intentoCompletado ? (
+                                                <>
+                                                  <span className="fw-bold">
+                                                    {
+                                                      sessionActivity.usuario
+                                                        .nombreUsuario
+                                                    }
+                                                  </span>{' '}
+                                                  completó la prueba{' '}
+                                                  <span className="fw-bold">
+                                                    {
+                                                      sessionActivity
+                                                        .pruebaDiagnostica
+                                                        .titulo
+                                                    }
+                                                  </span>
+                                                </>
+                                              ) : (
+                                                <>
+                                                  <span className="fw-bold">
+                                                    {
+                                                      sessionActivity.usuario
+                                                        .nombreUsuario
+                                                    }
+                                                  </span>{' '}
+                                                  intentó realizar la prueba{' '}
+                                                  <span className="fw-bold">
+                                                    {
+                                                      sessionActivity
+                                                        .pruebaDiagnostica
+                                                        .titulo
+                                                    }
+                                                  </span>
+                                                </>
+                                              )}
+                                            </p>
+                                          </Card.Header>
+                                          <Card.Body>
+                                            <p>
+                                              <span className="fw-bold">
+                                                Fecha:{' '}
+                                              </span>
+                                              {format(
+                                                Date.parse(
+                                                  sessionActivity.fechaCreacion
+                                                ),
+                                                'PPp',
+                                                { locale: es }
+                                              )}
+                                            </p>
+                                            {sessionActivity.intentoCompletado ? (
+                                              <p>
+                                                <span className="fw-bold">
+                                                  Calificación:{' '}
+                                                </span>
+                                                {sessionActivity.calificacion}
+                                              </p>
+                                            ) : null}
+                                          </Card.Body>
+                                        </Card>
+                                      </Col>
+                                    )
+                                  )}
+                              </>
+                            )}
+
+                            {/* Agregar la parte de la fecha de ingreso en el sistema */}
                           </Tab.Pane>
                         </Tab.Content>
                       </Tab.Container>

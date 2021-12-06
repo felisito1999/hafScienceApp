@@ -44,7 +44,7 @@ const StudentSessionDetails = (props) => {
         pageSize,
         sessionId
       );
-  
+
       setUsers(sessionUsers.data.records);
       setUsersRecordsTotal(sessionUsers.data.recordsTotal);
     } catch (error) {
@@ -67,7 +67,7 @@ const StudentSessionDetails = (props) => {
     }
   };
   const handleGoToTest = (pruebaId, sessionId) => {
-    history.push(`${host}prueba-diagnostica/${pruebaId}/${sessionId}`)
+    history.push(`${host}prueba-diagnostica/${pruebaId}/${sessionId}`);
     console.log(pruebaId, sessionId);
   };
 
@@ -171,7 +171,9 @@ const StudentSessionDetails = (props) => {
                                     {prueba && prueba.pruebaSesion
                                       ? format(
                                           Date.parse(
-                                            new Date(prueba.pruebaSesion.fechaInicio).toUTCString()
+                                            new Date(
+                                              prueba.pruebaSesion.fechaInicio
+                                            ).toUTCString()
                                           ),
                                           'PPp',
                                           {
@@ -203,6 +205,23 @@ const StudentSessionDetails = (props) => {
                                   </p>
                                 </div>
                               </Card.Body>
+                              <Card.Footer className="d-flex">
+                                {prueba &&
+                                prueba.usuarioRealizaPrueba &&
+                                prueba.usuarioRealizaPrueba
+                                  .intentoCompletado ? (
+                                  <div>
+                                    <span className="fw-bold">
+                                      Calificación:
+                                    </span>{' '}
+                                    {prueba &&
+                                      prueba.usuarioRealizaPrueba &&
+                                      prueba.usuarioRealizaPrueba.calificacion}
+                                  </div>
+                                ) : (
+                                  <p className="fw-bold">Esta prueba no ha sido realizada</p>
+                                )}
+                              </Card.Footer>
                             </Card>
                           ))}
                       </div>

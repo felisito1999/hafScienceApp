@@ -304,7 +304,7 @@ testsService.submitTestAttempt = async (attemptModel) => {
 
   try {
     const response = await axios(config);
-
+    alert('¡Se ha registrado su intento satisfactoriamente!');
     return response;
   } catch (error) {
     if (error.response) {
