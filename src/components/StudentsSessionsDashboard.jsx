@@ -28,7 +28,7 @@ const StudentsSessionsDashboard = (props) => {
   const [sessions, setSessions] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
   const [recordsTotal, setRecordsTotal] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(9);
 
   //Variables de estado para manejar la muestra del estado de carga de la información
   const [isDataLoading, setIsDataLoading] = useState(true);
@@ -168,7 +168,7 @@ const StudentsSessionsDashboard = (props) => {
                 <>
                   {sessions && sessions.length > 0 ? (
                     <>
-                      <Row xs={1} md={2} className="g-2 pb-2">
+                      <Row xs={1} md={2} lg={3} className="g-2 pb-2">
                         {sessions.map((session) => (
                           <Col key={session.id}>
                             <Card className="bg-light h-100">

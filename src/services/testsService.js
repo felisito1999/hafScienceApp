@@ -254,12 +254,13 @@ testsService.getBySessionId = async (page, pageSize, sessionId) => {
   }
 };
 
-testsService.getTestAttempt = async (id) => {
+testsService.getTestAttempt = async (pruebaDiagnosticaId, sessionId) => {
   const config = {
     method: 'get',
-    url: `${apiHost}pruebasdiagnosticas/get-attempt-info`,
+    url: `${apiHost}pruebasdiagnosticas/get-attempt`,
     params: {
-      id: id,
+      pruebaDiagnosticaId: pruebaDiagnosticaId,
+      sessionId: sessionId
     },
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -290,15 +291,15 @@ testsService.getTestAttempt = async (id) => {
   }
 };
 
-testsService.submitTestAttempt = async (testId, testAnswers) => {
+testsService.submitTestAttempt = async (attemptModel) => {
   const config = {
     method: 'post',
-    url: `${apiHost}pruebasdiagnosticas/get-attempt-info`,
+    url: `${apiHost}pruebasdiagnosticas/submit-attempt`,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-    data: { testId, testAnswers },
+    data: attemptModel,
   };
 
   try {

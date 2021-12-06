@@ -29,7 +29,7 @@ const AssignTestToSessionModal = (props) => {
     fechaInicio: fechaInicioMinDateTime,
     fechaLimite: fechaLimiteMinDateTime,
     duracionMinutos: 15,
-    cantidadIntentos: 1
+    cantidadIntentos: 1,
   });
 
   const [pruebasDiagnosticas, setPruebasDiagnosticas] = useState([]);
@@ -81,13 +81,13 @@ const AssignTestToSessionModal = (props) => {
   };
 
   const handleIntentosChange = (e) => {
-    const cantidadIntentos = e.target.value; 
+    const cantidadIntentos = e.target.value;
 
     setAssignmentInfo({
-      ...assignmentInfo, 
-      cantidadIntentos: cantidadIntentos
-    })
-  }
+      ...assignmentInfo,
+      cantidadIntentos: cantidadIntentos,
+    });
+  };
 
   const handlePruebaAddClick = (pruebaDiagnosticaId, index) => {
     setSelectedTestIndex(index);
@@ -140,7 +140,7 @@ const AssignTestToSessionModal = (props) => {
     if (errorMessages.length > 0) {
       alert(
         'No se puede asignar la prueba, revise lo siguiente:\n' +
-        errorMessages.map((message) => '- ' + message + '\n').join('')
+          errorMessages.map((message) => '- ' + message + '\n').join('')
       );
       return false;
     }
@@ -150,7 +150,7 @@ const AssignTestToSessionModal = (props) => {
   const handleTestAssignment = () => {
     console.log(assignmentInfo);
 
-    if (isTestAssignmentValid()){
+    if (isTestAssignmentValid()) {
       setAreTestsLoading(true);
       props.onSelecting(assignmentInfo);
       setAreTestsLoading(false);
@@ -189,6 +189,8 @@ const AssignTestToSessionModal = (props) => {
               <div className="mb-3">
                 <label>Fecha de inicio</label>
                 <DateTimePicker
+                  id="fecha-inicio"
+                  name="fecha-inicio"
                   className="form-control"
                   minDate={fechaInicioMinDateTime}
                   format="dd/MM/yyyy HH:mm"
@@ -199,6 +201,8 @@ const AssignTestToSessionModal = (props) => {
               <div className="mb-3">
                 <label>Fecha límite</label>
                 <DateTimePicker
+                  id="fecha-limite"
+                  name="fecha-limite"
                   className="form-control"
                   minDate={fechaLimiteMinDateTime}
                   format="dd/MM/yyyy HH:mm"

@@ -94,9 +94,14 @@ const App = () => {
             setFooterState={setFooterShowing}
           />
           <ProtectedRoute
-            path={`${host}pruebas-diagnosticas`}
+            exact path={`${host}pruebas-diagnosticas`}
             isLoggedIn={loggedIn}
             component={CreateTest}
+          />
+          <ProtectedRoute
+            path={`${host}prueba-diagnostica/:prueba/:session`}
+            isLoggedIn={loggedIn}
+            component={TestAttempt}
           />
           {/* <ProtectedRoute
             path={`${host}crear-prueba-diagnostica`}
@@ -131,10 +136,6 @@ const App = () => {
             path={`${host}est-sesiones`}
             isLoggedIn={loggedIn}
             component={StudentsSessionsDashboard}
-          />
-          <Route
-            path={`${host}prueba-diagnostica-development`}
-            component={CreateTest}
           />
           <Route path={`${host}reset-password`} component={ResetPassword} />
           <Route>
