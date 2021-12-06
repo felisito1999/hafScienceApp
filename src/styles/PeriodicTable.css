@@ -358,7 +358,7 @@
       position: relative;
       width: 460%;
       height: 150%;
-  }
+    }
     .periodic {
       height: 460px;
       margin-right: -2px;
@@ -545,7 +545,7 @@
     top: 0;
     left: 0;
     box-sizing: border-box;
-    z-index: 5;
+    z-index: 9999;
     display: flex;
     align-items: left;
     /* CODE TEST */
@@ -555,12 +555,11 @@
   }
 
   .modalDetail{
-    /* padding-left: 20px; */
-    background: #fff;
     width: 500px;
     height: 700px;
     margin: auto;
     text-align: left;
+    background: #1c1f26;
   }
 
   @keyframes slidein {
@@ -652,19 +651,31 @@
 
 .btnPrev{
   background-color: transparent;
-  background-repeat: no-repeat;
   border: none;
   cursor: pointer;
-  overflow: hidden;
-  outline: none;
-  position: absolute;
-  display:flex;
+  display: inline-flex;
   height: 40px;
   width: 40px;
-  margin-top: -255px;
-  margin-left: 10px;
 }
 
+.btnClose{
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  height: 40px;
+  width: 40px;
+  margin-left: auto;
+}
+
+.btnfilterClose{
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline;
+  height: 40px;
+  width: 40px;
+}
 
 .rowsHeader{
   height: 50px;
@@ -678,12 +689,17 @@
 }
 
 .wikipedia{
-  position: absolute;
-  display:flex;
+  display: inline-flex;
   height: 40px;
   width: 40px;
-  margin-top: -260px;
-  margin-left: 450px;
+  margin-left: 37%;
+
+}
+
+.buttonContainer{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  width: 100%;
 }
 
 .pt-legend{
@@ -786,7 +802,7 @@
 
 .filterSymbol{
   flex-shrink: 0;
-  background: lightgreen;
+  background: #4db6ac;
   width: 60px;
   display: grid;
   place-items: center;
@@ -807,19 +823,24 @@
   border-top-right-radius: 5px;
 }
 
-.modalDetail{
-  background: #1c1f26;
-}
-
 .listElementFilter{
   margin: 10px;
 }
 
 .filterTitle{
+  display: inline;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 20px;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 22px;
   color: white;
+  margin-left: 20%;
+}
+
+.filterHeader{
+  display: grid;
+  grid-template-columns: 85% 15%;
+  align-items: center;
 }
 
 .hr{

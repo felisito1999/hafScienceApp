@@ -9,7 +9,8 @@ import quimica_bg from '../images/quimica.png';
 import properties from '../images/flask.svg';
 import reactive from '../images/reactivo.svg';
 import wikipedia from '../images/Wikipedia_W.svg';
-import prev from '../images/left-arrow.png';
+import prev from '../images/left-arrow.svg';
+import close from '../images/green-cross.svg';
 
 const PeriodicTable = () => {
     
@@ -161,14 +162,19 @@ const PeriodicTable = () => {
                 showModal ?
                 <div className="modalBG" onClick={handleModalClick}>
                     <div className="modalDetail" onClick={handleChildClick}>
+                        <div className="buttonContainer">
+                                <button className="btnPrev" onClick={handleFilterButtonClick}>
+                                <img className="image-prev" src={prev} alt="image-prev"/>
+                                </button>
+                                <a className="wikipedia" href={source} target="_blank">
+                                    <img className="image-wikipedia" src={wikipedia} alt="image-modal"/>
+                                </a>
+                                <button className="btnClose" onClick={handleModalClick}>
+                                <img className="close" src={close} alt="close"/>
+                                </button>
+                        </div>
                         <div className="image-modal-bg">
                             <img className="image-modal" src={quimica_bg} alt="image-modal"/>
-                            <a className="wikipedia" href={source} target="_blank">
-                                <img className="image-wikipedia" src={wikipedia} alt="image-modal"/>
-                            </a>
-                            <button className="btnPrev" onClick={handleFilterButtonClick}>
-                              <img className="image-prev" src={prev} alt="image-prev"/>
-                            </button>
                         </div>
 
                         <div className="rowsHeader flex-row">
@@ -274,7 +280,12 @@ const PeriodicTable = () => {
                 showFilterModal ?
                 <div className="modalBG" onClick={handleFilterModalClick}>
                     <div className="modalDetail filter-modal" onClick={handleChildClick}>
-                        <h3 className="filterTitle">Lista de elementos</h3>
+                        <div className="filterHeader">
+                            <h3 className="filterTitle">Lista de elementos</h3>
+                            <button className="btnfilterClose" onClick={handleFilterModalClick}>
+                                <img className="close" src={close} alt="close"/>
+                            </button>
+                        </div>
                         <hr className="hr"/>
                         <input autoFocus className="searchInput" type="text" name="searchFilter" value={search} onChange={handleSearchOnChange}/>
                         <div className="listElementFilter">
@@ -1254,4 +1265,3 @@ const PeriodicTable = () => {
 };
 
 export default PeriodicTable;
-
