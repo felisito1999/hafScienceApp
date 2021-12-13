@@ -253,20 +253,6 @@ const TeachersSessionsDashboard = (props) => {
         </div>
         </>
       </Route>
-      <ProtectedRoute
-        exact
-        path={`${host}prof-sesiones/agregar`}
-        component={TeachersCreateSessions}
-      />
-      <ProtectedRoute
-        exact
-        path={`${host}prof-sesiones/:sessionId`}
-        component={SessionDetails}
-      />
-      <ProtectedRoute
-        path={`${host}prof-sesiones/actualizar/:sessionId`}
-        component={UpdateSessions}
-      />
     </Switch>
   );
 };

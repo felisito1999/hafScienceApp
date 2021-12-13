@@ -25,6 +25,10 @@ import LandingPage from './components/LandingPage';
 import ResetPassword from './components/ResetPassword';
 import CreateTest from './components/CreateTest';
 import StudentsSessionsDashboard from './components/StudentsSessionsDashboard';
+import StudentSessionDetails from './components/StudentSessionDetails';
+import TeachersCreateSessions from './components/TeachersCreateSessions';
+import SessionDetails from './components/SessionDetails';
+import UpdateSessions from './components/UpdateSessions';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -94,7 +98,8 @@ const App = () => {
             setFooterState={setFooterShowing}
           />
           <ProtectedRoute
-            exact path={`${host}pruebas-diagnosticas`}
+            exact
+            path={`${host}pruebas-diagnosticas`}
             isLoggedIn={loggedIn}
             component={CreateTest}
           />
@@ -128,14 +133,36 @@ const App = () => {
                         component={SessionsDashboard}
                     /> */}
           <ProtectedRoute
+            exact
             path={`${host}prof-sesiones`}
             isLoggedIn={loggedIn}
             component={TeachersSessionsDashboard}
           />
           <ProtectedRoute
+            exact
+            path={`${host}prof-sesiones/agregar`}
+            component={TeachersCreateSessions}
+          />
+          <ProtectedRoute
+            exact
+            path={`${host}prof-sesiones/:sessionId`}
+            component={SessionDetails}
+          />
+          <ProtectedRoute
+            exact
+            path={`${host}prof-sesiones/actualizar/:sessionId`}
+            component={UpdateSessions}
+          />
+          <ProtectedRoute
+            exact
             path={`${host}est-sesiones`}
             isLoggedIn={loggedIn}
             component={StudentsSessionsDashboard}
+          />
+          <ProtectedRoute
+            exact
+            path={`${host}est-sesiones/:sessionId`}
+            component={StudentSessionDetails}
           />
           <Route path={`${host}reset-password`} component={ResetPassword} />
           <Route>

@@ -102,17 +102,9 @@ sessionsService.getPaginatedTeacherSessionsBy = async (
 };
 
 sessionsService.getById = async (id) => {
-  const CancelToken = axios.CancelToken;
-  const source = CancelToken.source();
-
-  const timeout = setTimeout(() => {
-    source.cancel();
-    alert('Ha pasado el tiempo máximo de espera');
-  }, 10000);
 
   const config = {
     method: 'get',
-    cancelToken: source.token,
     params: {
       id: id,
     },
@@ -126,11 +118,9 @@ sessionsService.getById = async (id) => {
 
   try {
     const response = await axios(config);
-    clearTimeout(timeout);
 
     return response;
   } catch (error) {
-    clearTimeout(timeout);
     if (error.response) {
       //La petición ha sido realizada y el servidor respondió con un status code de error.
       if (error.response.data.message) {

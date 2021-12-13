@@ -3,6 +3,9 @@ import { useParams, useHistory } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import { IoSchool } from 'react-icons/io5';
 import { FaUser } from 'react-icons/fa';
+import { BiHappyBeaming, BiSad } from 'react-icons/bi';
+import { GiSurprised } from 'react-icons/gi';
+import { AiFillWarning } from 'react-icons/ai';
 import sessionsService from '../services/sessionsService';
 import Pagination from './Pagination';
 import userService from '../services/usersService';
@@ -14,6 +17,7 @@ import testsService from '../services/testsService';
 import LoadingIcon from './LoadingIcon';
 import { format } from 'date-fns';
 import es from 'date-fns/locale/es';
+import StartTestAttemptConfirmationModal from './StartTestAttemptConfirmationModal';
 
 const StudentSessionDetails = (props) => {
   const host = process.env.REACT_APP_HOST_NAME;
@@ -29,41 +33,73 @@ const StudentSessionDetails = (props) => {
   const [usersRecordsTotal, setUsersRecordsTotal] = useState(0);
   const [pruebasDiagnosticas, setPruebasDiagnosticas] = useState([]);
   const [selectedPruebasPage, setSelectedPruebasPage] = useState(1);
-  const [pruebasPageSize, setPruebasPageSize] = useState(10);
+  const [pruebasPageSize, setPruebasPageSize] = useState(5);
   const [pruebasRecordsTotal, setPruebasRecordsTotal] = useState(0);
-
+  const [arePruebasLoading, setArePruebasLoading] = useState(true);
+  const [isTestConfirmationModalOpen, setIsTestConfirmationModalOpen] =
+    useState(false);
+  const [selectedTestId, setSelectedTestId] = useState(null);
   const handlePageChange = (selectedPage) => {
     setUsersSelectedPage(selectedPage);
     getSessionUsers(selectedPage, usersPageSize, sessionId);
   };
 
+  const handlePruebasPageChange = async (selectedPage) => {
+    setSelectedPruebasPage(selectedPage);
+    await getSessionsPruebasDiagnosticas(
+      sessionId,
+      selectedPage,
+      pruebasPageSize
+    );
+  };
+
   const getSessionUsers = async (selectedPage, pageSize, sessionId) => {
     try {
-      const sessionUsers = await userService.getPaginatedSessionStudents(
+      const response = await userService.getPaginatedSessionStudents(
         selectedPage,
         pageSize,
         sessionId
       );
 
-      setUsers(sessionUsers.data.records);
-      setUsersRecordsTotal(sessionUsers.data.recordsTotal);
+      if (response) {
+        setUsers(response.data.records);
+        setUsersRecordsTotal(response.data.recordsTotal);
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
   const getSessionsPruebasDiagnosticas = async (sessionId, page, pageSize) => {
+    setArePruebasLoading(true);
     try {
-      const result = await testsService.getBySessionId(
+      const response = await testsService.getBySessionId(
         page,
         pageSize,
         sessionId
       );
-      console.log(result);
-      setPruebasDiagnosticas(result.data.records);
-      setPruebasRecordsTotal(result.data.recordsData);
+
+      if (response) {
+        console.log(response.data);
+        setPruebasDiagnosticas(response.data.records);
+        setPruebasRecordsTotal(response.data.recordsTotal);
+      }
     } catch (error) {
       console.log(error);
+    }
+    setArePruebasLoading(false);
+  };
+  const handleTestConfirmationModalShow = () => {
+    setIsTestConfirmationModalOpen(!isTestConfirmationModalOpen);
+  };
+
+  const handleOpenTestConfirmationModal = (pruebaId, sessionId) => {};
+
+  const handleTestConfirmationModalResult = (isSure, pruebaId, sessionId) => {
+    if (isSure) {
+      handleGoToTest(pruebaId, sessionId);
+    } else {
+      handleTestConfirmationModalShow();
     }
   };
   const handleGoToTest = (pruebaId, sessionId) => {
@@ -74,13 +110,17 @@ const StudentSessionDetails = (props) => {
   useEffect(() => {
     const getInitData = async () => {
       const sessionData = await sessionsService.getById(sessionId);
-      setSession(sessionData.data);
-      getSessionUsers(usersSelectedPage, usersPageSize, sessionId);
-      await getSessionsPruebasDiagnosticas(
-        sessionId,
-        selectedPruebasPage,
-        pruebasPageSize
-      );
+
+      if (sessionData) {
+        setSession(sessionData.data);
+        getSessionUsers(usersSelectedPage, usersPageSize, sessionId);
+        await getSessionsPruebasDiagnosticas(
+          sessionId,
+          selectedPruebasPage,
+          pruebasPageSize
+        );
+      }
+
       setIsSessionInfoLoading(false);
     };
 
@@ -93,6 +133,15 @@ const StudentSessionDetails = (props) => {
           <LoadingIcon />
         ) : (
           <>
+            {isTestConfirmationModalOpen ? (
+              <StartTestAttemptConfirmationModal
+                show={isTestConfirmationModalOpen}
+                onHide={handleOpenTestConfirmationModal}
+                testId={selectedTestId}
+                sessionId={parseInt(sessionId)}
+                handleModalResult={handleTestConfirmationModalResult}
+              />
+            ) : null}
             <div className="fw-bold d-flex justify-content-center">
               <h1 className="fw-bold text-center">
                 <span>
@@ -136,6 +185,14 @@ const StudentSessionDetails = (props) => {
                         Participantes
                       </Nav.Link>
                     </Nav.Item>
+                    <Nav.Item className="tab-pills">
+                      <Nav.Link
+                        className="tab-pills-children"
+                        eventKey="insignias"
+                      >
+                        Insignias
+                      </Nav.Link>
+                    </Nav.Item>
                   </Nav>
                   <Tab.Content>
                     <Tab.Pane eventKey="informacion">
@@ -149,81 +206,199 @@ const StudentSessionDetails = (props) => {
                     </Tab.Pane>
                     <Tab.Pane eventKey="pruebas">
                       <div className="container">
-                        {pruebasDiagnosticas &&
-                          pruebasDiagnosticas.map((prueba, index) => (
-                            <Card
-                              key={index}
-                              className="pointer-cursor mb-3"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                handleGoToTest(prueba.id, sessionId);
-                              }}
-                            >
-                              <Card.Header className="fw-bold">
-                                {prueba.titulo}
-                              </Card.Header>
-                              <Card.Body>
-                                <div>
-                                  <p>
-                                    <span className="fw-bold">
-                                      Fecha inicio:{' '}
-                                    </span>
-                                    {prueba && prueba.pruebaSesion
-                                      ? format(
-                                          Date.parse(
-                                            new Date(
-                                              prueba.pruebaSesion.fechaInicio
-                                            ).toUTCString()
-                                          ),
-                                          'PPp',
-                                          {
-                                            locale: es,
-                                          }
-                                        )
-                                      : '01-01-2000'}
-                                  </p>
-                                  <p>
-                                    <span className="fw-bold">
-                                      Fecha cierre:{' '}
-                                    </span>
-                                    {prueba && prueba.pruebaSesion
-                                      ? format(
-                                          Date.parse(
-                                            prueba.pruebaSesion.fechaLimite
-                                          ),
-                                          'PPp',
-                                          {
-                                            locale: es,
-                                          }
-                                        )
-                                      : '01-01-2000'}
-                                  </p>
-                                  <p>
-                                    <span className="fw-bold">Tiempo: </span>
-                                    {prueba.pruebaSesion.duracionMinutos}{' '}
-                                    minutos
-                                  </p>
-                                </div>
-                              </Card.Body>
-                              <Card.Footer className="d-flex">
-                                {prueba &&
-                                prueba.usuarioRealizaPrueba &&
-                                prueba.usuarioRealizaPrueba
-                                  .intentoCompletado ? (
-                                  <div>
-                                    <span className="fw-bold">
-                                      Calificación:
-                                    </span>{' '}
-                                    {prueba &&
-                                      prueba.usuarioRealizaPrueba &&
-                                      prueba.usuarioRealizaPrueba.calificacion}
-                                  </div>
-                                ) : (
-                                  <p className="fw-bold">Esta prueba no ha sido realizada</p>
-                                )}
-                              </Card.Footer>
-                            </Card>
-                          ))}
+                        {arePruebasLoading ? (
+                          <LoadingIcon />
+                        ) : (
+                          <>
+                            {pruebasDiagnosticas &&
+                            pruebasDiagnosticas.length > 0 ? (
+                              <>
+                                {pruebasDiagnosticas &&
+                                  pruebasDiagnosticas.map((prueba, index) => (
+                                    <Card
+                                      key={index}
+                                      className={`border rounded pointer-cursor mb-3 ${
+                                        prueba.usuarioRealizaPrueba &&
+                                        prueba.usuarioRealizaPrueba
+                                          .intentoCompletado
+                                          ? prueba.usuarioRealizaPrueba
+                                              .porcentaje >= 90
+                                            ? 'border-success'
+                                            : prueba.usuarioRealizaPrueba
+                                                .porcentaje >= 70
+                                            ? 'border-warning border-2'
+                                            : 'border-danger border-2'
+                                          : null
+                                      }`}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        setSelectedTestId(prueba.id);
+                                        handleTestConfirmationModalShow();
+                                      }}
+                                    >
+                                      <Card.Header
+                                        className={`d-flex border justify-content-center fw-bold ${
+                                          prueba.usuarioRealizaPrueba &&
+                                          prueba.usuarioRealizaPrueba
+                                            .intentoCompletado
+                                            ? prueba.usuarioRealizaPrueba
+                                                .porcentaje >= 90
+                                              ? 'bg-success border-success'
+                                              : prueba.usuarioRealizaPrueba
+                                                  .porcentaje >= 70
+                                              ? 'bg-warning border-warning border-2'
+                                              : 'bg-danger border-danger border-2'
+                                            : null
+                                        }`}
+                                      >
+                                        <div className="flex-grow-1">
+                                          {prueba.titulo}
+                                        </div>
+                                        {prueba &&
+                                        prueba.usuarioRealizaPrueba == null ? (
+                                          <span className="text-warning">
+                                            <AiFillWarning size={25} />
+                                          </span>
+                                        ) : prueba.usuarioRealizaPrueba
+                                            .intentoCompletado ? null : (
+                                          <span className="text-warning">
+                                            <AiFillWarning size={25} />
+                                          </span>
+                                        )}
+                                      </Card.Header>
+                                      <Card.Body>
+                                        <div>
+                                          <p>
+                                            <span className="fw-bold">
+                                              Fecha inicio:{' '}
+                                            </span>
+                                            {prueba && prueba.pruebaSesion
+                                              ? format(
+                                                  Date.parse(
+                                                    prueba.pruebaSesion
+                                                      .fechaInicio
+                                                  ),
+                                                  'PPp',
+                                                  {
+                                                    locale: es,
+                                                  }
+                                                )
+                                              : '01-01-2000'}
+                                          </p>
+                                          <p>
+                                            <span className="fw-bold">
+                                              Fecha cierre:{' '}
+                                            </span>
+                                            {prueba && prueba.pruebaSesion
+                                              ? format(
+                                                  Date.parse(
+                                                    prueba.pruebaSesion
+                                                      .fechaLimite
+                                                  ),
+                                                  'PPp',
+                                                  {
+                                                    locale: es,
+                                                  }
+                                                )
+                                              : '01-01-2000'}
+                                          </p>
+                                          <p>
+                                            <span className="fw-bold">
+                                              Tiempo:{' '}
+                                            </span>
+                                            {
+                                              prueba.pruebaSesion
+                                                .duracionMinutos
+                                            }{' '}
+                                            minutos
+                                          </p>
+                                          <p>
+                                            <span className="fw-bold">
+                                              Estado:{' '}
+                                            </span>{' '}
+                                            {prueba &&
+                                            prueba.usuarioRealizaPrueba != null
+                                              ? prueba.usuarioRealizaPrueba
+                                                  .intentoCompletado
+                                                ? 'Prueba completada'
+                                                : 'En proceso'
+                                              : 'Pendiente'}
+                                          </p>
+                                          {prueba &&
+                                          prueba.usuarioRealizaPrueba !=
+                                            null ? (
+                                            prueba.usuarioRealizaPrueba
+                                              .intentoCompletado ? (
+                                              <>
+                                                <p>
+                                                  <span className="fw-bold">
+                                                    Calificación obtenida:
+                                                  </span>{' '}
+                                                  {prueba.usuarioRealizaPrueba &&
+                                                    prueba.usuarioRealizaPrueba
+                                                      .calificacion}
+                                                  {' / '}
+                                                  {prueba &&
+                                                    prueba.calificacionMaxima}
+                                                </p>
+                                                <div>
+                                                  {prueba.usuarioRealizaPrueba &&
+                                                  prueba.usuarioRealizaPrueba
+                                                    .intentoCompletado ? (
+                                                    prueba.usuarioRealizaPrueba
+                                                      .porcentaje >= 90 ? (
+                                                      <p className="text-center text-success">
+                                                        <BiHappyBeaming
+                                                          size={30}
+                                                        />
+                                                        Muchas felicitaciones
+                                                        ¡Te ha ido de maravilla
+                                                        en esta prueba!
+                                                      </p>
+                                                    ) : prueba
+                                                        .usuarioRealizaPrueba
+                                                        .porcentaje >= 70 ? (
+                                                      <p className="text-center text-warning">
+                                                        <GiSurprised
+                                                          size={30}
+                                                        />
+                                                        No has reprobado, pero
+                                                        vamos a estudiar más
+                                                        para que la próxima vez
+                                                        te vaya mejor.
+                                                      </p>
+                                                    ) : (
+                                                      <p className="text-center text-danger">
+                                                        <BiSad size={30} />
+                                                        Has reprobado, pero
+                                                        anímate. Sigue
+                                                        estudiando para que te
+                                                        vaya mejor.
+                                                      </p>
+                                                    )
+                                                  ) : null}
+                                                </div>
+                                              </>
+                                            ) : null
+                                          ) : null}
+                                        </div>
+                                      </Card.Body>
+                                    </Card>
+                                  ))}
+                                <Pagination
+                                  actualPage={selectedPruebasPage}
+                                  recordsTotal={pruebasRecordsTotal}
+                                  pageSize={pruebasPageSize}
+                                  handlePageChange={handlePruebasPageChange}
+                                />
+                              </>
+                            ) : (
+                              <div className="w-100 p-5 text-center">
+                                <h2>Esta sesión no tiene pruebas asignadas.</h2>
+                              </div>
+                            )}
+                          </>
+                        )}
                       </div>
                     </Tab.Pane>
                     <Tab.Pane eventKey="participantes">
@@ -272,6 +447,9 @@ const StudentSessionDetails = (props) => {
                         pageSize={usersPageSize}
                         handlePageChange={handlePageChange}
                       />
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="insignias">
+                      <h1>Aquí aparecerán tus insignias</h1>
                     </Tab.Pane>
                   </Tab.Content>
                 </Tab.Container>

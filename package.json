@@ -19,6 +19,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-select": "^5.0.0",
+    "react-text-mask": "^5.4.3",
+    "recharts": "^2.1.6",
     "sass": "^1.39.2",
     "web-vitals": "^1.1.2"
   },

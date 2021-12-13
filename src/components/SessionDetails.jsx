@@ -21,6 +21,7 @@ import AssignTestToSessionModal from './AssignTestToSessionModal';
 import LoadingIcon from './LoadingIcon';
 import { format } from 'date-fns';
 import es from 'date-fns/locale/es';
+import { Pie, PieChart, Cell, ResponsiveContainer } from 'recharts';
 
 const SessionDetails = (props) => {
   const host = process.env.REACT_APP_HOST_NAME;
@@ -38,8 +39,13 @@ const SessionDetails = (props) => {
   const [usersRecordsTotal, setUsersRecordsTotal] = useState(0);
   const [pruebasDiagnosticas, setPruebasDiagnosticas] = useState([]);
   const [selectedPruebasPage, setSelectedPruebasPage] = useState(1);
-  const [pruebasPageSize, setPruebasPageSize] = useState(10);
+  const [pruebasPageSize, setPruebasPageSize] = useState(5);
   const [pruebasRecordsTotal, setPruebasRecordsTotal] = useState(0);
+  const [selectedReport, setSelectedReport] = useState(1);
+  const [reportData, setReportData] = useState(null);
+  const [isReportLoading, setIsReportLoading] = useState(false);
+
+  const [arePruebasLoading, setArePruebasLoading] = useState(true);
 
   const [sessionActivity, setSessionActivity] = useState([]);
 
@@ -48,6 +54,79 @@ const SessionDetails = (props) => {
   const handlePageChange = (selectedPage) => {
     setUsersSelectedPage(selectedPage);
     getSessionUsers(selectedPage, usersPageSize, sessionId);
+  };
+
+  const handlePruebasPageChange = async (selectedPage) => {
+    setSelectedPruebasPage(selectedPage);
+    await getSessionsPruebasDiagnosticas(
+      sessionId,
+      selectedPage,
+      pruebasPageSize
+    );
+  };
+
+  const handleReportSelect = async (e) => {
+    const selectValue = e.target.value;
+    console.log(selectValue);
+    setSelectedReport(selectValue);
+    setIsReportLoading(true);
+    await getReportData(selectValue);
+    setIsReportLoading(false);
+  };
+
+  const pieColors = ['#4DB6AC', '#DC3545'];
+
+  const radian = Math.PI / 180;
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    index,
+  }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * radian);
+    const y = cy + radius * Math.sin(-midAngle * radian);
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? 'start' : 'end'}
+        dominantBaseline="central"
+      >
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
+
+  const getReportData = async (type) => {
+    try {
+      if (type && type == 1) {
+        const response = await testsService.getSessionAverageGrades(sessionId);
+
+        if (response) {
+          console.log(response);
+          const report = [
+            {
+              name: 'Promedio de calificaciones',
+              value: response.data.notaPromedio,
+            },
+          ];
+
+          if (response.data.notaPromedio < 100) {
+            report.push({
+              name: 'restante',
+              value: 100 - response.data.notaPromedio,
+            });
+          }
+          setReportData(report);
+        }
+      }
+    } catch (error) {}
   };
 
   const getSessionUsers = async (selectedPage, pageSize, sessionId) => {
@@ -99,12 +178,6 @@ const SessionDetails = (props) => {
     }
   };
 
-  const handleEnableUpdate = (e) => {
-    e.preventDefault();
-    setIsEditing(!isEditing);
-    setUpdatesession(session);
-  };
-
   const handleOpenAddTestModal = () => {
     setIsAddTestsModalOpen(!isAddTestsModalOpen);
   };
@@ -136,18 +209,21 @@ const SessionDetails = (props) => {
   };
 
   const getSessionsPruebasDiagnosticas = async (sessionId, page, pageSize) => {
+    setArePruebasLoading(true);
     try {
       const result = await testsService.getBySessionId(
         page,
         pageSize,
         sessionId
       );
-      console.log(result);
-      setPruebasDiagnosticas(result.data.records);
-      setPruebasRecordsTotal(result.data.recordsData);
+      if (result) {
+        setPruebasDiagnosticas(result.data.records);
+        setPruebasRecordsTotal(result.data.recordsTotal);
+      }
     } catch (error) {
       console.log(error);
     }
+    setArePruebasLoading(false);
   };
 
   const handleSessionUpdate = async (session) => {
@@ -165,7 +241,6 @@ const SessionDetails = (props) => {
   const getSessionActivity = async (sessionId) => {
     try {
       const result = await sessionsService.getSessionActivity(sessionId);
-      console.log(result.data);
       if (result) {
         setSessionActivity(result.data);
       }
@@ -224,12 +299,12 @@ const SessionDetails = (props) => {
                 <AiFillEdit size={20} /> <span>Actualizar</span>
               </Link>
 
-              <Link
+              <button
                 className="py-3 dropdown-item text-dark text-decoration-none"
                 onClick={handleOpenDelete}
               >
                 <AiFillDelete size={20} /> <span>Deshabilitar</span>
-              </Link>
+              </button>
             </Dropdown.Menu>
           </Dropdown>
         </div>
@@ -333,6 +408,22 @@ const SessionDetails = (props) => {
                               Actividad
                             </Nav.Link>
                           </Nav.Item>
+                          <Nav.Item className="tab-pills">
+                            <Nav.Link
+                              className="tab-pills-children"
+                              eventKey="insignias"
+                            >
+                              Insignias
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item className="tab-pills">
+                            <Nav.Link
+                              className="tab-pills-children"
+                              eventKey="reportes"
+                            >
+                              Reportes
+                            </Nav.Link>
+                          </Nav.Item>
                         </Nav>
                         <Tab.Content>
                           <Tab.Pane eventKey="informacion">
@@ -361,62 +452,95 @@ const SessionDetails = (props) => {
                               {/* Agregar la parte de la fecha de ingreso en el sistema */}
                             </div>
                             <div className="container">
-                              {pruebasDiagnosticas &&
-                                pruebasDiagnosticas.map((prueba, index) => (
-                                  <Card
-                                    key={index}
-                                    className="pointer-cursor mb-3"
-                                  >
-                                    <Card.Header className="fw-bold">
-                                      {prueba.titulo}
-                                    </Card.Header>
-                                    <Card.Body>
-                                      <div>
-                                        <p>
-                                          <span className="fw-bold">
-                                            Fecha inicio:{' '}
-                                          </span>
-                                          {prueba && prueba.pruebaSesion
-                                            ? format(
-                                                Date.parse(
-                                                  prueba.pruebaSesion
-                                                    .fechaInicio
-                                                ),
-                                                'PPp',
-                                                {
-                                                  locale: es,
-                                                }
-                                              )
-                                            : '01-01-2000'}
-                                        </p>
-                                        <p>
-                                          <span className="fw-bold">
-                                            Fecha cierre:{' '}
-                                          </span>
-                                          {prueba && prueba.pruebaSesion
-                                            ? format(
-                                                Date.parse(
-                                                  prueba.pruebaSesion
-                                                    .fechaLimite
-                                                ),
-                                                'PPp',
-                                                {
-                                                  locale: es,
-                                                }
-                                              )
-                                            : '01-01-2000'}
-                                        </p>
-                                        <p>
-                                          <span className="fw-bold">
-                                            Tiempo:{' '}
-                                          </span>
-                                          {prueba.pruebaSesion.duracionMinutos}{' '}
-                                          minutos
-                                        </p>
-                                      </div>
-                                    </Card.Body>
-                                  </Card>
-                                ))}
+                              {arePruebasLoading ? (
+                                <LoadingIcon />
+                              ) : (
+                                <>
+                                  {pruebasDiagnosticas &&
+                                  pruebasDiagnosticas.length > 0 ? (
+                                    <>
+                                      {pruebasDiagnosticas &&
+                                        pruebasDiagnosticas.map(
+                                          (prueba, index) => (
+                                            <Card
+                                              key={index}
+                                              className="pointer-cursor mb-3"
+                                            >
+                                              <Card.Header className="fw-bold">
+                                                {prueba.titulo}
+                                              </Card.Header>
+                                              <Card.Body>
+                                                <div>
+                                                  <p>
+                                                    <span className="fw-bold">
+                                                      Fecha inicio:{' '}
+                                                    </span>
+                                                    {prueba &&
+                                                    prueba.pruebaSesion
+                                                      ? format(
+                                                          Date.parse(
+                                                            prueba.pruebaSesion
+                                                              .fechaInicio
+                                                          ),
+                                                          'PPp',
+                                                          {
+                                                            locale: es,
+                                                          }
+                                                        )
+                                                      : '01-01-2000'}
+                                                  </p>
+                                                  <p>
+                                                    <span className="fw-bold">
+                                                      Fecha cierre:{' '}
+                                                    </span>
+                                                    {prueba &&
+                                                    prueba.pruebaSesion
+                                                      ? format(
+                                                          Date.parse(
+                                                            prueba.pruebaSesion
+                                                              .fechaLimite
+                                                          ),
+                                                          'PPp',
+                                                          {
+                                                            locale: es,
+                                                          }
+                                                        )
+                                                      : '01-01-2000'}
+                                                  </p>
+                                                  <p>
+                                                    <span className="fw-bold">
+                                                      Tiempo:{' '}
+                                                    </span>
+                                                    {
+                                                      prueba.pruebaSesion
+                                                        .duracionMinutos
+                                                    }{' '}
+                                                    minutos
+                                                  </p>
+                                                </div>
+                                              </Card.Body>
+                                            </Card>
+                                          )
+                                        )}
+                                      <Pagination
+                                        actualPage={selectedPruebasPage}
+                                        recordsTotal={pruebasRecordsTotal}
+                                        pageSize={pruebasPageSize}
+                                        handlePageChange={
+                                          handlePruebasPageChange
+                                        }
+                                      />
+                                    </>
+                                  ) : (
+                                    <div className="w-100 p-5 text-center">
+                                      <h2>
+                                        Esta sesión no tiene pruebas
+                                        diagnósticas asignadas.
+                                      </h2>
+                                    </div>
+                                  )}
+                                </>
+                              )}
                             </div>
                           </Tab.Pane>
                           <Tab.Pane eventKey="participantes">
@@ -551,8 +675,81 @@ const SessionDetails = (props) => {
                                   )}
                               </>
                             )}
-
                             {/* Agregar la parte de la fecha de ingreso en el sistema */}
+                          </Tab.Pane>
+                          <Tab.Pane eventKey="insignias">
+                            <h1>Hello world</h1>
+                          </Tab.Pane>
+                          <Tab.Pane eventKey="reportes">
+                            <div>
+                              <div className="form-floating">
+                                <select
+                                  name="report-type"
+                                  id="report-type"
+                                  className="form-select"
+                                  defaultValue={0}
+                                  onChange={handleReportSelect}
+                                >
+                                  <option value="0">
+                                    Selecciona un reporte
+                                  </option>
+                                  <option value="1">
+                                    Reporte de promedio de calificaciones
+                                  </option>
+                                </select>
+                                <label htmlFor="report-select">Reportes</label>
+                              </div>
+                              <div>
+                                <div className="my-3 d-flex flex-column align-items-center justify-content-center">
+                                  {selectedReport == 1 ? (
+                                    isReportLoading ? (
+                                      <LoadingIcon />
+                                    ) : reportData ? (
+                                      <>
+                                        <div>
+                                          <p className="fw-bold">Leyenda</p>
+                                          <p>
+                                            <span className="text-success">
+                                              &#9632;
+                                            </span>{' '}
+                                            Respuestas correctas
+                                          </p>
+                                          <p>
+                                            <span className="text-danger">
+                                              &#9632;
+                                            </span>{' '}
+                                            Respuestas incorrectas
+                                          </p>
+                                        </div>
+                                        <PieChart width={750} height={350}>
+                                          <Pie
+                                            data={reportData}
+                                            dataKey="value"
+                                            nameKey="name"
+                                            cx="50%"
+                                            cy="50%"
+                                            fill="#8884d8"
+                                            labelLine={false}
+                                            label={renderCustomizedLabel}
+                                          >
+                                            {reportData.map((entry, index) => (
+                                              <Cell
+                                                key={`cell-${index}`}
+                                                fill={
+                                                  pieColors[
+                                                    index % pieColors.length
+                                                  ]
+                                                }
+                                              />
+                                            ))}
+                                          </Pie>
+                                        </PieChart>
+                                      </>
+                                    ) : null
+                                  ) : null}
+                                </div>
+                              </div>
+                            </div>
                           </Tab.Pane>
                         </Tab.Content>
                       </Tab.Container>

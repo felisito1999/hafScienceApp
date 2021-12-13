@@ -260,7 +260,7 @@ testsService.getTestAttempt = async (pruebaDiagnosticaId, sessionId) => {
     url: `${apiHost}pruebasdiagnosticas/get-attempt`,
     params: {
       pruebaDiagnosticaId: pruebaDiagnosticaId,
-      sessionId: sessionId
+      sessionId: sessionId,
     },
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -324,5 +324,174 @@ testsService.submitTestAttempt = async (attemptModel) => {
     }
   }
 };
+
+testsService.getTestDetails = async (testId, sessionId) => {
+  const config = {
+    method: 'get',
+    url: `${apiHost}pruebasdiagnosticas/test-details`,
+    params: {
+      testId: testId,
+      sessionId: sessionId,
+    },
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    data: null,
+  };
+
+  try {
+    const response = await axios(config);
+
+    return response;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        alert(error.response.data.message);
+      }
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      console.log(error.request);
+    } else {
+      console.log('Error', error.message);
+    }
+  }
+};
+
+testsService.getSessionAverageGrades = async (sessionId) => {
+  const config = {
+    method: 'get',
+    url: `${apiHost}pruebasdiagnosticas/session-average-grades`,
+    params: {
+      sessionId: sessionId,
+    },
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    data: null,
+  };
+
+  try {
+    const response = await axios(config);
+
+    return response;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        alert(error.response.data.message);
+      }
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      console.log(error.request);
+    } else {
+      console.log('Error', error.message);
+    }
+  }
+};
+
+testsService.getSessionTestAverageGrades = async (sessionId, testId) => {
+  const config = {
+    method: 'get',
+    url: `${apiHost}pruebasdiagnosticas/session-test-average-grades`,
+    params: {
+      sessionId: sessionId,
+      testId: testId,
+    },
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    data: null,
+  };
+
+  try {
+    const response = await axios(config);
+
+    return response;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        alert(error.response.data.message);
+      }
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      console.log(error.request);
+    } else {
+      console.log('Error', error.message);
+    }
+  }
+};
+
+testsService.getStudentSessionAverageGrades = async (sessionId, studentId) => {
+  const config = {
+    method: 'get',
+    url: `${apiHost}pruebasdiagnosticas/student-session-average-grades`,
+    params: {
+      sessionId: sessionId,
+      studentId: studentId,
+    },
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    data: null,
+  };
+
+  try {
+    const response = await axios(config);
+
+    return response;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        alert(error.response.data.message);
+      }
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      console.log(error.request);
+    } else {
+      console.log('Error', error.message);
+    }
+  }
+};
+
+testsService.GetTestSessionGrades = async (sessionId, testId) => {
+  const config = {
+    method: 'get',
+    url: `${apiHost}pruebasdiagnosticas/session-test-grades`,
+    params: {
+      sessionId: sessionId,
+      testId: testId
+    },
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    },
+    data: null
+  }
+
+  try {
+    const response = await axios(config);
+    
+    return response;
+  } catch (error) {
+    if(error.response){
+      if (error.response.data.message){
+        alert(error.response.data.message);
+      }
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      console.log(error.request);
+    } else {
+      console.log('Error', error.message);
+    }
+  }
+}
 
 export default testsService;

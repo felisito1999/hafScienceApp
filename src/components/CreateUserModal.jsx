@@ -3,6 +3,7 @@ import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import userService from '../services/usersService';
 import DateTimePicker from 'react-datetime-picker/dist/DateTimePicker';
+import MaskedInput from 'react-text-mask';
 
 const CreateUserModal = (props) => {
   const defaultUserValues = {
@@ -112,14 +113,22 @@ const CreateUserModal = (props) => {
       correoElectronico: e.target.value,
     });
   };
-  
+
   const today = new Date();
 
-  const minBirthDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDay());
-  const minStudentBirthDate = new Date(today.getFullYear() - 5, today.getMonth(), today.getDay())
-  
+  const minBirthDate = new Date(
+    today.getFullYear() - 18,
+    today.getMonth(),
+    today.getDay()
+  );
+  const minStudentBirthDate = new Date(
+    today.getFullYear() - 5,
+    today.getMonth(),
+    today.getDay()
+  );
+
   const handleRolChange = (e) => {
-    const rolId = e.target.value; 
+    const rolId = e.target.value;
 
     if (rolId != 1) {
       setUser({
@@ -161,21 +170,21 @@ const CreateUserModal = (props) => {
   };
 
   const handleIsSuperadministradorChange = (e) => {
-    const isChecked = e.target.checked; 
+    const isChecked = e.target.checked;
 
-    if (isChecked){
+    if (isChecked) {
       setUser({
         ...user,
         esSuperAdministrador: isChecked,
-        centroEducativoId: 0
+        centroEducativoId: 0,
       });
     } else {
       setUser({
         ...user,
         esSuperAdministrador: isChecked,
-        centroEducativoId: 1
+        centroEducativoId: 1,
       });
-      console.log(e.target.checked)
+      console.log(e.target.checked);
     }
   };
 
@@ -281,7 +290,11 @@ const CreateUserModal = (props) => {
             <DateTimePicker
               value={user.fechaNacimiento}
               // onClick={handleChangeMinBirthDate}
-              maxDate={user.rolId === 1 || user.rolId === 2 ? minBirthDate : minStudentBirthDate}
+              maxDate={
+                user.rolId === 1 || user.rolId === 2
+                  ? minBirthDate
+                  : minStudentBirthDate
+              }
               onChange={handleFechaNacimientoChange}
               format="dd-MM-y"
               className="form-control"
@@ -289,13 +302,25 @@ const CreateUserModal = (props) => {
             />
           </div>
           <div className="form-group">
-            <input
-              type="tel"
+            <MaskedInput
+              mask={[
+                /[1-9]/,
+                /[0-9]/,
+                /[0-9]/,
+                '-',
+                /[0-9]/,
+                /[0-9]/,
+                /[0-9]/,
+                '-',
+                /[0-9]/,
+                /[0-9]/,
+                /[0-9]/,
+                /[0-9]/,
+              ]}
+              placeholder="809-000-0000"
               name="telefono"
               id="telefono"
-              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               minLength="12"
-              maxLength="12"
               value={user.telefono}
               onChange={handleTelefonoChange}
               required
