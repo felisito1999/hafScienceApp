@@ -12,6 +12,7 @@ import AddSessionsUsers from '../components/AddSessionsUsers';
 import CreateTest from '../components/CreateTest';
 import StudentsSessionsDashboard from '../components/StudentsSessionsDashboard';
 import StudentSessionDetails from '../components/StudentSessionDetails';
+import TeacherTestAttempts from '../components/TeacherTestAttempts';
 
 const usersComponents = {
   adminComponents: [
@@ -24,6 +25,7 @@ const usersComponents = {
     TeachersSessionsDashboard.name,
     AddSessionsUsers.name,
     CreateTest.name,
+    TeacherTestAttempts.name
   ],
   studentComponents: [
     TestAttempt.name,

@@ -29,6 +29,7 @@ import StudentSessionDetails from './components/StudentSessionDetails';
 import TeachersCreateSessions from './components/TeachersCreateSessions';
 import SessionDetails from './components/SessionDetails';
 import UpdateSessions from './components/UpdateSessions';
+import TeacherTestAttempts from './components/TeacherTestAttempts';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -163,6 +164,11 @@ const App = () => {
             exact
             path={`${host}est-sesiones/:sessionId`}
             component={StudentSessionDetails}
+          />
+          <ProtectedRoute 
+            exact 
+            path={`${host}prof-sesiones/calificaciones-prueba/:sessionId/:pruebaId`}
+            component={TeacherTestAttempts}
           />
           <Route path={`${host}reset-password`} component={ResetPassword} />
           <Route>

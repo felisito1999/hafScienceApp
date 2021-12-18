@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Nav from 'react-bootstrap/Nav';
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
@@ -22,9 +22,12 @@ import LoadingIcon from './LoadingIcon';
 import { format } from 'date-fns';
 import es from 'date-fns/locale/es';
 import { Pie, PieChart, Cell, ResponsiveContainer } from 'recharts';
+import jsPDF from 'jspdf';
+import domtoimage from 'dom-to-image';
 
 const SessionDetails = (props) => {
   const host = process.env.REACT_APP_HOST_NAME;
+  const history = useHistory();
   const { sessionId } = useParams();
   const [isSessionInfoLoading, setIsSessionInfoLoading] = useState(true);
 
@@ -72,6 +75,23 @@ const SessionDetails = (props) => {
     setIsReportLoading(true);
     await getReportData(selectValue);
     setIsReportLoading(false);
+  };
+
+  const generateReport = (reportType) => {
+    if (reportType) {
+      if (reportType == 1) {
+        const input = document.getElementById('reporte-promedio-calificaciones');
+        const pdf = new jsPDF();
+
+        if (pdf) {
+          domtoimage.toJpeg(input, {quality: 1.0})
+            .then(imgData => {
+              pdf.addImage(imgData, 'JPEG', 10, 10);
+              pdf.save('reporte-promedio-calificaciones.pdf');
+            });
+        }
+      }
+    }
   };
 
   const pieColors = ['#4DB6AC', '#DC3545'];
@@ -247,6 +267,11 @@ const SessionDetails = (props) => {
     } catch (error) {}
   };
 
+  const goToPruebaGrades = async (sessionId, testId) => {
+    console.log("Hello")
+    history.push(`${host}prof-sesiones/calificaciones-prueba/${sessionId}/${testId}`);
+  }
+
   useEffect(() => {
     const getInitData = async () => {
       const sessionData = await sessionsService.getById(sessionId);
@@ -327,7 +352,7 @@ const SessionDetails = (props) => {
             >
               {isEditing ? (
                 <>
-                  <div className="form-group">
+                  <div className="form-group">/
                     <input
                       type="text"
                       name="nombre"
@@ -465,6 +490,10 @@ const SessionDetails = (props) => {
                                             <Card
                                               key={index}
                                               className="pointer-cursor mb-3"
+                                              onClick={(e) => {
+                                                e.preventDefault()
+                                                goToPruebaGrades(sessionId, prueba.id)
+                                              }}
                                             >
                                               <Card.Header className="fw-bold">
                                                 {prueba.titulo}
@@ -706,44 +735,59 @@ const SessionDetails = (props) => {
                                       <LoadingIcon />
                                     ) : reportData ? (
                                       <>
-                                        <div>
-                                          <p className="fw-bold">Leyenda</p>
-                                          <p>
-                                            <span className="text-success">
-                                              &#9632;
-                                            </span>{' '}
-                                            Respuestas correctas
-                                          </p>
-                                          <p>
-                                            <span className="text-danger">
-                                              &#9632;
-                                            </span>{' '}
-                                            Respuestas incorrectas
-                                          </p>
-                                        </div>
-                                        <PieChart width={750} height={350}>
-                                          <Pie
-                                            data={reportData}
-                                            dataKey="value"
-                                            nameKey="name"
-                                            cx="50%"
-                                            cy="50%"
-                                            fill="#8884d8"
-                                            labelLine={false}
-                                            label={renderCustomizedLabel}
+                                        <div className="w-100 d-flex flex-column align-items-center">
+                                          <button
+                                            className="w-100 btn btn-success mb-3"
+                                            onClick={(e) => {
+                                              e.preventDefault();
+                                              generateReport(1);
+                                            }}
                                           >
-                                            {reportData.map((entry, index) => (
-                                              <Cell
-                                                key={`cell-${index}`}
-                                                fill={
-                                                  pieColors[
-                                                    index % pieColors.length
-                                                  ]
-                                                }
-                                              />
-                                            ))}
-                                          </Pie>
-                                        </PieChart>
+                                            Generar reporte
+                                          </button>
+                                        </div>
+                                        <div id="reporte-promedio-calificaciones" className="bg-light d-flex flex-column align-items-center">
+                                          <div>
+                                            <p className="fw-bold">Leyenda</p>
+                                            <p>
+                                              <span className="text-success">
+                                                &#9632;
+                                              </span>{' '}
+                                              Respuestas correctas
+                                            </p>
+                                            <p>
+                                              <span className="text-danger">
+                                                &#9632;
+                                              </span>{' '}
+                                              Respuestas incorrectas
+                                            </p>
+                                          </div>
+                                          <PieChart width={750} height={350}>
+                                            <Pie
+                                              data={reportData}
+                                              dataKey="value"
+                                              nameKey="name"
+                                              cx="50%"
+                                              cy="50%"
+                                              fill="#8884d8"
+                                              labelLine={false}
+                                              label={renderCustomizedLabel}
+                                            >
+                                              {reportData.map(
+                                                (entry, index) => (
+                                                  <Cell
+                                                    key={`cell-${index}`}
+                                                    fill={
+                                                      pieColors[
+                                                        index % pieColors.length
+                                                      ]
+                                                    }
+                                                  />
+                                                )
+                                              )}
+                                            </Pie>
+                                          </PieChart>
+                                        </div>
                                       </>
                                     ) : null
                                   ) : null}
