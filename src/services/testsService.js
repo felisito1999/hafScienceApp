@@ -460,7 +460,7 @@ testsService.getStudentSessionAverageGrades = async (sessionId, studentId) => {
   }
 };
 
-testsService.GetTestSessionGrades = async (sessionId, testId) => {
+testsService.getTestSessionGrades = async (sessionId, testId) => {
   const config = {
     method: 'get',
     url: `${apiHost}pruebasdiagnosticas/session-test-grades`,
