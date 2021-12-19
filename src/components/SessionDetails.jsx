@@ -268,8 +268,11 @@ const SessionDetails = (props) => {
   };
 
   const goToPruebaGrades = async (sessionId, testId) => {
-    console.log("Hello")
     history.push(`${host}prof-sesiones/calificaciones-prueba/${sessionId}/${testId}`);
+  }
+
+  const goToStudentAverage = async (sessionId, studentId) => {
+    history.push(`${host}prof-sesiones/promedio-estudiante/${sessionId}/${studentId}`);
   }
 
   useEffect(() => {
@@ -580,6 +583,8 @@ const SessionDetails = (props) => {
                                     <Card
                                       className="pointer-cursor bg-light h-100"
                                       onClick={(e) => {
+                                        e.preventDefault();
+                                        goToStudentAverage(sessionId, user.id)
                                         //history.push(`${host}prof-sesiones/${session.id}`)
                                       }}
                                     >

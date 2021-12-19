@@ -100,10 +100,11 @@ const AddTestQuestionsModal = (props) => {
     e.preventDefault();
     try {
       const result = await testsService.addToQuestionPool(newQuestion);
-      // props.onQuestionSelected(newQuestion);
-      cleanNewQuestion();
-      await getRegisteredQuestions();
-      alert('¡La pregunta ha sido añadida exitosamente!');
+      if (result) {
+        cleanNewQuestion();
+        await getRegisteredQuestions();
+        alert('¡La pregunta ha sido añadida exitosamente!');
+      }
     } catch (error) {
       console.log(error);
     }
@@ -150,73 +151,77 @@ const AddTestQuestionsModal = (props) => {
           <Tab.Content>
             <Tab.Pane eventKey="preguntas-disponibles">
               <section id="registered-questions" className="my-5">
-                { areQuestionsLoading ? <LoadingIcon /> :
-                <>
-                  {registeredQuestions && registeredQuestions.length > 0 ? (
-                  <Accordion
-                    defaultActiveKey="" /*{registeredQuestions[0].id}*/
-                  >
-                    {registeredQuestions.map((question, index) => (
-                      <Accordion.Item eventKey={index}>
-                        <Accordion.Header>{question.titulo}</Accordion.Header>
-                        <Accordion.Body>
-                        {question.respuesta &&
-                            question.respuesta.map((respuesta, index) => (
-                              <div key={index} className="input-group mb-3">
-                                <span
-                                  className="input-group-text pointer-cursor"
-                                  id={`Respuesta${index}`}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    handleCorrectAnswerClick(index);
-                                  }}
-                                >
-                                  {respuesta.esCorrecta ? (
-                                    <AiFillCheckCircle
-                                      className="cursor-pointer text-success"
-                                      size={25}
-                                    />
-                                  ) : (
-                                    <AiFillCloseCircle
-                                      className="text-danger"
-                                      size={25}
-                                    />
-                                  )}
-                                </span>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  value={respuesta.contenido}
-                                  onChange={(e) => {
-                                    handleAnswerContentChange(e, index);
-                                  }}
-                                  placeholder={`Respuesta ${index + 1}`}
-                                  aria-label="Username"
-                                  aria-describedby={`Respuesta${index}`}
-                                  disabled
-                                />
-                              </div>
-                            ))}
-                          <button
-                            className="w-100 btn btn-success"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              props.onQuestionSelected(question);
-                            }}
-                          >
-                            Añadir pregunta a prueba
-                          </button>
-                        </Accordion.Body>
-                      </Accordion.Item>
-                    ))}
-                  </Accordion>
+                {areQuestionsLoading ? (
+                  <LoadingIcon />
                 ) : (
-                  <h6 className="text-center">
-                    No tiene preguntas registradas en su banco de preguntas
-                  </h6>
+                  <>
+                    {registeredQuestions && registeredQuestions.length > 0 ? (
+                      <Accordion
+                        defaultActiveKey="" /*{registeredQuestions[0].id}*/
+                      >
+                        {registeredQuestions.map((question, index) => (
+                          <Accordion.Item eventKey={index}>
+                            <Accordion.Header>
+                              {question.titulo}
+                            </Accordion.Header>
+                            <Accordion.Body>
+                              {question.respuesta &&
+                                question.respuesta.map((respuesta, index) => (
+                                  <div key={index} className="input-group mb-3">
+                                    <span
+                                      className="input-group-text pointer-cursor"
+                                      id={`Respuesta${index}`}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        handleCorrectAnswerClick(index);
+                                      }}
+                                    >
+                                      {respuesta.esCorrecta ? (
+                                        <AiFillCheckCircle
+                                          className="cursor-pointer text-success"
+                                          size={25}
+                                        />
+                                      ) : (
+                                        <AiFillCloseCircle
+                                          className="text-danger"
+                                          size={25}
+                                        />
+                                      )}
+                                    </span>
+                                    <input
+                                      type="text"
+                                      className="form-control"
+                                      value={respuesta.contenido}
+                                      onChange={(e) => {
+                                        handleAnswerContentChange(e, index);
+                                      }}
+                                      placeholder={`Respuesta ${index + 1}`}
+                                      aria-label="Username"
+                                      aria-describedby={`Respuesta${index}`}
+                                      disabled
+                                    />
+                                  </div>
+                                ))}
+                              <button
+                                className="w-100 btn btn-success"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  props.onQuestionSelected(question);
+                                }}
+                              >
+                                Añadir pregunta a prueba
+                              </button>
+                            </Accordion.Body>
+                          </Accordion.Item>
+                        ))}
+                      </Accordion>
+                    ) : (
+                      <h6 className="text-center">
+                        No tiene preguntas registradas en su banco de preguntas
+                      </h6>
+                    )}
+                  </>
                 )}
-                </>
-                }
               </section>
             </Tab.Pane>
             <Tab.Pane eventKey="nueva-pregunta">

@@ -115,36 +115,46 @@ const TeachersCreateSessions = (props) => {
   };
 
   const handleSessionSubmit = async (e) => {
-    e.preventDefault();
-    let newSessionStudents = [];
+    try {
+      e.preventDefault();
+      let newSessionStudents = [];
 
-    session.usuariosSesiones.forEach((item) => {
-      const newStudent = {
-        usuarioId: item.id,
-        sessionId: 0,
-        nombreUsuario: item.nombreUsuario,
-        nombreSesion: '',
+      session.usuariosSesiones.forEach((item) => {
+        const newStudent = {
+          usuarioId: item.id,
+          sessionId: 0,
+          nombreUsuario: item.nombreUsuario,
+          nombreSesion: '',
+        };
+
+        newSessionStudents.push(newStudent);
+      });
+
+      const sessionModel = {
+        nombre: session.nombre,
+        descripcion: session.descripcion,
+        usuariosSesiones: newSessionStudents,
       };
 
-      newSessionStudents.push(newStudent);
-    });
+      const result = await sessionsService.saveSession(sessionModel);
 
-    const sessionModel = {
-      nombre: session.nombre,
-      descripcion: session.descripcion,
-      usuariosSesiones: newSessionStudents,
-    };
-
-    const result = await sessionsService.saveSession(sessionModel);
-
-    if (typeof result !== 'undefined') {
-      console.log('Ta bueno');
-      if (result.status === 200) {
-        history.push(`${host}prof-sesiones`);
-      } else {
-        alert('Ha sucedido un error');
+      if (result) {
+        if(result.status === 200) {
+          history.push(`${host}prof-sesiones`);
+        }
       }
-    } else {
+      // if (typeof result !== 'undefined') {
+      //   console.log('Ta bueno');
+      //   if (result.status === 200) {
+      //     history.push(`${host}prof-sesiones`);
+      //   } else {
+      //     alert('Ha sucedido un error');
+      //   }
+      // } else {
+      //   alert('Ha sucedido un error');
+      // }
+    } catch (error) {
+      console.log(error);
       alert('Ha sucedido un error');
     }
   };
@@ -152,7 +162,7 @@ const TeachersCreateSessions = (props) => {
   const handleGoToSessions = (e) => {
     e.preventDefault();
     history.push(`${host}prof-sesiones`);
-  }
+  };
 
   useEffect(() => {
     getUsers(usersSelectedPage, usersPageSize, searchParameters);

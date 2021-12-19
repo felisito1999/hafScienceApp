@@ -13,6 +13,7 @@ import CreateTest from '../components/CreateTest';
 import StudentsSessionsDashboard from '../components/StudentsSessionsDashboard';
 import StudentSessionDetails from '../components/StudentSessionDetails';
 import TeacherTestAttempts from '../components/TeacherTestAttempts';
+import StudentSessionAverage from '../components/StudentSessionAverage';
 
 const usersComponents = {
   adminComponents: [
@@ -25,7 +26,8 @@ const usersComponents = {
     TeachersSessionsDashboard.name,
     AddSessionsUsers.name,
     CreateTest.name,
-    TeacherTestAttempts.name
+    TeacherTestAttempts.name,
+    StudentSessionAverage.name
   ],
   studentComponents: [
     TestAttempt.name,

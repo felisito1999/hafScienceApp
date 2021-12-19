@@ -50,6 +50,7 @@ const TeachersSessionsDashboard = (props) => {
         pageSize,
         searchParameters
       );
+      console.log(response);
       setSessions(response.data.records);
       setRecordsTotal(response.data.recordsTotal);
 

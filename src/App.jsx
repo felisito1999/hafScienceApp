@@ -4,8 +4,6 @@ import {
   HashRouter as Router,
   Switch,
   Route,
-  Redirect,
-  useHistory,
 } from 'react-router-dom';
 import Home from './components/Home';
 import Login from './components/Login';
@@ -30,6 +28,7 @@ import TeachersCreateSessions from './components/TeachersCreateSessions';
 import SessionDetails from './components/SessionDetails';
 import UpdateSessions from './components/UpdateSessions';
 import TeacherTestAttempts from './components/TeacherTestAttempts';
+import StudentSessionAverage from './components/StudentSessionAverage';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -169,6 +168,11 @@ const App = () => {
             exact 
             path={`${host}prof-sesiones/calificaciones-prueba/:sessionId/:pruebaId`}
             component={TeacherTestAttempts}
+          />
+          <ProtectedRoute
+            exact 
+            path={`${host}prof-sesiones/promedio-estudiante/:sessionId/:studentId`}
+            component={StudentSessionAverage}
           />
           <Route path={`${host}reset-password`} component={ResetPassword} />
           <Route>
