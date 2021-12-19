@@ -23,12 +23,17 @@ const TeacherTestAttempts = (props) => {
 
   const handleCreateReport = async () => {
     const input = document.getElementById('report-area');
-        const pdf = new jsPDF();
+        const pdf = new jsPDF('p', 'pt', 'letter');
 
         if (pdf) {
+          // pdf.html(input.innerHTML);
+          // pdf.save('test');
           DomToImage.toJpeg(input, {quality: 1.0})
             .then(imgData => {
-              pdf.addImage(imgData, 'JPEG', 10, 10);
+              const imageProps = pdf.getImageProperties(imgData);
+              const pdfWidth = pdf.internal.pageSize.getWidth();
+              const pdfHeight = (imageProps.height * pdfWidth) / imageProps.width;
+              pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
               pdf.save('reporte-promedio-calificaciones.pdf');
             });
         }
@@ -56,7 +61,7 @@ const TeacherTestAttempts = (props) => {
                 handleCreateReport();
               }}
             >
-              Generar reporte
+              Exportar reporte
             </button>
             <article id="report-area" className="bg-light">
               <h1 className="p-5 text-center rounded-3 bg-success fw-bold">Reporte de calificaciones</h1>

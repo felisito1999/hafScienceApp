@@ -3,11 +3,11 @@ import { useHistory } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Accordion from 'react-bootstrap/Accordion';
-import DateTimePicker from 'react-datetime-picker/dist/DateTimePicker';
-import { GrAdd } from 'react-icons/gr';
 import { AiFillCheckCircle, AiFillCloseCircle } from 'react-icons/ai';
 import AddTestQuestionsModal from './AddTestQuestionsModal';
 import testsService from '../services/testsService';
+import MaskedInput from 'react-text-mask';
+import validationService from '../services/validationService';
 
 function CreateTest(props) {
   // const today = new Date();
@@ -19,8 +19,6 @@ function CreateTest(props) {
       titulo: '',
       calificacionMaxima: 0.0,
     },
-    // fechaInicio: today,
-    // fechaLimite: today.setDate(today.getDate() + 1),
     preguntas: [],
   };
   const [pruebaDiagnostica, setPruebaDiagnostica] = useState({
@@ -73,20 +71,6 @@ function CreateTest(props) {
     }
   };
 
-  const handleFechaIncioChange = (value) => {
-    setPruebaDiagnostica({
-      ...pruebaDiagnostica,
-      fechaInicio: value,
-    });
-  };
-
-  const handleFechaLimiteChange = (value) => {
-    setPruebaDiagnostica({
-      ...pruebaDiagnostica,
-      fechaLimite: value,
-    });
-  };
-
   const addSelectedQuestion = (question) => {
     if (question) {
       if (
@@ -120,15 +104,49 @@ function CreateTest(props) {
     setIsQuestionsModalOpen(!isQuestionsModalOpen);
   };
 
+  const validateTest = () => {
+    if (Array.isArray(pruebaDiagnostica.preguntas)) {
+      if (pruebaDiagnostica.preguntas.length > 0) {
+        if (
+          validationService.isNullOrWhiteSpace(
+            pruebaDiagnostica.pruebaDiagnostica.titulo
+          )
+        ) {
+          alert('La prueba diagnóstica debe poseer un título válido');
+          return false;
+        }
+        if (pruebaDiagnostica.pruebaDiagnostica.calificacionMaxima > 0 && pruebaDiagnostica.pruebaDiagnostica.calificacionMaxima <= 100){
+          return true;
+        }
+        else {
+          alert('La calificación máxima de la prueba diagnóstica debe estar entre 0 y 100 puntos');
+          return false;
+        }
+        return true;
+      } else {
+        alert('La prueba diagnóstica debe tener al menos una pregunta');
+        return false;
+      }
+    } else {
+      alert('Ha ocurrido un error y no se pudo guardar la prueba diagnóstica');
+      return false;
+    }
+  };
+
   const submitTest = async (pruebaDiagnostica) => {
-    try {
-      const result = await testsService.savePruebaDiagnostica(
-        pruebaDiagnostica
-      );
-      alert('La prueba diagnóstica ha sido guardada exitosamente.');
-      history.push(`${host}prof-sesiones`);
-    } catch (error) {
-      console.log(error);
+    if (validateTest() === true) {
+      try {
+        const result = await testsService.savePruebaDiagnostica(
+          pruebaDiagnostica
+        );
+
+        if (result) {
+          alert('La prueba diagnóstica ha sido guardada exitosamente.');
+          history.push(`${host}prof-sesiones`);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
