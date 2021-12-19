@@ -1,0 +1,125 @@
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Atrapame si puedes</title>
+</head>
+<div id="divselect">
+
+<select>
+    <option value="0" >Seleccione un elemento</option>
+    <option value="op1" >Nivel facil</option>
+    <option value="op2" >Nivel intermedio</option>
+    <option value="op3" >Nivel dificl</option>
+    
+</select>
+
+    
+</div>
+<br>
+
+<body background="chemistry-image.jpg">
+     
+        <div id="contenedor">
+            <marquee>
+                <h4></h4>
+             </marquee>
+
+        <div id="colum1" >
+            <span class="luz" id="blink">
+                <center>
+                    <p>
+                
+                    </p>
+                   
+                </center>
+                
+        </span>  
+        </div>
+       
+
+
+      
+        
+        <div id="colum2" >
+<!-- <marquee direction="right">-->
+        
+            <h3 id="h6">Tiempo Restante:</h3>
+        <span id="countdown"></span>
+        <h2 id="h2"><center></center></h2>
+        
+        <h1 id="h1">
+            <center>
+               
+            </center>
+           
+        </h1>
+       
+
+        </marquee>
+    </div>
+</div  >
+
+<br>
+        <script  src="game.js"></script>
+
+        <br>
+
+    <div>
+        <br>
+        <br>
+        <button id="holas23" class="button" style="margin-left: 183px;">
+            <img src="imagenarriba.png" alt="" width="50px">
+            
+        </button>
+    </div>
+    <br>
+    <div>
+        <button id="holas26" class="button" style="margin-left: 133px;">
+            <img src="imagenizquierda.png" alt="" width="50px">
+            
+        </button>
+        <button id="holas25" class="button" >
+            <img src="imagenderecha.png" alt="" width="50px">
+          
+        </button>
+        
+      
+    </div>
+    <br>
+    <div>
+        
+        <button id="holas24" class="button" style="margin-left: 183px;" >
+            <img src="imagenabajo.png" alt="" width="50px">
+          
+        </button>
+    </div>
+
+
+
+        
+
+
+
+
+        
+  
+
+   
+    
+</body>
+
+
+<script>
+    (function() {
+    
+    setInterval(function(){
+      var el = document.getElementById('blink');
+      if(el.className == 'luz'){
+          el.className = 'luz on';
+      }else{
+          el.className = 'luz';
+      }
+    },500);
+    
+    })();
+    </script>

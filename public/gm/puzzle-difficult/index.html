@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <p>Seleccione un elemento:
+        <select id="imagenmostrar" Inchange="">
+            <option value="Elemento">Seleccione un elemento</option>
+            <option value="GN">Gases nobles</option>
+            <option value="MA">metales alcalinos</option>
+            <option value="FH">Familia del hierro</option>
+           <!-- <option value="de">Descripcion del elemento</option> -->
+        </select>
+        
+            
+    </p>         
+        
+        <hr>
+        <marquee direction='lefth'>
+            <p> <h5>  Seleccionar un elemento</h5> </p>
+           <p>
+           
+            <img src="imagenes/ositos.gif" height="70px" alt="">
+            <img src="imagenes/NINO.gif" height="70px" alt="">
+           </p> 
+
+        </marquee>
+       
+        <hr>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="css/jqpuzzle.css" />
+        <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+        <script type="text/javascript" src="js/jquery.jqpuzzle.js"></script>
+        
+        <script type="text/javascript">
+            //Rutas a imagenes que se cargaran al azar.
+           
+            var imagenes = new Array(
+               
+               
+                'imagenes/xenon.jpg',
+               'imagenes/radon.png',
+               'imagenes/neon.jpg',
+               
+                
+            );
+
+            var imagenes2 = new Array(
+                'imagenes/cesio.png', 
+                'imagenes/francio.jpg',
+                'imagenes/sodio.png',
+                'imagenes/Litio.png',
+                
+            );
+
+
+            var imagenes3 = new Array(
+                'imagenes/hierro.jpg',
+                'imagenes/RUTERINO.jpg',
+                'imagenes/OSMIO.JPG',
+               'imagenes/Hassio.jpg',
+                
+            );
+
+            var imagenes4 = new Array(
+                /*'imagenes/hierro.jpg',*/
+                /*'imagenes/carbon.jpg',*/
+                /*'imagenes/descripcion.png',
+               'imagenes/tablacompleta.png',*/
+                
+            );
+            var variable =0;
+
+            var node = document.createElement('img');
+            node.classList.add("jqPuzzle");
+            node.id = "rompecabezas";
+
+        let seleccion=document.querySelector('select');
+       
+
+        let parrafo=document.querySelector('h5')
+       // seleccion.addEventListener('change',prueba);  
+        seleccion.addEventListener('change',seleccionarimagen);
+    
+      
+            
+        function seleccionarimagen()
+        {
+            let eleccion=seleccion.value;
+            console.log(eleccion)
+            if(eleccion==='GN')
+            {
+
+                prueba();
+                  parrafo.textContent=('Los gases nobles son un conjunto de '+
+                  'elementos químicos que comparten un rango determinado de características: son monoatómicos, inodoros e incoloros en condiciones normales,'+
+                  'tienen puntos de ebullición muy bajos y solo pueden licuarse bajo grandes presiones. Por ejemplo: neón, xenón, radón.')
+
+
+            }
+            else if(eleccion==='MA')
+            {
+
+                prueba4();
+                parrafo.textContent=(' Los metales alcalinos o simplemente alcalinos (del árabe, alqali) son estos seis elementos químicos: '+
+                'litio (Li), sodio (Na), potasio (K), rubidio (Rb), cesio (Cs) y francio (Fr). Estos elementos, junto con el hidrógeno '+
+                '(que es un gas), constituyen el grupo 1 que se encuentra en el bloque-s de la tabla periódica.');
+             
+               
+            }
+            else if(eleccion==='FH')
+            {
+                prueba2();
+                parrafo.textContent=('La familia del hierro se compone de todos los integrantes del Grupo 8 de la tabla periódica (antiguamente VIII B)'+
+                'Hierro (Fe),Rutenio (Ru),Osmio (Os),Hassio (Hs). Todos los elementos de este grupo tienen comportamientos físico-químicos representativos '+
+                'del nombre que los representa. En este caso es el hierro. Además este tipo de materiales son muy buenos para hacer lo que se denomina experimentos '+
+                'con rocas y toda clase de objetos que sean muy sólidos.');
+            }
+            else if (eleccion==='de')
+            {
+                prueba3();
+                parrafo.textContent=('El calcio (del latín calx, calis, cal) es un elemento químico, de símbolo Ca y de número atómico 20. Su masa atómica es 40,078 u. El calcio es un metal blando, grisáceo, y es el quinto más abundante en masa de la corteza terrestre. También es el ion más abundante disuelto en el agua de mar, ');
+
+            }
+                    
+        }
+        
+             
+        
+      
+                    
+       
+            
+          
+             
+            //Seteos del rompecabezas.
+            var settings = {
+                shuffle: true,
+                control: {
+                    shufflePieces: true, // display 'Shuffle' button [true|false] 
+                    confirmShuffle: false, // ask before shuffling [true|false] 
+                    toggleOriginal: true, // display 'Original' button [true|false] 
+                    toggleNumbers: true, // display 'Numbers' button [true|false] 
+                    counter: true, // display moves counter [true|false] 
+                    timer: true, // display timer (seconds) [true|false] 
+                    pauseTimer: false
+                }
+            };
+
+            //Textos que mostraran el rompecabezas.
+            var myTexts = {
+                shuffleLabel: 'Mezclar',
+
+                toggleOriginalLabel: 'Ver Original',
+
+                toggleNumbersLabel: 'Numeros',
+
+                confirmShuffleMessage: 'Desea mezclar la imagen?',
+
+                movesLabel: 'Movimientos',
+
+                secondsLabel: 'segundos'
+            };
+            function prueba()
+            {
+                var azar = Math.floor((Math.random() * imagenes.length) + variable);
+                
+                var imagen = ""; 
+                imagen = imagenes[azar];
+
+                var contenedor = document.getElementById("container");
+
+                if(contenedor.childElementCount > 0 )
+                    contenedor.removeChild(document.getElementById("rompecabezas"));
+                   
+                contenedor.appendChild(node);
+
+                $("#rompecabezas").attr('src', imagen);
+                $("#rompecabezas").jqPuzzle(settings, myTexts);
+            }
+
+
+
+
+            function prueba2()
+            {
+                var azar = Math.floor((Math.random() * imagenes3.length) + variable);
+                
+                var imagen = ""; 
+                imagen = imagenes3[azar];
+
+                var contenedor = document.getElementById("container");
+
+                if(contenedor.childElementCount > 0 )
+                    contenedor.removeChild(document.getElementById("rompecabezas"));
+
+                contenedor.appendChild(node);
+
+                $("#rompecabezas").attr('src', imagen);
+                $("#rompecabezas").jqPuzzle(settings, myTexts);
+            }
+
+
+            function prueba3()
+            {
+                var azar = Math.floor((Math.random() * imagenes4.length) + variable);
+                
+                var imagen = ""; 
+                imagen = imagenes4[azar];
+
+                var contenedor = document.getElementById("container");
+
+                if(contenedor.childElementCount > 0 )
+                    contenedor.removeChild(document.getElementById("rompecabezas"));
+
+                contenedor.appendChild(node);
+
+                $("#rompecabezas").attr('src', imagen);
+                $("#rompecabezas").jqPuzzle(settings, myTexts);
+            }
+
+
+            function prueba4()
+            {
+                var azar = Math.floor((Math.random() * imagenes2.length) + variable);
+                
+                var imagen = ""; 
+                imagen = imagenes2[azar];
+
+                var contenedor = document.getElementById("container");
+
+                if(contenedor.childElementCount > 0 )
+                    contenedor.removeChild(document.getElementById("rompecabezas"));
+
+                contenedor.appendChild(node);
+
+                $("#rompecabezas").attr('src', imagen);
+                $("#rompecabezas").jqPuzzle(settings, myTexts);
+            }
+          
+            $(document).ready(function() {
+
+            });
+        </script>
+    </head>
+    <body>
+        <div id="container"></div>
+        
+    </body>
+</html>
