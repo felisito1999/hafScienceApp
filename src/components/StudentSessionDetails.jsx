@@ -18,6 +18,7 @@ import LoadingIcon from './LoadingIcon';
 import { format } from 'date-fns';
 import es from 'date-fns/locale/es';
 import StartTestAttemptConfirmationModal from './StartTestAttemptConfirmationModal';
+import badgesService from '../services/badgesService';
 
 const StudentSessionDetails = (props) => {
   const host = process.env.REACT_APP_HOST_NAME;
@@ -26,7 +27,7 @@ const StudentSessionDetails = (props) => {
   const [isSessionInfoLoading, setIsSessionInfoLoading] = useState(true);
 
   const [session, setSession] = useState(null);
-
+  const [sessionBadges, setSessionBadges] = useState([]);
   const [users, setUsers] = useState([]);
   const [usersSelectedPage, setUsersSelectedPage] = useState(1);
   const [usersPageSize, setUsersPageSize] = useState(3);
@@ -107,6 +108,19 @@ const StudentSessionDetails = (props) => {
     console.log(pruebaId, sessionId);
   };
 
+  const getMyBadges = async () => {
+    try {
+      const result = await badgesService.getStudentBadges(sessionId);
+
+      if (result) { 
+        console.log(result);
+        setSessionBadges(result.data)
+      }
+    } catch (error) {
+      
+    }
+  }
+
   useEffect(() => {
     const getInitData = async () => {
       const sessionData = await sessionsService.getById(sessionId);
@@ -120,7 +134,7 @@ const StudentSessionDetails = (props) => {
           pruebasPageSize
         );
       }
-
+      getMyBadges();
       setIsSessionInfoLoading(false);
     };
 
@@ -449,7 +463,20 @@ const StudentSessionDetails = (props) => {
                       />
                     </Tab.Pane>
                     <Tab.Pane eventKey="insignias">
-                      <h1>Aquí aparecerán tus insignias</h1>
+                      {sessionBadges && sessionBadges.length > 0 ? sessionBadges && sessionBadges.map((badge, index) => (<Col key={index} className="mb-3">
+                      <Card
+                        
+                      >
+                        <Card.Header className="text-center fw-bold">{badge.insignia.nombre}</Card.Header>
+                        <Card.Img
+                          className="my-3"
+                          height={50}
+                          src={badge.insignia.contenidoSvg}
+                        ></Card.Img>
+                        <Card.Footer className="text-center">{badge.insignia.descripcion}</Card.Footer>
+                      </Card>
+                    </Col>)) : <h1 className="text-center">Usted no tiene insignias asignadas</h1> }
+                      {}
                     </Tab.Pane>
                   </Tab.Content>
                 </Tab.Container>
