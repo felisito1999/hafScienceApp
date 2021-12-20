@@ -309,7 +309,7 @@ const BadgesAssignment = (props) => {
                       >
                         <Card.Img
                           height={50}
-                          src={image.contenidoSvg}
+                          src={image.imgData}
                         ></Card.Img>
                       </Card>
                     </Col>
@@ -443,7 +443,7 @@ const BadgesAssignment = (props) => {
                   height={50}
                   key={index}
                   alt="Badge"
-                  src={`${badgeImage.contenidoSvg}`}
+                  src={`${badgeImage.imgData}`}
                 />
               ))}
           </>

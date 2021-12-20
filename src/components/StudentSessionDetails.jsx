@@ -471,7 +471,7 @@ const StudentSessionDetails = (props) => {
                         <Card.Img
                           className="my-3"
                           height={50}
-                          src={badge.insignia.contenidoSvg}
+                          src={badge.insignia.imgData}
                         ></Card.Img>
                         <Card.Footer className="text-center">{badge.insignia.descripcion}</Card.Footer>
                       </Card>
